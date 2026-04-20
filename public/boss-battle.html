@@ -920,8 +920,9 @@ function nextQuestion(){
     grid.appendChild(btn);
   });
 
-  // timer
-  const phaseTime = state.phase===0 ? 15 : state.phase===1 ? 12 : 8;
+  // timer — calculation questions (Math, calc-heavy Physics/Chemistry) get +10s
+  let phaseTime = state.phase===0 ? 15 : state.phase===1 ? 12 : 8;
+  if(q.calc) phaseTime += 10;
   state.timerValue = phaseTime;
   state._timerMax = phaseTime;
   state.questionStart = Date.now();
