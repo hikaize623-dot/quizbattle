@@ -265,13 +265,13 @@
   .timer-bar{height:8px;background:rgba(0,0,0,0.5);border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,0.08)}
   .timer-fill{height:100%;width:100%;background:var(--good);transition:width .2s linear, background .3s;border-radius:6px}
 
-  .question-text{font-family:'Cinzel',serif;font-size:18px;font-weight:700;line-height:1.35;margin:0;color:#fff}
+  .question-text{font-family:'Cinzel',serif;font-size:18px;font-weight:700;line-height:1.35;margin:0;color:#fff;white-space:pre-line}
 
   .options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .option{
     background:rgba(20,12,50,0.7);border:1px solid var(--border);border-radius:10px;
     padding:12px 14px;text-align:left;display:flex;align-items:center;gap:10px;
-    transition:all .15s;font-size:14px;color:var(--text);
+    transition:all .15s;font-size:14px;color:var(--text);white-space:pre-line;
   }
   .option:not(:disabled):hover{transform:translateY(-2px);border-color:var(--border-glow);background:rgba(50,30,100,0.7)}
   .option .key{
