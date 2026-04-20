@@ -366,6 +366,14 @@
     .battle-main{grid-template-columns:1fr;overflow-y:auto}
     .side-panel{max-height:none;overflow:visible}
     .options{grid-template-columns:1fr}
+    /* Stop the boss area from eating all vertical space and hiding the question card */
+    .center-stage{flex:none;overflow:visible}
+    .boss-area{flex:none;min-height:260px;height:260px}
+    .question-card{flex:none}
+    /* Reorder: boss + question first, then spells, then leaderboard */
+    .battle-main > .center-stage{order:1}
+    .battle-main > .side-spells{order:2}
+    .battle-main > .side-leader{order:3}
   }
 
   /* Phone layout */
