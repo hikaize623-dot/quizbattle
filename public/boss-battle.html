@@ -379,7 +379,7 @@
     .btn{padding:12px 20px;font-size:12px;letter-spacing:1.5px;width:100%}
 
     .screen{position:absolute;min-height:100%}
-    #battleScreen{padding:8px;gap:8px;overflow-y:auto;display:flex}
+    #battleScreen.active{padding:8px;gap:8px;overflow-y:auto}
     .top-bar{flex-direction:column;gap:8px}
     .hp-block{padding:8px 10px}
     .hp-name{font-size:12px}
@@ -388,6 +388,10 @@
     .hp-text{font-size:10px}
 
     .battle-main{gap:8px;display:flex;flex-direction:column;flex:none}
+    /* Reorder so the boss & question appear first on mobile */
+    .battle-main > .center-stage{order:1}
+    .battle-main > .side-spells{order:2}
+    .battle-main > .side-leader{order:3}
     .side-panel{padding:10px;gap:10px}
     .panel-title{font-size:12px;letter-spacing:1.5px}
 
@@ -472,8 +476,10 @@
   </div>
 
   <div class="battle-main">
+    <!-- mobile order: center first, then spells, then leaderboard -->
+
     <!-- LEFT: Spells & Combo -->
-    <div class="side-panel">
+    <div class="side-panel side-spells">
       <h3 class="panel-title">Combo</h3>
       <div class="combo-row">
         <div class="combo-dots" id="comboDots"></div>
@@ -518,7 +524,7 @@
     </div>
 
     <!-- RIGHT: Leaderboard -->
-    <div class="side-panel">
+    <div class="side-panel side-leader">
       <h3 class="panel-title">Leaderboard</h3>
       <div id="leaderboardList" style="display:flex;flex-direction:column;gap:6px"></div>
     </div>
