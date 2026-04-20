@@ -547,34 +547,71 @@
 
 <script>
 /* ============ DATA ============ */
+// Questions based on Malaysia KSSM Tingkatan 4 & 5 syllabus.
+// Each question is tagged with `boss` so each boss has a unique question bank.
+// meta = "Subject • Chapter • Tingkatan"
 const QUESTIONS = [
-  // Fire
-  {text:"Which planet is closest to the Sun?",element:"fire",options:["Venus","Mercury","Mars","Earth"],answer:1,category:"Astronomy"},
-  {text:"What gas do plants release during photosynthesis?",element:"fire",options:["Carbon dioxide","Nitrogen","Oxygen","Hydrogen"],answer:2,category:"Biology"},
-  {text:"Which metal has the chemical symbol 'Au'?",element:"fire",options:["Silver","Gold","Aluminum","Argon"],answer:1,category:"Chemistry"},
-  {text:"How many continents are there on Earth?",element:"fire",options:["5","6","7","8"],answer:2,category:"Geography"},
-  {text:"Which artist painted the Mona Lisa?",element:"fire",options:["Van Gogh","Picasso","Da Vinci","Michelangelo"],answer:2,category:"Art"},
-  {text:"What is the hottest planet in our solar system?",element:"fire",options:["Mercury","Venus","Mars","Jupiter"],answer:1,category:"Astronomy"},
-  {text:"Which language has the most native speakers?",element:"fire",options:["English","Spanish","Mandarin","Hindi"],answer:2,category:"Language"},
+  /* ============================================================
+     LORD VEXON — Tingkatan 4 syllabus (weakness: lightning)
+     ============================================================ */
+  // FIRE — Sejarah / Geografi / Pendidikan Islam (T4)
+  {boss:"vexon",text:"Bilakah Tanah Melayu mencapai kemerdekaan?",element:"fire",options:["31 Ogos 1957","16 September 1963","31 Ogos 1963","27 Disember 1949"],answer:0,category:"Sejarah • Bab 7: Pembinaan Negara dan Bangsa • Tingkatan 4"},
+  {boss:"vexon",text:"Tamadun Indus berkembang di lembah sungai yang manakah?",element:"fire",options:["Sungai Nil","Sungai Indus","Sungai Kuning","Sungai Tigris"],answer:1,category:"Sejarah • Bab 2: Tamadun Awal Dunia • Tingkatan 4"},
+  {boss:"vexon",text:"Khalifah pertama selepas kewafatan Nabi Muhammad SAW ialah?",element:"fire",options:["Umar al-Khattab","Uthman bin Affan","Abu Bakar As-Siddiq","Ali bin Abi Talib"],answer:2,category:"Sejarah • Bab 5: Kerajaan Islam di Madinah • Tingkatan 4"},
+  {boss:"vexon",text:"Garisan khayalan 0° latitud dikenali sebagai?",element:"fire",options:["Garisan Tropika Cancer","Garisan Khatulistiwa","Garisan Meridian","Garisan Antartika"],answer:1,category:"Geografi • Bab 1: Bentuk Muka Bumi • Tingkatan 4"},
+  {boss:"vexon",text:"Rukun Islam yang kelima ialah?",element:"fire",options:["Solat","Puasa","Zakat","Mengerjakan Haji"],answer:3,category:"Pendidikan Islam • Akidah • Tingkatan 4"},
+  {boss:"vexon",text:"Kesultanan Melayu Melaka diasaskan oleh?",element:"fire",options:["Parameswara","Sultan Mansur Shah","Hang Tuah","Tun Perak"],answer:0,category:"Sejarah • Bab 3: Kerajaan Alam Melayu • Tingkatan 4"},
+  {boss:"vexon",text:"Apakah jenis hujan yang turun akibat pertembungan angin lembap dengan banjaran gunung?",element:"fire",options:["Hujan perolakan","Hujan bukit (orografik)","Hujan siklon","Hujan monsun"],answer:1,category:"Geografi • Bab 5: Cuaca dan Iklim • Tingkatan 4"},
 
-  // Ice
-  {text:"What is the largest ocean on Earth?",element:"ice",options:["Atlantic","Indian","Arctic","Pacific"],answer:3,category:"Geography"},
-  {text:"At what temperature does water freeze (Celsius)?",element:"ice",options:["0°","32°","-10°","100°"],answer:0,category:"Physics"},
-  {text:"Which is the largest mammal?",element:"ice",options:["Elephant","Blue Whale","Giraffe","Orca"],answer:1,category:"Biology"},
-  {text:"How many bones are in the adult human body?",element:"ice",options:["186","206","226","306"],answer:1,category:"Biology"},
-  {text:"What is the capital of Australia?",element:"ice",options:["Sydney","Melbourne","Canberra","Perth"],answer:2,category:"Geography"},
-  {text:"Which element has the symbol 'O'?",element:"ice",options:["Osmium","Oxygen","Gold","Oganesson"],answer:1,category:"Chemistry"},
-  {text:"What year did World War II end?",element:"ice",options:["1943","1944","1945","1946"],answer:2,category:"History"},
+  // ICE — Bahasa Melayu / Bahasa Inggeris / Pendidikan Moral (T4)
+  {boss:"vexon",text:"Apakah maksud peribahasa 'bagai aur dengan tebing'?",element:"ice",options:["Sangat berjauhan","Saling bekerjasama dan bantu-membantu","Berdendam tanpa henti","Berseorangan tanpa kawan"],answer:1,category:"Bahasa Melayu • Peribahasa • Tingkatan 4"},
+  {boss:"vexon",text:"Pilih ayat yang menggunakan kata sendi nama yang BETUL.",element:"ice",options:["Dia pergi ke sekolah dengan basikal.","Dia pergi di sekolah dengan basikal.","Dia pergi pada sekolah dengan basikal.","Dia pergi dari sekolah dengan basikal pagi tadi."],answer:0,category:"Bahasa Melayu • Tatabahasa: Kata Sendi Nama • Tingkatan 4"},
+  {boss:"vexon",text:"Choose the correct passive form: 'The teacher marked the books.'",element:"ice",options:["The books was marked by the teacher.","The books were marked by the teacher.","The books are marked by the teacher.","The books have marked by the teacher."],answer:1,category:"English • Grammar: Passive Voice • Form 4"},
+  {boss:"vexon",text:"Which word is a SYNONYM of 'diligent'?",element:"ice",options:["Lazy","Hardworking","Careless","Selfish"],answer:1,category:"English • Vocabulary • Form 4"},
+  {boss:"vexon",text:"Nilai yang menekankan sikap menerima dan menghormati perbezaan kaum dan agama disebut?",element:"ice",options:["Hemah tinggi","Toleransi","Berdikari","Rasional"],answer:1,category:"Pendidikan Moral • Nilai Berkaitan Masyarakat • Tingkatan 4"},
+  {boss:"vexon",text:"Antara berikut, yang manakah BUKAN kata adjektif?",element:"ice",options:["Cantik","Lari","Tinggi","Pandai"],answer:1,category:"Bahasa Melayu • Tatabahasa: Kata Adjektif • Tingkatan 4"},
+  {boss:"vexon",text:"Identify the tense: 'She has been studying for two hours.'",element:"ice",options:["Present perfect","Present perfect continuous","Past perfect","Present continuous"],answer:1,category:"English • Grammar: Tenses • Form 4"},
 
-  // Lightning
-  {text:"What is the speed of light (approx, m/s)?",element:"lightning",options:["3×10⁸","3×10⁶","3×10¹⁰","3×10⁴"],answer:0,category:"Physics"},
-  {text:"Who developed the theory of relativity?",element:"lightning",options:["Newton","Einstein","Tesla","Hawking"],answer:1,category:"Science"},
-  {text:"Which company created the iPhone?",element:"lightning",options:["Microsoft","Google","Apple","Samsung"],answer:2,category:"Tech"},
-  {text:"What does CPU stand for?",element:"lightning",options:["Central Processing Unit","Computer Personal Unit","Central Power Unit","Control Process Unit"],answer:0,category:"Tech"},
-  {text:"What is the powerhouse of the cell?",element:"lightning",options:["Mitochondria","Nucleus","Ribosome","Golgi"],answer:0,category:"Biology"},
-  {text:"In what language is 'console.log' a function?",element:"lightning",options:["Python","Java","JavaScript","Ruby"],answer:2,category:"Tech"},
-  {text:"How many sides does a hexagon have?",element:"lightning",options:["5","6","7","8"],answer:1,category:"Math"},
-  {text:"What is the square root of 144?",element:"lightning",options:["10","11","12","13"],answer:2,category:"Math"},
+  // LIGHTNING — Matematik / Sains / Fizik / Kimia (T4) — Vexon's WEAKNESS
+  {boss:"vexon",text:"Selesaikan: 2x + 6 = 20. Nilai x ialah?",element:"lightning",options:["5","6","7","8"],answer:2,category:"Matematik • Bab 1: Persamaan Linear • Tingkatan 4"},
+  {boss:"vexon",text:"Apakah unit SI bagi daya?",element:"lightning",options:["Joule (J)","Newton (N)","Pascal (Pa)","Watt (W)"],answer:1,category:"Fizik • Bab 1: Pengenalan kepada Fizik • Tingkatan 4"},
+  {boss:"vexon",text:"Formula kimia bagi gas metana ialah?",element:"lightning",options:["CH₄","CO₂","C₂H₆","CH₃"],answer:0,category:"Kimia • Bab 8: Sebatian Karbon • Tingkatan 4"},
+  {boss:"vexon",text:"Hukum Newton yang manakah berkaitan dengan inersia?",element:"lightning",options:["Hukum Pertama","Hukum Kedua","Hukum Ketiga","Hukum Graviti"],answer:0,category:"Fizik • Bab 2: Daya dan Gerakan • Tingkatan 4"},
+  {boss:"vexon",text:"Luas sebuah bulatan berjejari 7 cm ialah? (π = 22/7)",element:"lightning",options:["154 cm²","144 cm²","49 cm²","22 cm²"],answer:0,category:"Matematik • Bab: Bulatan • Tingkatan 4"},
+  {boss:"vexon",text:"Organel yang menjalankan respirasi sel ialah?",element:"lightning",options:["Nukleus","Ribosom","Mitokondria","Kloroplas"],answer:2,category:"Biologi • Bab 2: Sel sebagai Unit Asas Hidupan • Tingkatan 4"},
+  {boss:"vexon",text:"Nombor proton bagi atom oksigen (O) ialah?",element:"lightning",options:["6","7","8","16"],answer:2,category:"Kimia • Bab 2: Struktur Atom • Tingkatan 4"},
+  {boss:"vexon",text:"Cerun bagi garis lurus y = 3x − 5 ialah?",element:"lightning",options:["−5","3","−3","5"],answer:1,category:"Matematik • Bab: Garis Lurus • Tingkatan 4"},
+
+  /* ============================================================
+     GLACIERA — Tingkatan 5 syllabus (weakness: fire)
+     ============================================================ */
+  // FIRE — Matematik / Sains / Fizik / Kimia / Biologi (T5) — Glaciera's WEAKNESS
+  {boss:"glaciera",text:"Nilai sin 30° ialah?",element:"fire",options:["0","½","√3/2","1"],answer:1,category:"Matematik • Bab: Nisbah Trigonometri • Tingkatan 5"},
+  {boss:"glaciera",text:"Hukum Ohm dinyatakan sebagai?",element:"fire",options:["V = IR","P = IV","F = ma","E = mc²"],answer:0,category:"Fizik • Bab 2: Keelektrikan • Tingkatan 5"},
+  {boss:"glaciera",text:"Asid kuat yang manakah berikut?",element:"fire",options:["CH₃COOH","H₂CO₃","HCl","NH₃"],answer:2,category:"Kimia • Bab 7: Asid, Bes dan Garam • Tingkatan 5"},
+  {boss:"glaciera",text:"Proses pembahagian sel yang menghasilkan gamet ialah?",element:"fire",options:["Mitosis","Meiosis","Binari","Tunas"],answer:1,category:"Biologi • Bab: Pembahagian Sel • Tingkatan 5"},
+  {boss:"glaciera",text:"Selesaikan: log₁₀ 1000 = ?",element:"fire",options:["1","2","3","10"],answer:2,category:"Matematik • Bab: Indeks dan Logaritma • Tingkatan 5"},
+  {boss:"glaciera",text:"Gelombang yang TIDAK memerlukan medium untuk merambat ialah?",element:"fire",options:["Gelombang bunyi","Gelombang air","Gelombang elektromagnet","Gelombang seismik"],answer:2,category:"Fizik • Bab 1: Gelombang • Tingkatan 5"},
+  {boss:"glaciera",text:"Hormon yang mengawal aras gula dalam darah ialah?",element:"fire",options:["Adrenalina","Insulin","Tiroksin","Estrogen"],answer:1,category:"Biologi • Bab: Koordinasi dan Gerak Balas • Tingkatan 5"},
+
+  // ICE — Bahasa Melayu / English / Pendidikan Moral (T5)
+  {boss:"glaciera",text:"Apakah maksud simpulan bahasa 'kaki bangku'?",element:"ice",options:["Orang yang malas","Orang yang tidak pandai bersukan","Orang yang gemar duduk","Orang yang suka mencuri"],answer:1,category:"Bahasa Melayu • Simpulan Bahasa • Tingkatan 5"},
+  {boss:"glaciera",text:"Pilih ayat aktif yang BETUL.",element:"ice",options:["Buku itu dibaca oleh Ali.","Ali membaca buku itu.","Buku itu Ali membaca.","Membaca buku itu oleh Ali."],answer:1,category:"Bahasa Melayu • Tatabahasa: Ayat Aktif/Pasif • Tingkatan 5"},
+  {boss:"glaciera",text:"Choose the correct conditional: 'If I ___ rich, I would travel the world.'",element:"ice",options:["am","was","were","be"],answer:2,category:"English • Grammar: Conditional Sentences • Form 5"},
+  {boss:"glaciera",text:"Identify the literary device: 'Her smile was as bright as the sun.'",element:"ice",options:["Metaphor","Simile","Personification","Hyperbole"],answer:1,category:"English • Literature Component • Form 5"},
+  {boss:"glaciera",text:"Nilai bertanggungjawab terhadap alam sekitar ditunjukkan melalui?",element:"ice",options:["Membakar sampah terbuka","Kitar semula bahan buangan","Menebang pokok sesuka hati","Membuang sisa ke sungai"],answer:1,category:"Pendidikan Moral • Nilai Berkaitan Alam Sekitar • Tingkatan 5"},
+  {boss:"glaciera",text:"Antara berikut, yang manakah merupakan kata ganda berentak?",element:"ice",options:["Buku-buku","Lauk-pauk","Berlari-lari","Kura-kura"],answer:1,category:"Bahasa Melayu • Tatabahasa: Kata Ganda • Tingkatan 5"},
+  {boss:"glaciera",text:"Choose the correct reported speech: He said, 'I am tired.'",element:"ice",options:["He said that he is tired.","He said that he was tired.","He said that he were tired.","He said he tired."],answer:1,category:"English • Grammar: Reported Speech • Form 5"},
+
+  // LIGHTNING — Sejarah / Geografi / Pendidikan Islam / ASK (T5)
+  {boss:"glaciera",text:"Persekutuan Tanah Melayu ditubuhkan pada tahun?",element:"lightning",options:["1946","1948","1957","1963"],answer:1,category:"Sejarah • Bab 1: Kemunculan Tamadun Awal Manusia • Tingkatan 5"},
+  {boss:"glaciera",text:"Malaysia ditubuhkan secara rasmi pada?",element:"lightning",options:["31 Ogos 1957","16 September 1963","27 Disember 1949","9 Julai 1963"],answer:1,category:"Sejarah • Bab: Pembentukan Malaysia • Tingkatan 5"},
+  {boss:"glaciera",text:"Perjanjian yang menyebabkan pemisahan Singapura daripada Malaysia ditandatangani pada?",element:"lightning",options:["1963","1965","1969","1971"],answer:1,category:"Sejarah • Bab: Pengukuhan Negara dan Bangsa Malaysia • Tingkatan 5"},
+  {boss:"glaciera",text:"Sumber tenaga yang BOLEH diperbaharui ialah?",element:"lightning",options:["Arang batu","Petroleum","Tenaga suria","Gas asli"],answer:2,category:"Geografi • Bab: Sumber dan Pengurusannya • Tingkatan 5"},
+  {boss:"glaciera",text:"Rukun Iman yang pertama ialah beriman kepada?",element:"lightning",options:["Malaikat","Rasul","Allah SWT","Hari Akhirat"],answer:2,category:"Pendidikan Islam • Akidah • Tingkatan 5"},
+  {boss:"glaciera",text:"Dalam Sains Komputer, struktur data 'first in, first out' dikenali sebagai?",element:"lightning",options:["Stack","Queue","Array","Tree"],answer:1,category:"Asas Sains Komputer • Struktur Data • Tingkatan 5"},
+  {boss:"glaciera",text:"Apakah output: print(2 ** 3) dalam Python?",element:"lightning",options:["6","8","9","23"],answer:1,category:"Asas Sains Komputer • Pengaturcaraan Python • Tingkatan 5"},
+  {boss:"glaciera",text:"Kepulauan Borneo dikongsi oleh tiga buah negara, iaitu?",element:"lightning",options:["Malaysia, Indonesia, Filipina","Malaysia, Indonesia, Brunei","Malaysia, Brunei, Singapura","Indonesia, Brunei, Filipina"],answer:1,category:"Geografi • Bab: Kependudukan Malaysia • Tingkatan 5"},
 ];
 
 const BOSSES = [
@@ -763,7 +800,7 @@ function startBattle(){
   state.combo = 0; state.score = 0; state.phase = 0;
   state.questionIndex = 0; state.shielded = false; state.frozen = false;
   state.spellsUsed = {};
-  state.questionPool = shuffle([...QUESTIONS]);
+  state.questionPool = shuffle(QUESTIONS.filter(q => q.boss === state.currentBoss.id));
 
   document.getElementById('titleScreen').classList.remove('active');
   document.getElementById('resultScreen').classList.remove('active');
@@ -842,7 +879,7 @@ function nextQuestion(){
 
   // pick question
   if(state.questionIndex >= state.questionPool.length){
-    state.questionPool = shuffle([...QUESTIONS]);
+    state.questionPool = shuffle(QUESTIONS.filter(q => q.boss === state.currentBoss.id));
     state.questionIndex = 0;
   }
   const q = state.questionPool[state.questionIndex++];
