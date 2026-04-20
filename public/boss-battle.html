@@ -1168,6 +1168,7 @@ function endBattle(victory){
 function showResult(victory){
   document.getElementById('battleScreen').classList.remove('active');
   document.getElementById('resultScreen').classList.add('active');
+  document.getElementById('defeatOverlay').classList.remove('on');
   const title = document.getElementById('resultTitle');
   const flavor = document.getElementById('resultFlavor');
   const loot = document.getElementById('lootContainer');
