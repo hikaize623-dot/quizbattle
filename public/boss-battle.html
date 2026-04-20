@@ -800,7 +800,7 @@ function startBattle(){
   state.combo = 0; state.score = 0; state.phase = 0;
   state.questionIndex = 0; state.shielded = false; state.frozen = false;
   state.spellsUsed = {};
-  state.questionPool = shuffle([...QUESTIONS]);
+  state.questionPool = shuffle(QUESTIONS.filter(q => q.boss === state.currentBoss.id));
 
   document.getElementById('titleScreen').classList.remove('active');
   document.getElementById('resultScreen').classList.remove('active');
