@@ -370,6 +370,10 @@
     .center-stage{flex:none}
     .boss-area{flex:none;min-height:260px;height:260px}
     .question-card{flex:none}
+    /* Reorder: boss + question first, then spells, then leaderboard */
+    .battle-main > .center-stage{order:1}
+    .battle-main > .side-spells{order:2}
+    .battle-main > .side-leader{order:3}
   }
 
   /* Phone layout */
