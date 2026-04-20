@@ -552,66 +552,80 @@
 // meta = "Subject • Chapter • Tingkatan"
 const QUESTIONS = [
   /* ============================================================
-     LORD VEXON — Tingkatan 4 syllabus (weakness: lightning)
+     LORD VEXON — Tingkatan 4 (Matematik, Fizik, Kimia, Biologi)
+     Weakness: LIGHTNING  →  Matematik & Fizik = lightning
      ============================================================ */
-  // FIRE — Sejarah / Geografi / Pendidikan Islam (T4)
-  {boss:"vexon",text:"Bilakah Tanah Melayu mencapai kemerdekaan?",element:"fire",options:["31 Ogos 1957","16 September 1963","31 Ogos 1963","27 Disember 1949"],answer:0,category:"Sejarah • Bab 7: Pembinaan Negara dan Bangsa • Tingkatan 4"},
-  {boss:"vexon",text:"Tamadun Indus berkembang di lembah sungai yang manakah?",element:"fire",options:["Sungai Nil","Sungai Indus","Sungai Kuning","Sungai Tigris"],answer:1,category:"Sejarah • Bab 2: Tamadun Awal Dunia • Tingkatan 4"},
-  {boss:"vexon",text:"Khalifah pertama selepas kewafatan Nabi Muhammad SAW ialah?",element:"fire",options:["Umar al-Khattab","Uthman bin Affan","Abu Bakar As-Siddiq","Ali bin Abi Talib"],answer:2,category:"Sejarah • Bab 5: Kerajaan Islam di Madinah • Tingkatan 4"},
-  {boss:"vexon",text:"Garisan khayalan 0° latitud dikenali sebagai?",element:"fire",options:["Garisan Tropika Cancer","Garisan Khatulistiwa","Garisan Meridian","Garisan Antartika"],answer:1,category:"Geografi • Bab 1: Bentuk Muka Bumi • Tingkatan 4"},
-  {boss:"vexon",text:"Rukun Islam yang kelima ialah?",element:"fire",options:["Solat","Puasa","Zakat","Mengerjakan Haji"],answer:3,category:"Pendidikan Islam • Akidah • Tingkatan 4"},
-  {boss:"vexon",text:"Kesultanan Melayu Melaka diasaskan oleh?",element:"fire",options:["Parameswara","Sultan Mansur Shah","Hang Tuah","Tun Perak"],answer:0,category:"Sejarah • Bab 3: Kerajaan Alam Melayu • Tingkatan 4"},
-  {boss:"vexon",text:"Apakah jenis hujan yang turun akibat pertembungan angin lembap dengan banjaran gunung?",element:"fire",options:["Hujan perolakan","Hujan bukit (orografik)","Hujan siklon","Hujan monsun"],answer:1,category:"Geografi • Bab 5: Cuaca dan Iklim • Tingkatan 4"},
 
-  // ICE — Bahasa Melayu / Bahasa Inggeris / Pendidikan Moral (T4)
-  {boss:"vexon",text:"Apakah maksud peribahasa 'bagai aur dengan tebing'?",element:"ice",options:["Sangat berjauhan","Saling bekerjasama dan bantu-membantu","Berdendam tanpa henti","Berseorangan tanpa kawan"],answer:1,category:"Bahasa Melayu • Peribahasa • Tingkatan 4"},
-  {boss:"vexon",text:"Pilih ayat yang menggunakan kata sendi nama yang BETUL.",element:"ice",options:["Dia pergi ke sekolah dengan basikal.","Dia pergi di sekolah dengan basikal.","Dia pergi pada sekolah dengan basikal.","Dia pergi dari sekolah dengan basikal pagi tadi."],answer:0,category:"Bahasa Melayu • Tatabahasa: Kata Sendi Nama • Tingkatan 4"},
-  {boss:"vexon",text:"Choose the correct passive form: 'The teacher marked the books.'",element:"ice",options:["The books was marked by the teacher.","The books were marked by the teacher.","The books are marked by the teacher.","The books have marked by the teacher."],answer:1,category:"English • Grammar: Passive Voice • Form 4"},
-  {boss:"vexon",text:"Which word is a SYNONYM of 'diligent'?",element:"ice",options:["Lazy","Hardworking","Careless","Selfish"],answer:1,category:"English • Vocabulary • Form 4"},
-  {boss:"vexon",text:"Nilai yang menekankan sikap menerima dan menghormati perbezaan kaum dan agama disebut?",element:"ice",options:["Hemah tinggi","Toleransi","Berdikari","Rasional"],answer:1,category:"Pendidikan Moral • Nilai Berkaitan Masyarakat • Tingkatan 4"},
-  {boss:"vexon",text:"Antara berikut, yang manakah BUKAN kata adjektif?",element:"ice",options:["Cantik","Lari","Tinggi","Pandai"],answer:1,category:"Bahasa Melayu • Tatabahasa: Kata Adjektif • Tingkatan 4"},
-  {boss:"vexon",text:"Identify the tense: 'She has been studying for two hours.'",element:"ice",options:["Present perfect","Present perfect continuous","Past perfect","Present continuous"],answer:1,category:"English • Grammar: Tenses • Form 4"},
+  // FIRE — KIMIA Tingkatan 4
+  {boss:"vexon",text:"Nombor proton bagi atom oksigen (O) ialah?",element:"fire",options:["6","7","8","16"],answer:2,category:"Kimia • Bab 2: Struktur Atom • Tingkatan 4"},
+  {boss:"vexon",text:"Formula kimia bagi gas metana ialah?",element:"fire",options:["CH₄","CO₂","C₂H₆","CH₃"],answer:0,category:"Kimia • Bab 8: Sebatian Karbon • Tingkatan 4"},
+  {boss:"vexon",text:"Zarah subatom yang TIDAK bercas ialah?",element:"fire",options:["Proton","Elektron","Neutron","Ion"],answer:2,category:"Kimia • Bab 2: Struktur Atom • Tingkatan 4"},
+  {boss:"vexon",text:"Apakah jenis ikatan dalam molekul air, H₂O?",element:"fire",options:["Ikatan ionik","Ikatan kovalen","Ikatan logam","Ikatan hidrogen sahaja"],answer:1,category:"Kimia • Bab 5: Ikatan Kimia • Tingkatan 4"},
+  {boss:"vexon",text:"Kumpulan unsur dalam Jadual Berkala yang dikenali sebagai gas adi ialah?",element:"fire",options:["Kumpulan 1","Kumpulan 17","Kumpulan 18","Kumpulan 2"],answer:2,category:"Kimia • Bab 4: Jadual Berkala Unsur • Tingkatan 4"},
+  {boss:"vexon",text:"Bilangan mol bagi 24 g karbon (Jisim atom relatif C = 12) ialah?",element:"fire",options:["1 mol","2 mol","12 mol","24 mol"],answer:1,category:"Kimia • Bab 3: Konsep Mol • Tingkatan 4"},
+  {boss:"vexon",text:"Konfigurasi elektron bagi atom natrium (Z = 11) ialah?",element:"fire",options:["2.8.1","2.8.2","2.7.2","2.8.3"],answer:0,category:"Kimia • Bab 2: Struktur Atom • Tingkatan 4"},
 
-  // LIGHTNING — Matematik / Sains / Fizik / Kimia (T4) — Vexon's WEAKNESS
-  {boss:"vexon",text:"Selesaikan: 2x + 6 = 20. Nilai x ialah?",element:"lightning",options:["5","6","7","8"],answer:2,category:"Matematik • Bab 1: Persamaan Linear • Tingkatan 4"},
-  {boss:"vexon",text:"Apakah unit SI bagi daya?",element:"lightning",options:["Joule (J)","Newton (N)","Pascal (Pa)","Watt (W)"],answer:1,category:"Fizik • Bab 1: Pengenalan kepada Fizik • Tingkatan 4"},
-  {boss:"vexon",text:"Formula kimia bagi gas metana ialah?",element:"lightning",options:["CH₄","CO₂","C₂H₆","CH₃"],answer:0,category:"Kimia • Bab 8: Sebatian Karbon • Tingkatan 4"},
-  {boss:"vexon",text:"Hukum Newton yang manakah berkaitan dengan inersia?",element:"lightning",options:["Hukum Pertama","Hukum Kedua","Hukum Ketiga","Hukum Graviti"],answer:0,category:"Fizik • Bab 2: Daya dan Gerakan • Tingkatan 4"},
-  {boss:"vexon",text:"Luas sebuah bulatan berjejari 7 cm ialah? (π = 22/7)",element:"lightning",options:["154 cm²","144 cm²","49 cm²","22 cm²"],answer:0,category:"Matematik • Bab: Bulatan • Tingkatan 4"},
-  {boss:"vexon",text:"Organel yang menjalankan respirasi sel ialah?",element:"lightning",options:["Nukleus","Ribosom","Mitokondria","Kloroplas"],answer:2,category:"Biologi • Bab 2: Sel sebagai Unit Asas Hidupan • Tingkatan 4"},
-  {boss:"vexon",text:"Nombor proton bagi atom oksigen (O) ialah?",element:"lightning",options:["6","7","8","16"],answer:2,category:"Kimia • Bab 2: Struktur Atom • Tingkatan 4"},
+  // ICE — BIOLOGI Tingkatan 4
+  {boss:"vexon",text:"Organel yang menjalankan respirasi sel ialah?",element:"ice",options:["Nukleus","Ribosom","Mitokondria","Kloroplas"],answer:2,category:"Biologi • Bab 2: Sel sebagai Unit Asas Hidupan • Tingkatan 4"},
+  {boss:"vexon",text:"Tapak utama fotosintesis dalam sel tumbuhan ialah?",element:"ice",options:["Mitokondria","Kloroplas","Nukleus","Vakuol"],answer:1,category:"Biologi • Bab 6: Nutrisi • Tingkatan 4"},
+  {boss:"vexon",text:"Enzim yang mencernakan kanji kepada maltosa ialah?",element:"ice",options:["Pepsin","Lipase","Amilase","Tripsin"],answer:2,category:"Biologi • Bab 6: Nutrisi • Tingkatan 4"},
+  {boss:"vexon",text:"Pergerakan molekul dari kawasan kepekatan tinggi ke rendah dipanggil?",element:"ice",options:["Osmosis","Resapan","Pengangkutan aktif","Endositosis"],answer:1,category:"Biologi • Bab 3: Pergerakan Bahan Merentasi Membran Plasma • Tingkatan 4"},
+  {boss:"vexon",text:"Sel darah yang membantu pembekuan darah ialah?",element:"ice",options:["Eritrosit","Leukosit","Platelet","Limfosit"],answer:2,category:"Biologi • Bab 8: Pengangkutan • Tingkatan 4"},
+  {boss:"vexon",text:"Bahagian otak yang mengawal keseimbangan badan ialah?",element:"ice",options:["Serebrum","Serebelum","Medula oblongata","Hipotalamus"],answer:1,category:"Biologi • Bab 10: Sistem Saraf Manusia • Tingkatan 4"},
+  {boss:"vexon",text:"Hasil akhir glikolisis (respirasi anaerob pada sel otot) ialah?",element:"ice",options:["Etanol + CO₂","Asid laktik","Glukosa","Air sahaja"],answer:1,category:"Biologi • Bab 7: Respirasi • Tingkatan 4"},
+
+  // LIGHTNING — MATEMATIK & FIZIK Tingkatan 4 (Vexon's WEAKNESS, ×1.5 damage)
+  {boss:"vexon",text:"Selesaikan: 2x + 6 = 20. Nilai x ialah?",element:"lightning",options:["5","6","7","8"],answer:2,category:"Matematik • Bab 1: Fungsi dan Persamaan Kuadratik • Tingkatan 4"},
   {boss:"vexon",text:"Cerun bagi garis lurus y = 3x − 5 ialah?",element:"lightning",options:["−5","3","−3","5"],answer:1,category:"Matematik • Bab: Garis Lurus • Tingkatan 4"},
+  {boss:"vexon",text:"Luas bulatan berjejari 7 cm ialah? (π = 22/7)",element:"lightning",options:["154 cm²","144 cm²","49 cm²","22 cm²"],answer:0,category:"Matematik • Bab: Bulatan • Tingkatan 4"},
+  {boss:"vexon",text:"Punca-punca persamaan kuadratik x² − 5x + 6 = 0 ialah?",element:"lightning",options:["1 dan 6","2 dan 3","−2 dan −3","−1 dan −6"],answer:1,category:"Matematik • Bab 2: Persamaan Kuadratik • Tingkatan 4"},
+  {boss:"vexon",text:"Min bagi data 4, 6, 8, 10, 12 ialah?",element:"lightning",options:["6","7","8","9"],answer:2,category:"Matematik • Bab: Sukatan Serakan Data Tak Terkumpul • Tingkatan 4"},
+  {boss:"vexon",text:"Dalam segi tiga bersudut tegak, jika tan θ = 3/4, maka sin θ ialah?",element:"lightning",options:["3/5","4/5","3/4","5/3"],answer:0,category:"Matematik • Bab: Nisbah Trigonometri • Tingkatan 4"},
+
+  {boss:"vexon",text:"Apakah unit SI bagi daya?",element:"lightning",options:["Joule (J)","Newton (N)","Pascal (Pa)","Watt (W)"],answer:1,category:"Fizik • Bab 1: Pengenalan kepada Fizik • Tingkatan 4"},
+  {boss:"vexon",text:"Hukum Newton yang berkaitan dengan inersia ialah?",element:"lightning",options:["Hukum Pertama","Hukum Kedua","Hukum Ketiga","Hukum Graviti"],answer:0,category:"Fizik • Bab 2: Daya dan Gerakan I • Tingkatan 4"},
+  {boss:"vexon",text:"Sebuah kereta berjisim 1000 kg memecut pada 2 m/s². Daya yang dikenakan ialah?",element:"lightning",options:["500 N","1000 N","2000 N","4000 N"],answer:2,category:"Fizik • Bab 2: Daya dan Gerakan I • Tingkatan 4"},
+  {boss:"vexon",text:"Tenaga kinetik bagi objek 2 kg yang bergerak pada 4 m/s ialah?",element:"lightning",options:["8 J","16 J","32 J","4 J"],answer:1,category:"Fizik • Bab 3: Kegravitian • Tingkatan 4"},
+  {boss:"vexon",text:"Tekanan dalam cecair bergantung pada?",element:"lightning",options:["Luas dasar bekas","Bentuk bekas","Kedalaman dan ketumpatan","Isi padu cecair"],answer:2,category:"Fizik • Bab 4: Tekanan • Tingkatan 4"},
+  {boss:"vexon",text:"Prinsip Pascal digunakan dalam peranti?",element:"lightning",options:["Termometer","Sistem brek hidraulik","Barometer","Hidrometer"],answer:1,category:"Fizik • Bab 4: Tekanan • Tingkatan 4"},
 
   /* ============================================================
-     GLACIERA — Tingkatan 5 syllabus (weakness: fire)
+     GLACIERA — Tingkatan 5 (Matematik, Fizik, Kimia, Biologi)
+     Weakness: FIRE  →  Matematik & Fizik = fire
      ============================================================ */
-  // FIRE — Matematik / Sains / Fizik / Kimia / Biologi (T5) — Glaciera's WEAKNESS
+
+  // FIRE — MATEMATIK & FIZIK Tingkatan 5 (Glaciera's WEAKNESS, ×1.5 damage)
   {boss:"glaciera",text:"Nilai sin 30° ialah?",element:"fire",options:["0","½","√3/2","1"],answer:1,category:"Matematik • Bab: Nisbah Trigonometri • Tingkatan 5"},
+  {boss:"glaciera",text:"Selesaikan: log₁₀ 1000 = ?",element:"fire",options:["1","2","3","10"],answer:2,category:"Matematik • Bab 5: Janjang • Tingkatan 5"},
+  {boss:"glaciera",text:"Sebutan ke-10 bagi janjang aritmetik 3, 7, 11, … ialah?",element:"fire",options:["37","39","40","43"],answer:1,category:"Matematik • Bab 5: Janjang • Tingkatan 5"},
+  {boss:"glaciera",text:"Persamaan bulatan berpusat (0,0) berjejari 5 ialah?",element:"fire",options:["x² + y² = 5","x² + y² = 10","x² + y² = 25","x + y = 25"],answer:2,category:"Matematik • Bab 7: Pengukuran Sudut dan Lengkok • Tingkatan 5"},
+  {boss:"glaciera",text:"Kebarangkalian mendapat nombor genap apabila sebiji dadu adil dilambung ialah?",element:"fire",options:["1/6","1/3","1/2","2/3"],answer:2,category:"Matematik • Bab 9: Kebarangkalian Peristiwa Bergabung • Tingkatan 5"},
+  {boss:"glaciera",text:"Diberi matriks A = [[2,1],[3,4]], penentu A ialah?",element:"fire",options:["5","8","11","−5"],answer:0,category:"Matematik • Bab 4: Matriks • Tingkatan 5"},
+
   {boss:"glaciera",text:"Hukum Ohm dinyatakan sebagai?",element:"fire",options:["V = IR","P = IV","F = ma","E = mc²"],answer:0,category:"Fizik • Bab 2: Keelektrikan • Tingkatan 5"},
-  {boss:"glaciera",text:"Asid kuat yang manakah berikut?",element:"fire",options:["CH₃COOH","H₂CO₃","HCl","NH₃"],answer:2,category:"Kimia • Bab 7: Asid, Bes dan Garam • Tingkatan 5"},
-  {boss:"glaciera",text:"Proses pembahagian sel yang menghasilkan gamet ialah?",element:"fire",options:["Mitosis","Meiosis","Binari","Tunas"],answer:1,category:"Biologi • Bab: Pembahagian Sel • Tingkatan 5"},
-  {boss:"glaciera",text:"Selesaikan: log₁₀ 1000 = ?",element:"fire",options:["1","2","3","10"],answer:2,category:"Matematik • Bab: Indeks dan Logaritma • Tingkatan 5"},
   {boss:"glaciera",text:"Gelombang yang TIDAK memerlukan medium untuk merambat ialah?",element:"fire",options:["Gelombang bunyi","Gelombang air","Gelombang elektromagnet","Gelombang seismik"],answer:2,category:"Fizik • Bab 1: Gelombang • Tingkatan 5"},
-  {boss:"glaciera",text:"Hormon yang mengawal aras gula dalam darah ialah?",element:"fire",options:["Adrenalina","Insulin","Tiroksin","Estrogen"],answer:1,category:"Biologi • Bab: Koordinasi dan Gerak Balas • Tingkatan 5"},
+  {boss:"glaciera",text:"Dua perintang 4 Ω dan 6 Ω disambung secara bersiri. Rintangan berkesan ialah?",element:"fire",options:["2.4 Ω","5 Ω","10 Ω","24 Ω"],answer:2,category:"Fizik • Bab 2: Keelektrikan • Tingkatan 5"},
+  {boss:"glaciera",text:"Indeks biasan kaca jika sin i = 0.6 dan sin r = 0.4 ialah?",element:"fire",options:["0.67","1.0","1.5","2.4"],answer:2,category:"Fizik • Bab 1: Gelombang • Tingkatan 5"},
+  {boss:"glaciera",text:"Alat yang menukar tenaga elektrik kepada tenaga kinetik ialah?",element:"fire",options:["Generator","Motor elektrik","Transformer","Dinamo"],answer:1,category:"Fizik • Bab 3: Keelektromagnetan • Tingkatan 5"},
+  {boss:"glaciera",text:"Reputan radioaktif memancarkan zarah alfa, yang merupakan?",element:"fire",options:["Elektron berkelajuan tinggi","Nukleus helium","Foton tenaga tinggi","Neutron"],answer:1,category:"Fizik • Bab 5: Fizik Nuklear • Tingkatan 5"},
 
-  // ICE — Bahasa Melayu / English / Pendidikan Moral (T5)
-  {boss:"glaciera",text:"Apakah maksud simpulan bahasa 'kaki bangku'?",element:"ice",options:["Orang yang malas","Orang yang tidak pandai bersukan","Orang yang gemar duduk","Orang yang suka mencuri"],answer:1,category:"Bahasa Melayu • Simpulan Bahasa • Tingkatan 5"},
-  {boss:"glaciera",text:"Pilih ayat aktif yang BETUL.",element:"ice",options:["Buku itu dibaca oleh Ali.","Ali membaca buku itu.","Buku itu Ali membaca.","Membaca buku itu oleh Ali."],answer:1,category:"Bahasa Melayu • Tatabahasa: Ayat Aktif/Pasif • Tingkatan 5"},
-  {boss:"glaciera",text:"Choose the correct conditional: 'If I ___ rich, I would travel the world.'",element:"ice",options:["am","was","were","be"],answer:2,category:"English • Grammar: Conditional Sentences • Form 5"},
-  {boss:"glaciera",text:"Identify the literary device: 'Her smile was as bright as the sun.'",element:"ice",options:["Metaphor","Simile","Personification","Hyperbole"],answer:1,category:"English • Literature Component • Form 5"},
-  {boss:"glaciera",text:"Nilai bertanggungjawab terhadap alam sekitar ditunjukkan melalui?",element:"ice",options:["Membakar sampah terbuka","Kitar semula bahan buangan","Menebang pokok sesuka hati","Membuang sisa ke sungai"],answer:1,category:"Pendidikan Moral • Nilai Berkaitan Alam Sekitar • Tingkatan 5"},
-  {boss:"glaciera",text:"Antara berikut, yang manakah merupakan kata ganda berentak?",element:"ice",options:["Buku-buku","Lauk-pauk","Berlari-lari","Kura-kura"],answer:1,category:"Bahasa Melayu • Tatabahasa: Kata Ganda • Tingkatan 5"},
-  {boss:"glaciera",text:"Choose the correct reported speech: He said, 'I am tired.'",element:"ice",options:["He said that he is tired.","He said that he was tired.","He said that he were tired.","He said he tired."],answer:1,category:"English • Grammar: Reported Speech • Form 5"},
+  // ICE — BIOLOGI Tingkatan 5
+  {boss:"glaciera",text:"Proses pembahagian sel yang menghasilkan gamet ialah?",element:"ice",options:["Mitosis","Meiosis","Binari","Tunas"],answer:1,category:"Biologi • Bab 5: Pembiakan • Tingkatan 5"},
+  {boss:"glaciera",text:"Hormon yang mengawal aras gula dalam darah ialah?",element:"ice",options:["Adrenalina","Insulin","Tiroksin","Estrogen"],answer:1,category:"Biologi • Bab 2: Koordinasi dan Gerak Balas • Tingkatan 5"},
+  {boss:"glaciera",text:"Ovulasi pada wanita biasanya berlaku pada hari ke- berapa kitaran haid?",element:"ice",options:["Hari ke-1","Hari ke-7","Hari ke-14","Hari ke-28"],answer:2,category:"Biologi • Bab 5: Pembiakan • Tingkatan 5"},
+  {boss:"glaciera",text:"Gen yang menentukan jantina lelaki ialah?",element:"ice",options:["XX","XY","YY","XO"],answer:1,category:"Biologi • Bab 6: Genetik • Tingkatan 5"},
+  {boss:"glaciera",text:"Asid nukleik yang membawa maklumat genetik ialah?",element:"ice",options:["DNA","Protein","Lipid","Karbohidrat"],answer:0,category:"Biologi • Bab 6: Genetik • Tingkatan 5"},
+  {boss:"glaciera",text:"Aliran tenaga dalam ekosistem bermula daripada?",element:"ice",options:["Pengguna primer","Pengeluar","Pereput","Pengguna tertier"],answer:1,category:"Biologi • Bab 8: Ekosistem Dinamik • Tingkatan 5"},
+  {boss:"glaciera",text:"Nefron ialah unit fungsi bagi organ?",element:"ice",options:["Hati","Jantung","Ginjal","Paru-paru"],answer:2,category:"Biologi • Bab 4: Homeostasis dan Sistem Urinari Manusia • Tingkatan 5"},
 
-  // LIGHTNING — Sejarah / Geografi / Pendidikan Islam / ASK (T5)
-  {boss:"glaciera",text:"Persekutuan Tanah Melayu ditubuhkan pada tahun?",element:"lightning",options:["1946","1948","1957","1963"],answer:1,category:"Sejarah • Bab 1: Kemunculan Tamadun Awal Manusia • Tingkatan 5"},
-  {boss:"glaciera",text:"Malaysia ditubuhkan secara rasmi pada?",element:"lightning",options:["31 Ogos 1957","16 September 1963","27 Disember 1949","9 Julai 1963"],answer:1,category:"Sejarah • Bab: Pembentukan Malaysia • Tingkatan 5"},
-  {boss:"glaciera",text:"Perjanjian yang menyebabkan pemisahan Singapura daripada Malaysia ditandatangani pada?",element:"lightning",options:["1963","1965","1969","1971"],answer:1,category:"Sejarah • Bab: Pengukuhan Negara dan Bangsa Malaysia • Tingkatan 5"},
-  {boss:"glaciera",text:"Sumber tenaga yang BOLEH diperbaharui ialah?",element:"lightning",options:["Arang batu","Petroleum","Tenaga suria","Gas asli"],answer:2,category:"Geografi • Bab: Sumber dan Pengurusannya • Tingkatan 5"},
-  {boss:"glaciera",text:"Rukun Iman yang pertama ialah beriman kepada?",element:"lightning",options:["Malaikat","Rasul","Allah SWT","Hari Akhirat"],answer:2,category:"Pendidikan Islam • Akidah • Tingkatan 5"},
-  {boss:"glaciera",text:"Dalam Sains Komputer, struktur data 'first in, first out' dikenali sebagai?",element:"lightning",options:["Stack","Queue","Array","Tree"],answer:1,category:"Asas Sains Komputer • Struktur Data • Tingkatan 5"},
-  {boss:"glaciera",text:"Apakah output: print(2 ** 3) dalam Python?",element:"lightning",options:["6","8","9","23"],answer:1,category:"Asas Sains Komputer • Pengaturcaraan Python • Tingkatan 5"},
-  {boss:"glaciera",text:"Kepulauan Borneo dikongsi oleh tiga buah negara, iaitu?",element:"lightning",options:["Malaysia, Indonesia, Filipina","Malaysia, Indonesia, Brunei","Malaysia, Brunei, Singapura","Indonesia, Brunei, Filipina"],answer:1,category:"Geografi • Bab: Kependudukan Malaysia • Tingkatan 5"},
+  // LIGHTNING — KIMIA Tingkatan 5
+  {boss:"glaciera",text:"Asid kuat yang manakah berikut?",element:"lightning",options:["CH₃COOH","H₂CO₃","HCl","NH₃"],answer:2,category:"Kimia • Bab 7: Asid, Bes dan Garam • Tingkatan 5"},
+  {boss:"glaciera",text:"pH bagi larutan neutral ialah?",element:"lightning",options:["0","7","10","14"],answer:1,category:"Kimia • Bab 7: Asid dan Bes • Tingkatan 5"},
+  {boss:"glaciera",text:"Dalam sel kimia, elektron mengalir dari?",element:"lightning",options:["Katod ke anod","Anod ke katod","Tidak mengalir","Ion ke ion"],answer:1,category:"Kimia • Bab 6: Pengoksidaan dan Penurunan • Tingkatan 5"},
+  {boss:"glaciera",text:"Tindak balas antara asid dan bes menghasilkan garam dan air dipanggil?",element:"lightning",options:["Pengoksidaan","Peneutralan","Hidrolisis","Pemendakan"],answer:1,category:"Kimia • Bab 7: Asid, Bes dan Garam • Tingkatan 5"},
+  {boss:"glaciera",text:"Polimer semula jadi yang manakah berikut?",element:"lightning",options:["Polietena","Getah asli","Nilon","PVC"],answer:1,category:"Kimia • Bab 9: Bahan Buatan dalam Industri • Tingkatan 5"},
+  {boss:"glaciera",text:"Tindak balas yang membebaskan haba dipanggil?",element:"lightning",options:["Endotermik","Eksotermik","Reversibel","Termolisis"],answer:1,category:"Kimia • Bab 4: Termokimia • Tingkatan 5"},
+  {boss:"glaciera",text:"Apabila zink ditambah ke dalam asid hidroklorik, gas yang terbebas ialah?",element:"lightning",options:["Oksigen","Hidrogen","Karbon dioksida","Klorin"],answer:1,category:"Kimia • Bab 7: Asid, Bes dan Garam • Tingkatan 5"},
 ];
 
 const BOSSES = [
