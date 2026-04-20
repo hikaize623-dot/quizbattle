@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Boss Battle Quiz — Arcane Trials</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#0a0617;
+    --bg-1:#150b2e;
+    --bg-2:#1c1147;
+    --panel:rgba(20,12,45,0.78);
+    --panel-2:rgba(30,18,65,0.85);
+    --border:rgba(160,120,255,0.35);
+    --border-glow:rgba(170,120,255,0.7);
+    --text:#ece6ff;
+    --muted:#a99dc9;
+    --accent:#b388ff;
+    --accent-2:#7c4dff;
+    --good:#3ddc97;
+    --bad:#ff5470;
+    --warn:#ffcb47;
+    --fire:#ff6b3d;
+    --fire-2:#ffb347;
+    --ice:#5ec8ff;
+    --ice-2:#a3e4ff;
+    --lightning:#ffd84d;
+    --lightning-2:#fff19a;
+    --gold:#ffd770;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%;overflow:hidden;font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg-0)}
+  button{font-family:inherit;color:inherit;cursor:pointer;border:none;background:none}
+  button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* Background battlefield */
+  .stage{
+    position:fixed;inset:0;
+    background:
+      radial-gradient(ellipse at 50% 20%, rgba(124,77,255,0.35), transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(255,80,140,0.18), transparent 55%),
+      radial-gradient(ellipse at 80% 85%, rgba(60,180,255,0.18), transparent 55%),
+      linear-gradient(180deg, #0b0620 0%, #160a35 50%, #08040f 100%);
+  }
+  .stage::before{
+    content:"";position:absolute;inset:0;
+    background-image:
+      radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.35), transparent),
+      radial-gradient(2px 2px at 85% 25%, rgba(200,180,255,0.6), transparent),
+      radial-gradient(1px 1px at 10% 65%, rgba(255,255,255,0.4), transparent);
+    background-size:600px 600px;
+    animation:stars 60s linear infinite;
+    opacity:.7;pointer-events:none;
+  }
+  @keyframes stars{from{background-position:0 0}to{background-position:600px 600px}}
+
+  .ground{
+    position:absolute;left:0;right:0;bottom:0;height:30%;
+    background:linear-gradient(180deg, transparent, rgba(80,40,140,0.4) 60%, rgba(20,10,50,0.9));
+    pointer-events:none;
+  }
+
+  /* Screens */
+  .screen{position:fixed;inset:0;display:none;flex-direction:column;z-index:5}
+  .screen.active{display:flex}
+
+  /* Title */
+  #titleScreen{align-items:center;justify-content:center;text-align:center;padding:24px}
+  .title-card{
+    background:var(--panel);backdrop-filter:blur(10px);
+    border:1px solid var(--border);border-radius:20px;
+    padding:40px 48px;max-width:560px;width:100%;
+    box-shadow:0 0 60px rgba(124,77,255,0.35), inset 0 0 40px rgba(124,77,255,0.08);
+  }
+  .game-title{
+    font-family:'Cinzel',serif;font-weight:900;font-size:46px;line-height:1.05;
+    background:linear-gradient(180deg,#fff,#b388ff 60%,#7c4dff);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    letter-spacing:2px;margin:0 0 6px;
+    text-shadow:0 0 30px rgba(124,77,255,0.4);
+  }
+  .subtitle{color:var(--muted);font-size:14px;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px}
+  .field{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;text-align:left}
+  .field label{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--muted)}
+  .input{
+    background:rgba(10,5,25,0.7);border:1px solid var(--border);border-radius:10px;
+    padding:12px 14px;font-size:15px;color:var(--text);width:100%;
+  }
+  .boss-picker{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+  .boss-pick{
+    background:rgba(10,5,25,0.6);border:1px solid var(--border);border-radius:12px;
+    padding:14px;text-align:left;transition:all .2s;
+  }
+  .boss-pick:hover{transform:translateY(-2px);border-color:var(--border-glow);box-shadow:0 0 20px rgba(124,77,255,0.3)}
+  .boss-pick.selected{border-color:var(--accent);box-shadow:0 0 25px rgba(124,77,255,0.5);background:rgba(40,20,80,0.6)}
+  .boss-pick h3{font-family:'Cinzel',serif;margin:0 0 4px;font-size:16px;letter-spacing:1px}
+  .boss-pick p{margin:0;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+  .btn{
+    display:inline-block;padding:14px 26px;border-radius:12px;font-weight:700;
+    letter-spacing:2px;text-transform:uppercase;font-size:13px;transition:all .2s;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--accent-2),var(--accent));
+    color:#fff;box-shadow:0 6px 24px rgba(124,77,255,0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(124,77,255,0.7)}
+  .btn-ghost{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--text)}
+  .btn-ghost:hover{background:rgba(255,255,255,0.12)}
+
+  /* Battle */
+  #battleScreen{padding:14px;gap:12px}
+  .top-bar{display:flex;gap:12px;align-items:stretch}
+  .hp-block{
+    flex:1;background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    padding:10px 14px;backdrop-filter:blur(8px);
+  }
+  .hp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:12px;letter-spacing:2px;text-transform:uppercase}
+  .hp-name{font-family:'Cinzel',serif;font-weight:700;font-size:14px}
+  .hp-bar{
+    position:relative;height:18px;background:rgba(0,0,0,0.5);border-radius:10px;overflow:hidden;
+    border:1px solid rgba(255,255,255,0.08);
+  }
+  .hp-fill{
+    position:absolute;top:0;left:0;bottom:0;width:100%;
+    transition:width .5s cubic-bezier(.2,.8,.2,1);border-radius:10px;
+  }
+  .hp-fill.boss{background:linear-gradient(90deg,#ff3860,#ff7849);box-shadow:0 0 14px rgba(255,80,80,0.6)}
+  .hp-fill.player{background:linear-gradient(90deg,#3ddc97,#5ec8ff);box-shadow:0 0 14px rgba(80,255,180,0.5)}
+  .hp-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,0.8)}
+  .shake{animation:shake .4s}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
+  .battle-main{flex:1;display:grid;grid-template-columns:260px 1fr 260px;gap:12px;min-height:0}
+  .side-panel{
+    background:var(--panel);border:1px solid var(--border);border-radius:14px;
+    padding:14px;backdrop-filter:blur(8px);overflow-y:auto;
+    display:flex;flex-direction:column;gap:12px;
+  }
+  .panel-title{font-family:'Cinzel',serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:0 0 4px;border-bottom:1px solid var(--border);padding-bottom:6px}
+
+  /* Spells */
+  .spell{
+    display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;
+    background:rgba(10,5,25,0.5);border:1px solid var(--border);
+    transition:all .2s;text-align:left;width:100%;
+  }
+  .spell:not(:disabled):hover{transform:translateY(-2px);border-color:var(--border-glow);box-shadow:0 0 16px rgba(124,77,255,0.4)}
+  .spell:disabled{opacity:.4;cursor:not-allowed}
+  .spell.used{opacity:.3;cursor:not-allowed}
+  .spell-icon{
+    width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--accent-2),var(--accent));font-size:18px;flex-shrink:0;
+    box-shadow:0 0 12px rgba(124,77,255,0.5);
+  }
+  .spell-info{flex:1;min-width:0}
+  .spell-name{font-weight:700;font-size:13px}
+  .spell-cost{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+
+  /* Combo */
+  .combo-row{display:flex;align-items:center;gap:6px;justify-content:space-between}
+  .combo-dots{display:flex;gap:5px}
+  .combo-dot{
+    width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,0.08);
+    border:1px solid var(--border);transition:all .25s;
+  }
+  .combo-dot.on{
+    background:radial-gradient(circle,var(--gold),#ff9f43);
+    border-color:var(--gold);box-shadow:0 0 12px var(--gold);
+    animation:dotPulse .5s;
+  }
+  @keyframes dotPulse{0%{transform:scale(0.4)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
+  .multiplier{font-family:'Cinzel',serif;font-weight:900;font-size:18px;color:var(--gold);text-shadow:0 0 10px rgba(255,200,80,0.6)}
+
+  /* Score */
+  .score-block{text-align:center;padding:10px;background:rgba(10,5,25,0.5);border:1px solid var(--border);border-radius:10px}
+  .score-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted)}
+  .score-value{font-family:'Cinzel',serif;font-weight:900;font-size:26px;color:var(--gold);text-shadow:0 0 14px rgba(255,200,80,0.5)}
+
+  /* Center stage with boss */
+  .center-stage{
+    position:relative;background:var(--panel);border:1px solid var(--border);border-radius:14px;
+    backdrop-filter:blur(8px);overflow:hidden;display:flex;flex-direction:column;
+  }
+  .boss-area{
+    position:relative;flex:1;min-height:240px;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(ellipse at 50% 70%, rgba(124,77,255,0.25), transparent 70%);
+  }
+  .boss-wrap{position:relative;width:240px;height:240px;animation:bossIdle 3.5s ease-in-out infinite}
+  @keyframes bossIdle{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .boss-wrap.hit{animation:bossHit .45s}
+  @keyframes bossHit{0%,100%{transform:translateX(0)}25%{transform:translateX(-12px) rotate(-3deg)}75%{transform:translateX(12px) rotate(3deg)}}
+  .boss-wrap.attack{animation:bossAttack .5s}
+  @keyframes bossAttack{0%,100%{transform:scale(1)}40%{transform:scale(1.15) translateY(20px)}}
+  .boss-wrap.defeat{animation:bossDefeat 1.6s forwards}
+  @keyframes bossDefeat{
+    0%{transform:scale(1);opacity:1;filter:none}
+    40%{transform:scale(1.1) rotate(8deg);filter:brightness(2)}
+    100%{transform:scale(0.3) rotate(-30deg) translateY(120px);opacity:0;filter:blur(8px)}
+  }
+  .boss-wrap.flash svg{filter:drop-shadow(0 0 30px rgba(255,80,80,1)) brightness(2)}
+  .boss-wrap svg{width:100%;height:100%;transition:filter .3s}
+
+  /* Phase glow */
+  .boss-wrap.phase2 svg{filter:drop-shadow(0 0 22px rgba(255,150,50,0.8))}
+  .boss-wrap.phase3 svg{filter:drop-shadow(0 0 30px rgba(255,80,80,0.95));animation:phase3Pulse 1.2s ease-in-out infinite}
+  @keyframes phase3Pulse{0%,100%{filter:drop-shadow(0 0 30px rgba(255,80,80,0.95))}50%{filter:drop-shadow(0 0 50px rgba(255,200,50,1)) brightness(1.2)}}
+
+  .boss-name{
+    position:absolute;top:10px;left:10px;right:10px;text-align:center;
+    font-family:'Cinzel',serif;font-weight:900;font-size:22px;letter-spacing:3px;
+    color:#fff;text-shadow:0 0 16px rgba(124,77,255,0.8), 0 2px 4px rgba(0,0,0,0.8);
+    pointer-events:none;
+  }
+  .boss-weakness{
+    position:absolute;top:48px;left:50%;transform:translateX(-50%);
+    font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);
+  }
+  .boss-weakness b{color:var(--warn)}
+
+  /* Floating damage */
+  .damage-num{
+    position:absolute;left:50%;top:30%;transform:translateX(-50%);
+    font-family:'Cinzel',serif;font-weight:900;font-size:32px;color:var(--gold);
+    text-shadow:0 0 12px rgba(255,200,50,0.9), 0 2px 4px rgba(0,0,0,0.7);
+    pointer-events:none;animation:dmgFloat 1.2s ease-out forwards;z-index:3;
+  }
+  .damage-num.crit{color:#ff7849;font-size:42px;text-shadow:0 0 18px rgba(255,80,80,1)}
+  .damage-num.weak{color:var(--lightning-2);text-shadow:0 0 18px var(--lightning)}
+  @keyframes dmgFloat{0%{opacity:0;transform:translate(-50%,0) scale(0.6)}20%{opacity:1;transform:translate(-50%,-20px) scale(1.2)}100%{opacity:0;transform:translate(-50%,-100px) scale(1)}}
+
+  /* Speech bubble */
+  .speech{
+    position:absolute;top:80px;left:50%;transform:translateX(-50%);
+    background:rgba(255,255,255,0.95);color:#1a0b3a;
+    padding:10px 16px;border-radius:14px;font-weight:700;font-size:13px;
+    max-width:80%;text-align:center;z-index:4;
+    animation:speechPop .35s ease-out;
+  }
+  .speech::after{
+    content:"";position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
+    border:8px solid transparent;border-top-color:rgba(255,255,255,0.95);border-bottom:0;
+  }
+  @keyframes speechPop{0%{transform:translateX(-50%) scale(0.3);opacity:0}100%{transform:translateX(-50%) scale(1);opacity:1}}
+
+  /* Question card */
+  .question-card{
+    background:rgba(10,5,25,0.85);border-top:1px solid var(--border);
+    padding:16px;display:flex;flex-direction:column;gap:12px;
+  }
+  .q-meta{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .element-badge{
+    display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;
+    font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;
+  }
+  .element-badge.fire{background:rgba(255,107,61,0.18);color:var(--fire-2);border:1px solid var(--fire)}
+  .element-badge.ice{background:rgba(94,200,255,0.18);color:var(--ice-2);border:1px solid var(--ice)}
+  .element-badge.lightning{background:rgba(255,216,77,0.18);color:var(--lightning-2);border:1px solid var(--lightning)}
+  .category-tag{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px}
+
+  .timer-bar{height:8px;background:rgba(0,0,0,0.5);border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,0.08)}
+  .timer-fill{height:100%;width:100%;background:var(--good);transition:width .2s linear, background .3s;border-radius:6px}
+
+  .question-text{font-family:'Cinzel',serif;font-size:18px;font-weight:700;line-height:1.35;margin:0;color:#fff}
+
+  .options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .option{
+    background:rgba(20,12,50,0.7);border:1px solid var(--border);border-radius:10px;
+    padding:12px 14px;text-align:left;display:flex;align-items:center;gap:10px;
+    transition:all .15s;font-size:14px;color:var(--text);
+  }
+  .option:not(:disabled):hover{transform:translateY(-2px);border-color:var(--border-glow);background:rgba(50,30,100,0.7)}
+  .option .key{
+    width:26px;height:26px;border-radius:6px;background:rgba(124,77,255,0.25);
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;
+    flex-shrink:0;border:1px solid var(--border);
+  }
+  .option.correct{background:rgba(61,220,151,0.2);border-color:var(--good);box-shadow:0 0 16px rgba(61,220,151,0.4)}
+  .option.correct .key::after{content:" ✓";margin-left:2px}
+  .option.wrong{background:rgba(255,84,112,0.2);border-color:var(--bad);box-shadow:0 0 16px rgba(255,84,112,0.4)}
+  .option.wrong .key::after{content:" ✕";margin-left:2px}
+  .option.eliminated{opacity:.25;text-decoration:line-through;pointer-events:none}
+  .option:disabled{cursor:not-allowed}
+
+  /* Leaderboard */
+  .leader-row{
+    display:grid;grid-template-columns:24px 1fr auto;gap:8px;align-items:center;
+    padding:8px 10px;border-radius:8px;background:rgba(10,5,25,0.5);border:1px solid transparent;
+    font-size:13px;transition:all .4s;
+  }
+  .leader-row.me{border-color:var(--accent);background:rgba(124,77,255,0.18);box-shadow:0 0 14px rgba(124,77,255,0.4)}
+  .rank{font-family:'Cinzel',serif;font-weight:900;color:var(--gold);text-align:center}
+  .pname{display:flex;flex-direction:column;min-width:0}
+  .pname b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pname small{font-size:10px;color:var(--gold);font-weight:700}
+  .pscore{font-family:'Cinzel',serif;font-weight:700;font-size:14px;color:var(--gold)}
+  .el-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:middle}
+  .el-dot.fire{background:var(--fire);box-shadow:0 0 6px var(--fire)}
+  .el-dot.ice{background:var(--ice);box-shadow:0 0 6px var(--ice)}
+  .el-dot.lightning{background:var(--lightning);box-shadow:0 0 6px var(--lightning)}
+
+  /* Phase overlay */
+  #phaseOverlay{
+    position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+    background:rgba(0,0,0,0.85);z-index:50;flex-direction:column;
+  }
+  #phaseOverlay.show{display:flex;animation:fadeIn .3s}
+  .phase-text{
+    font-family:'Cinzel',serif;font-weight:900;font-size:64px;letter-spacing:8px;
+    background:linear-gradient(180deg,#fff,#ff7849);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 60px rgba(255,80,80,0.6);
+    animation:phaseIn .6s ease-out;text-align:center;
+  }
+  .phase-sub{font-family:'Cinzel',serif;font-size:20px;color:var(--gold);letter-spacing:6px;margin-top:8px;animation:phaseIn .8s ease-out}
+  @keyframes phaseIn{0%{transform:scale(0.5);opacity:0;letter-spacing:30px}100%{transform:scale(1);opacity:1}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+  /* Crit flash */
+  #critFlash{
+    position:fixed;inset:0;pointer-events:none;z-index:40;opacity:0;
+    background:radial-gradient(ellipse at center, transparent 50%, rgba(255,200,50,0.5) 90%, rgba(255,80,80,0.7));
+    transition:opacity .2s;
+  }
+  #critFlash.on{opacity:1;animation:critFlash .4s}
+  @keyframes critFlash{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+
+  /* Screen shake */
+  .screen-shake{animation:bigShake .5s}
+  @keyframes bigShake{0%,100%{transform:translate(0,0)}10%{transform:translate(-8px,4px)}20%{transform:translate(8px,-4px)}30%{transform:translate(-6px,-3px)}40%{transform:translate(6px,3px)}50%{transform:translate(-4px,4px)}60%{transform:translate(4px,-4px)}70%{transform:translate(-3px,2px)}80%{transform:translate(3px,-2px)}90%{transform:translate(-2px,1px)}}
+
+  /* Result screen */
+  #resultScreen{align-items:center;justify-content:center;padding:24px}
+  .result-card{
+    background:var(--panel);backdrop-filter:blur(10px);
+    border:1px solid var(--border);border-radius:20px;
+    padding:36px 40px;max-width:560px;width:100%;text-align:center;
+    box-shadow:0 0 60px rgba(124,77,255,0.4);
+  }
+  .result-title{
+    font-family:'Cinzel',serif;font-weight:900;font-size:54px;letter-spacing:6px;margin:0 0 8px;
+  }
+  .result-title.victory{background:linear-gradient(180deg,#fff,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 40px rgba(255,200,50,0.6)}
+  .result-title.defeat{background:linear-gradient(180deg,#fff,var(--bad));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 40px rgba(255,80,80,0.6)}
+  .loot-drop{
+    display:inline-block;margin:18px 0;padding:14px 24px;border-radius:14px;
+    background:linear-gradient(135deg,#3a2470,#7c4dff);border:2px solid var(--gold);
+    font-family:'Cinzel',serif;font-weight:900;font-size:18px;letter-spacing:2px;color:#fff;
+    box-shadow:0 0 30px rgba(255,200,50,0.6);
+    animation:lootDrop 1s cubic-bezier(.5,1.7,.5,1);
+  }
+  @keyframes lootDrop{0%{transform:translateY(-200px) scale(0.3);opacity:0}60%{transform:translateY(20px) scale(1.1);opacity:1}80%{transform:translateY(-10px)}100%{transform:translateY(0) scale(1)}}
+  .final-score{font-family:'Cinzel',serif;font-size:32px;color:var(--gold);margin:14px 0}
+  .final-leader{margin:18px 0;display:flex;flex-direction:column;gap:6px;text-align:left}
+  .result-actions{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+
+  /* Defeat overlay */
+  #defeatOverlay{position:fixed;inset:0;background:rgba(80,0,0,0);z-index:30;pointer-events:none;transition:background 1.2s}
+  #defeatOverlay.on{background:rgba(40,0,0,0.7)}
+
+  @media (max-width:900px){
+    .battle-main{grid-template-columns:1fr}
+    .side-panel{max-height:none}
+    .options{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="stage"><div class="ground"></div></div>
+
+<!-- TITLE SCREEN -->
+<div id="titleScreen" class="screen active">
+  <div class="title-card">
+    <h1 class="game-title">ARCANE TRIALS</h1>
+    <div class="subtitle">Boss Battle Quiz</div>
+
+    <div class="field">
+      <label for="nameInput">Champion Name</label>
+      <input id="nameInput" class="input" maxlength="16" placeholder="Enter your name..." value="Hero"/>
+    </div>
+
+    <div class="field">
+      <label>Choose Your Foe</label>
+      <div class="boss-picker" id="bossPicker"></div>
+    </div>
+
+    <button id="startBtn" class="btn btn-primary">Start Battle</button>
+  </div>
+</div>
+
+<!-- BATTLE SCREEN -->
+<div id="battleScreen" class="screen">
+  <div class="top-bar">
+    <div class="hp-block" id="bossHpBlock">
+      <div class="hp-head"><span class="hp-name" id="bossHpName">BOSS</span><span id="bossHpLabel">100/100</span></div>
+      <div class="hp-bar"><div class="hp-fill boss" id="bossHpFill"></div></div>
+    </div>
+    <div class="hp-block" id="playerHpBlock">
+      <div class="hp-head"><span class="hp-name" id="playerHpName">PLAYER</span><span id="playerHpLabel">100/100</span></div>
+      <div class="hp-bar"><div class="hp-fill player" id="playerHpFill"></div></div>
+    </div>
+  </div>
+
+  <div class="battle-main">
+    <!-- LEFT: Spells & Combo -->
+    <div class="side-panel">
+      <h3 class="panel-title">Combo</h3>
+      <div class="combo-row">
+        <div class="combo-dots" id="comboDots"></div>
+        <div class="multiplier" id="multiplier">×1</div>
+      </div>
+      <div class="score-block">
+        <div class="score-label">Score</div>
+        <div class="score-value" id="scoreValue">0</div>
+      </div>
+
+      <h3 class="panel-title">Spells</h3>
+      <button class="spell" id="spell-fifty" data-spell="fifty">
+        <div class="spell-icon">½</div>
+        <div class="spell-info"><div class="spell-name">50/50</div><div class="spell-cost">Combo 2 — remove 2 wrongs</div></div>
+      </button>
+      <button class="spell" id="spell-freeze" data-spell="freeze">
+        <div class="spell-icon">❄</div>
+        <div class="spell-info"><div class="spell-name">Time Freeze</div><div class="spell-cost">Combo 3 — pause 5s</div></div>
+      </button>
+      <button class="spell" id="spell-shield" data-spell="shield">
+        <div class="spell-icon">🛡</div>
+        <div class="spell-info"><div class="spell-name">Shield</div><div class="spell-cost">Combo 4 — block next hit</div></div>
+      </button>
+    </div>
+
+    <!-- CENTER: Boss + Question -->
+    <div class="center-stage">
+      <div class="boss-area" id="bossArea">
+        <div class="boss-name" id="bossName"></div>
+        <div class="boss-weakness" id="bossWeak"></div>
+        <div class="boss-wrap" id="bossWrap"></div>
+      </div>
+      <div class="question-card">
+        <div class="q-meta">
+          <span class="element-badge" id="elementBadge"></span>
+          <span class="category-tag" id="categoryTag"></span>
+        </div>
+        <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+        <p class="question-text" id="questionText"></p>
+        <div class="options" id="optionsGrid"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Leaderboard -->
+    <div class="side-panel">
+      <h3 class="panel-title">Leaderboard</h3>
+      <div id="leaderboardList" style="display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="resultScreen" class="screen">
+  <div class="result-card">
+    <h1 class="result-title" id="resultTitle">VICTORY</h1>
+    <div id="resultFlavor" style="color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-size:12px"></div>
+    <div id="lootContainer"></div>
+    <div class="final-score">Final Score: <span id="finalScore">0</span></div>
+    <div class="final-leader" id="finalLeader"></div>
+    <div class="result-actions">
+      <button class="btn btn-ghost" id="playAgainBtn">Play Again</button>
+      <button class="btn btn-primary" id="nextBossBtn">Fight Next Boss</button>
+    </div>
+  </div>
+</div>
+
+<!-- Overlays -->
+<div id="phaseOverlay"><div class="phase-text" id="phaseText"></div><div class="phase-sub" id="phaseSub"></div></div>
+<div id="critFlash"></div>
+<div id="defeatOverlay"></div>
+
+<script>
+/* ============ DATA ============ */
+const QUESTIONS = [
+  // Fire
+  {text:"Which planet is closest to the Sun?",element:"fire",options:["Venus","Mercury","Mars","Earth"],answer:1,category:"Astronomy"},
+  {text:"What gas do plants release during photosynthesis?",element:"fire",options:["Carbon dioxide","Nitrogen","Oxygen","Hydrogen"],answer:2,category:"Biology"},
+  {text:"Which metal has the chemical symbol 'Au'?",element:"fire",options:["Silver","Gold","Aluminum","Argon"],answer:1,category:"Chemistry"},
+  {text:"How many continents are there on Earth?",element:"fire",options:["5","6","7","8"],answer:2,category:"Geography"},
+  {text:"Which artist painted the Mona Lisa?",element:"fire",options:["Van Gogh","Picasso","Da Vinci","Michelangelo"],answer:2,category:"Art"},
+  {text:"What is the hottest planet in our solar system?",element:"fire",options:["Mercury","Venus","Mars","Jupiter"],answer:1,category:"Astronomy"},
+  {text:"Which language has the most native speakers?",element:"fire",options:["English","Spanish","Mandarin","Hindi"],answer:2,category:"Language"},
+
+  // Ice
+  {text:"What is the largest ocean on Earth?",element:"ice",options:["Atlantic","Indian","Arctic","Pacific"],answer:3,category:"Geography"},
+  {text:"At what temperature does water freeze (Celsius)?",element:"ice",options:["0°","32°","-10°","100°"],answer:0,category:"Physics"},
+  {text:"Which is the largest mammal?",element:"ice",options:["Elephant","Blue Whale","Giraffe","Orca"],answer:1,category:"Biology"},
+  {text:"How many bones are in the adult human body?",element:"ice",options:["186","206","226","306"],answer:1,category:"Biology"},
+  {text:"What is the capital of Australia?",element:"ice",options:["Sydney","Melbourne","Canberra","Perth"],answer:2,category:"Geography"},
+  {text:"Which element has the symbol 'O'?",element:"ice",options:["Osmium","Oxygen","Gold","Oganesson"],answer:1,category:"Chemistry"},
+  {text:"What year did World War II end?",element:"ice",options:["1943","1944","1945","1946"],answer:2,category:"History"},
+
+  // Lightning
+  {text:"What is the speed of light (approx, m/s)?",element:"lightning",options:["3×10⁸","3×10⁶","3×10¹⁰","3×10⁴"],answer:0,category:"Physics"},
+  {text:"Who developed the theory of relativity?",element:"lightning",options:["Newton","Einstein","Tesla","Hawking"],answer:1,category:"Science"},
+  {text:"Which company created the iPhone?",element:"lightning",options:["Microsoft","Google","Apple","Samsung"],answer:2,category:"Tech"},
+  {text:"What does CPU stand for?",element:"lightning",options:["Central Processing Unit","Computer Personal Unit","Central Power Unit","Control Process Unit"],answer:0,category:"Tech"},
+  {text:"What is the powerhouse of the cell?",element:"lightning",options:["Mitochondria","Nucleus","Ribosome","Golgi"],answer:0,category:"Biology"},
+  {text:"In what language is 'console.log' a function?",element:"lightning",options:["Python","Java","JavaScript","Ruby"],answer:2,category:"Tech"},
+  {text:"How many sides does a hexagon have?",element:"lightning",options:["5","6","7","8"],answer:1,category:"Math"},
+  {text:"What is the square root of 144?",element:"lightning",options:["10","11","12","13"],answer:2,category:"Math"},
+];
+
+const BOSSES = [
+  {
+    id:"vexon",
+    name:"Lord Vexon",
+    title:"the Arcane Tyrant",
+    weakness:"lightning",
+    maxHp:600,
+    loot:"Arcane Breaker",
+    palette:{p1:"#5b2a86",p2:"#a23ec9",p3:"#ff3b6b"},
+    accent:"#b388ff",
+    taunts:[
+      "You dare challenge me?",
+      "Now you've made me angry!",
+      "THIS IS MY FINAL FORM!",
+      "Pathetic mortal!",
+      "Your mind is weak!"
+    ]
+  },
+  {
+    id:"glaciera",
+    name:"Glaciera",
+    title:"the Frozen Queen",
+    weakness:"fire",
+    maxHp:650,
+    loot:"Frost Breaker",
+    palette:{p1:"#2c5d8a",p2:"#3aa6e0",p3:"#a3e4ff"},
+    accent:"#5ec8ff",
+    taunts:[
+      "Your warmth means nothing here.",
+      "Feel the cold seeping into your bones.",
+      "The blizzard has no mercy!",
+      "Frozen to the core!",
+      "Winter is eternal!"
+    ]
+  }
+];
+
+const SEED_LEADERBOARD = [
+  {name:"ShadowKnight", element:"lightning", score:2840, title:"Arcane Breaker"},
+  {name:"ArcaneQueen",  element:"ice",       score:2510, title:"Frost Breaker"},
+  {name:"FireMage88",   element:"fire",      score:1760, title:null},
+  {name:"QuizLord",     element:"lightning", score:1340, title:null},
+  {name:"NoviceMage",   element:"ice",       score:720,  title:null},
+];
+
+/* ============ STATE ============ */
+const state = {
+  currentBoss:null,
+  bossHp:0, bossMaxHp:0,
+  playerHp:100, playerMaxHp:100,
+  combo:0,
+  score:0,
+  phase:0,
+  questionIndex:0,
+  answered:false,
+  timerValue:15,
+  timerRef:null,
+  shielded:false,
+  frozen:false,
+  spellsUsed:{},
+  playerName:"Hero",
+  playerElement:"lightning",
+  questionStart:0,
+  questionPool:[],
+  selectedBossIdx:0,
+  defeatedBosses:[],
+  earnedTitles:[],
+};
+
+/* ============ BOSS SVG ============ */
+function bossSvg(boss, phase){
+  const p = boss.palette;
+  const color = phase===0 ? p.p1 : phase===1 ? p.p2 : p.p3;
+  const eyeColor = phase===2 ? "#fff200" : phase===1 ? "#ff7849" : "#ffffff";
+  const glow = phase===2 ? "1" : phase===1 ? "0.6" : "0.3";
+
+  if(boss.id === "vexon"){
+    return `
+    <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="vbody" cx="50%" cy="40%">
+          <stop offset="0%" stop-color="${shade(color,30)}"/>
+          <stop offset="100%" stop-color="${color}"/>
+        </radialGradient>
+        <radialGradient id="vorb" cx="50%" cy="50%">
+          <stop offset="0%" stop-color="#fff"/>
+          <stop offset="40%" stop-color="${boss.accent}"/>
+          <stop offset="100%" stop-color="${shade(color,-30)}"/>
+        </radialGradient>
+      </defs>
+      <!-- Robe / body -->
+      <path d="M120 220 L60 220 L70 130 Q70 100 120 100 Q170 100 170 130 L180 220 Z" fill="url(#vbody)" stroke="${shade(color,-40)}" stroke-width="2"/>
+      <!-- Shoulders -->
+      <ellipse cx="75" cy="130" rx="22" ry="14" fill="${shade(color,-20)}"/>
+      <ellipse cx="165" cy="130" rx="22" ry="14" fill="${shade(color,-20)}"/>
+      <!-- Head -->
+      <ellipse cx="120" cy="80" rx="34" ry="40" fill="${shade(color,40)}" stroke="${shade(color,-40)}" stroke-width="2"/>
+      <!-- Crown -->
+      <path d="M88 55 L100 30 L112 50 L120 22 L128 50 L140 30 L152 55 Z" fill="${boss.accent}" stroke="#3a1f5f" stroke-width="2"/>
+      <circle cx="120" cy="38" r="4" fill="#fff200" opacity="${glow}"/>
+      <!-- Eyes -->
+      <ellipse cx="106" cy="82" rx="6" ry="8" fill="#000"/>
+      <ellipse cx="134" cy="82" rx="6" ry="8" fill="#000"/>
+      <circle cx="106" cy="84" r="3" fill="${eyeColor}"/>
+      <circle cx="134" cy="84" r="3" fill="${eyeColor}"/>
+      <!-- Mouth -->
+      <path d="M108 100 Q120 ${phase>0?108:104} 132 100" stroke="#1a0030" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- Staff -->
+      <line x1="195" y1="50" x2="195" y2="220" stroke="#3a1f5f" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="195" cy="45" r="14" fill="url(#vorb)"/>
+      <circle cx="195" cy="45" r="20" fill="${boss.accent}" opacity="0.3"/>
+    </svg>`;
+  }
+  // Glaciera
+  return `
+  <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="gbody" cx="50%" cy="40%">
+        <stop offset="0%" stop-color="${shade(color,40)}"/>
+        <stop offset="100%" stop-color="${color}"/>
+      </radialGradient>
+      <radialGradient id="gice" cx="50%" cy="40%">
+        <stop offset="0%" stop-color="#fff"/>
+        <stop offset="100%" stop-color="${boss.accent}"/>
+      </radialGradient>
+    </defs>
+    <!-- Dress -->
+    <path d="M120 220 L55 220 L75 140 Q75 110 120 110 Q165 110 165 140 L185 220 Z" fill="url(#gbody)" stroke="${shade(color,-30)}" stroke-width="2"/>
+    <!-- Ice shards on dress -->
+    <polygon points="90,200 95,180 100,200" fill="${boss.accent}" opacity="0.7"/>
+    <polygon points="140,210 145,185 150,210" fill="${boss.accent}" opacity="0.7"/>
+    <!-- Head -->
+    <ellipse cx="120" cy="85" rx="32" ry="38" fill="url(#gice)" stroke="${shade(color,-30)}" stroke-width="2"/>
+    <!-- Hair / icicles -->
+    <path d="M88 75 L82 130 L92 100 Z" fill="${shade(color,30)}"/>
+    <path d="M152 75 L158 130 L148 100 Z" fill="${shade(color,30)}"/>
+    <!-- Crown of ice -->
+    <path d="M90 60 L98 30 L108 55 L118 25 L128 55 L138 30 L150 60 Z" fill="${boss.accent}" stroke="#fff" stroke-width="1.5" opacity="0.95"/>
+    <circle cx="118" cy="35" r="4" fill="#a3e4ff" opacity="${glow}"/>
+    <!-- Eyes -->
+    <ellipse cx="108" cy="88" rx="5" ry="7" fill="#000"/>
+    <ellipse cx="132" cy="88" rx="5" ry="7" fill="#000"/>
+    <circle cx="108" cy="90" r="2.5" fill="${eyeColor}"/>
+    <circle cx="132" cy="90" r="2.5" fill="${eyeColor}"/>
+    <!-- Mouth -->
+    <path d="M110 105 Q120 ${phase>0?100:108} 130 105" stroke="#1a2a40" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Staff (icicle) -->
+    <line x1="40" y1="60" x2="40" y2="220" stroke="#2c5d8a" stroke-width="5"/>
+    <polygon points="40,40 30,65 50,65" fill="${boss.accent}" stroke="#fff" stroke-width="1"/>
+    <circle cx="40" cy="55" r="16" fill="${boss.accent}" opacity="0.35"/>
+  </svg>`;
+}
+
+function shade(hex, percent){
+  const h = hex.replace('#','');
+  let r=parseInt(h.substr(0,2),16), g=parseInt(h.substr(2,2),16), b=parseInt(h.substr(4,2),16);
+  r = Math.max(0,Math.min(255, r + Math.round(255*percent/100)));
+  g = Math.max(0,Math.min(255, g + Math.round(255*percent/100)));
+  b = Math.max(0,Math.min(255, b + Math.round(255*percent/100)));
+  return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+
+/* ============ TITLE SCREEN ============ */
+function renderBossPicker(){
+  const wrap = document.getElementById('bossPicker');
+  wrap.innerHTML = '';
+  BOSSES.forEach((b, i) => {
+    const div = document.createElement('button');
+    div.className = 'boss-pick' + (i===state.selectedBossIdx?' selected':'');
+    div.innerHTML = `<h3>${b.name}</h3><p>${b.title}<br>Weak to <span style="color:var(--warn)">${b.weakness}</span></p>`;
+    div.onclick = ()=>{ state.selectedBossIdx = i; renderBossPicker(); };
+    wrap.appendChild(div);
+  });
+}
+
+/* ============ START BATTLE ============ */
+function startBattle(){
+  const name = document.getElementById('nameInput').value.trim() || 'Hero';
+  state.playerName = name;
+  state.currentBoss = BOSSES[state.selectedBossIdx];
+  state.bossMaxHp = state.currentBoss.maxHp;
+  state.bossHp = state.bossMaxHp;
+  state.playerHp = 100; state.playerMaxHp = 100;
+  state.combo = 0; state.score = 0; state.phase = 0;
+  state.questionIndex = 0; state.shielded = false; state.frozen = false;
+  state.spellsUsed = {};
+  state.questionPool = shuffle([...QUESTIONS]);
+
+  document.getElementById('titleScreen').classList.remove('active');
+  document.getElementById('resultScreen').classList.remove('active');
+  document.getElementById('battleScreen').classList.add('active');
+  document.getElementById('defeatOverlay').classList.remove('on');
+
+  renderBoss();
+  renderHpBars();
+  renderCombo();
+  renderScore();
+  renderSpells();
+  renderLeaderboard();
+  showSpeech(state.currentBoss.taunts[0]);
+  nextQuestion();
+}
+
+function renderBoss(){
+  const b = state.currentBoss;
+  document.getElementById('bossName').textContent = b.name.toUpperCase();
+  document.getElementById('bossWeak').innerHTML = `Weakness: <b>${b.weakness.toUpperCase()}</b>`;
+  document.getElementById('bossHpName').textContent = b.name.toUpperCase();
+  document.getElementById('playerHpName').textContent = state.playerName.toUpperCase();
+  const wrap = document.getElementById('bossWrap');
+  wrap.innerHTML = bossSvg(b, state.phase);
+  wrap.classList.remove('phase2','phase3');
+  if(state.phase===1) wrap.classList.add('phase2');
+  if(state.phase===2) wrap.classList.add('phase3');
+}
+
+function renderHpBars(){
+  const bp = Math.max(0, state.bossHp/state.bossMaxHp*100);
+  const pp = Math.max(0, state.playerHp/state.playerMaxHp*100);
+  document.getElementById('bossHpFill').style.width = bp+'%';
+  document.getElementById('playerHpFill').style.width = pp+'%';
+  document.getElementById('bossHpLabel').textContent = `${Math.max(0,Math.ceil(state.bossHp))}/${state.bossMaxHp}`;
+  document.getElementById('playerHpLabel').textContent = `${Math.max(0,Math.ceil(state.playerHp))}/${state.playerMaxHp}`;
+}
+
+/* ============ COMBO / SPELLS ============ */
+function renderCombo(){
+  const dots = document.getElementById('comboDots');
+  dots.innerHTML='';
+  for(let i=0;i<5;i++){
+    const d = document.createElement('div');
+    d.className = 'combo-dot' + (i<state.combo?' on':'');
+    dots.appendChild(d);
+  }
+  const mult = comboMultiplier();
+  document.getElementById('multiplier').textContent = '×'+mult;
+}
+function comboMultiplier(){
+  if(state.combo>=5) return 3;
+  if(state.combo>=3) return 2;
+  return 1;
+}
+function renderScore(){
+  document.getElementById('scoreValue').textContent = state.score.toLocaleString();
+}
+function renderSpells(){
+  const reqs = {fifty:2, freeze:3, shield:4};
+  Object.keys(reqs).forEach(s=>{
+    const btn = document.getElementById('spell-'+s);
+    const used = state.spellsUsed[s];
+    btn.disabled = state.combo < reqs[s] || used || state.answered;
+    btn.classList.toggle('used', !!used);
+  });
+}
+
+/* ============ QUESTIONS ============ */
+function nextQuestion(){
+  if(state.bossHp<=0){ endBattle(true); return; }
+  if(state.playerHp<=0){ endBattle(false); return; }
+
+  state.answered = false;
+  state.frozen = false;
+
+  // pick question
+  if(state.questionIndex >= state.questionPool.length){
+    state.questionPool = shuffle([...QUESTIONS]);
+    state.questionIndex = 0;
+  }
+  const q = state.questionPool[state.questionIndex++];
+
+  // element badge
+  const eb = document.getElementById('elementBadge');
+  eb.className = 'element-badge ' + q.element;
+  const isWeak = q.element === state.currentBoss.weakness;
+  eb.innerHTML = `${elementIcon(q.element)} ${q.element.toUpperCase()}${isWeak?' ⚡ WEAKNESS':''}`;
+  document.getElementById('categoryTag').textContent = q.category;
+  document.getElementById('questionText').textContent = q.text;
+
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.innerHTML = `<span class="key">${'ABCD'[i]}</span><span>${opt}</span>`;
+    btn.onclick = ()=>answer(i, q);
+    grid.appendChild(btn);
+  });
+
+  // timer
+  const phaseTime = state.phase===0 ? 15 : state.phase===1 ? 12 : 8;
+  state.timerValue = phaseTime;
+  state._timerMax = phaseTime;
+  state.questionStart = Date.now();
+  startTimer();
+  renderSpells();
+}
+
+function elementIcon(e){
+  if(e==='fire') return '🔥';
+  if(e==='ice') return '❄';
+  return '⚡';
+}
+
+function startTimer(){
+  clearInterval(state.timerRef);
+  const fill = document.getElementById('timerFill');
+  state.timerRef = setInterval(()=>{
+    if(state.frozen || state.answered) return;
+    state.timerValue -= 0.1;
+    const pct = Math.max(0, state.timerValue / state._timerMax * 100);
+    fill.style.width = pct+'%';
+    if(pct>50) fill.style.background='var(--good)';
+    else if(pct>25) fill.style.background='var(--warn)';
+    else fill.style.background='var(--bad)';
+    if(state.timerValue<=0){
+      clearInterval(state.timerRef);
+      timeout();
+    }
+  }, 100);
+}
+
+function answer(idx, q){
+  if(state.answered) return;
+  state.answered = true;
+  clearInterval(state.timerRef);
+
+  const btns = document.querySelectorAll('.option');
+  btns.forEach(b=>b.disabled = true);
+  btns[q.answer].classList.add('correct');
+  if(idx !== q.answer) btns[idx].classList.add('wrong');
+
+  if(idx === q.answer){
+    correctHit(q);
+  } else {
+    wrongHit();
+  }
+
+  setTimeout(nextQuestion, 1300);
+}
+
+function timeout(){
+  if(state.answered) return;
+  state.answered = true;
+  const btns = document.querySelectorAll('.option');
+  const q = currentQuestionRef();
+  btns.forEach(b=>b.disabled=true);
+  if(q) btns[q.answer].classList.add('correct');
+  wrongHit();
+  setTimeout(nextQuestion, 1300);
+}
+
+function currentQuestionRef(){
+  return state.questionPool[state.questionIndex-1];
+}
+
+function correctHit(q){
+  const elapsed = (Date.now() - state.questionStart)/1000;
+  const isCrit = elapsed <= 3;
+  const isWeak = q.element === state.currentBoss.weakness;
+  const mult = comboMultiplier();
+  const weakBonus = isWeak ? 1.5 : 1;
+  const critBonus = isCrit ? 1.5 : 1;
+
+  let baseDmg = 60;
+  let dmg = Math.round(baseDmg * mult * weakBonus * critBonus);
+  let score = Math.round(20 * mult * weakBonus * critBonus);
+
+  state.bossHp -= dmg;
+  state.score += score;
+  state.combo = Math.min(5, state.combo+1);
+
+  // Animations
+  const wrap = document.getElementById('bossWrap');
+  wrap.classList.remove('hit','flash');
+  void wrap.offsetWidth;
+  wrap.classList.add('hit','flash');
+  setTimeout(()=>wrap.classList.remove('flash'),400);
+
+  showDamage(dmg, isCrit ? 'crit' : (isWeak ? 'weak' : ''), isWeak);
+  if(isCrit) flashCrit();
+
+  renderHpBars();
+  renderScore();
+  renderCombo();
+  renderSpells();
+  renderLeaderboard();
+
+  checkPhaseTransition();
+}
+
+function wrongHit(){
+  state.combo = 0;
+  if(state.shielded){
+    state.shielded = false;
+    showSpeech("🛡 Shield blocked the attack!");
+    renderCombo(); renderSpells();
+    return;
+  }
+  let dmg = state.phase===0 ? 18 : state.phase===1 ? 25 : 35;
+  state.playerHp -= dmg;
+  if(state.playerHp<0) state.playerHp = 0;
+
+  const wrap = document.getElementById('bossWrap');
+  wrap.classList.remove('attack');
+  void wrap.offsetWidth;
+  wrap.classList.add('attack');
+
+  const pb = document.getElementById('playerHpBlock');
+  pb.classList.remove('shake'); void pb.offsetWidth; pb.classList.add('shake');
+
+  if(state.phase===2){
+    document.body.classList.remove('screen-shake');
+    void document.body.offsetWidth;
+    document.body.classList.add('screen-shake');
+  }
+
+  // Random taunt
+  const taunts = state.currentBoss.taunts;
+  showSpeech(taunts[3 + Math.floor(Math.random()*2)]);
+
+  renderHpBars(); renderCombo(); renderSpells();
+}
+
+function showDamage(dmg, cls, weak){
+  const area = document.getElementById('bossArea');
+  const el = document.createElement('div');
+  el.className = 'damage-num ' + cls;
+  el.textContent = (cls==='crit'?'CRIT! ':'') + (weak?'WEAKNESS! ':'') + '-'+dmg;
+  area.appendChild(el);
+  setTimeout(()=>el.remove(), 1300);
+}
+
+function flashCrit(){
+  const f = document.getElementById('critFlash');
+  f.classList.remove('on'); void f.offsetWidth; f.classList.add('on');
+  setTimeout(()=>f.classList.remove('on'),400);
+}
+
+function showSpeech(text){
+  const area = document.getElementById('bossArea');
+  const old = area.querySelector('.speech');
+  if(old) old.remove();
+  const s = document.createElement('div');
+  s.className = 'speech';
+  s.textContent = text;
+  area.appendChild(s);
+  setTimeout(()=>{ if(s.parentNode) s.remove(); }, 2500);
+}
+
+/* ============ PHASES ============ */
+function checkPhaseTransition(){
+  const pct = state.bossHp / state.bossMaxHp;
+  let target = state.phase;
+  if(pct <= 0.3) target = 2;
+  else if(pct <= 0.6) target = 1;
+  else target = 0;
+  if(target > state.phase){
+    state.phase = target;
+    triggerPhase(target);
+  }
+}
+
+function triggerPhase(phase){
+  state.answered = true; // pause input
+  clearInterval(state.timerRef);
+  const overlay = document.getElementById('phaseOverlay');
+  const text = document.getElementById('phaseText');
+  const sub = document.getElementById('phaseSub');
+  if(phase===1){ text.textContent="PHASE 2"; sub.textContent="ENRAGED"; }
+  else { text.textContent="PHASE 3"; sub.textContent="FINAL FORM"; }
+  overlay.classList.add('show');
+  renderBoss();
+  setTimeout(()=>{
+    overlay.classList.remove('show');
+    showSpeech(state.currentBoss.taunts[phase]);
+    state.answered = false;
+    // restart timer for current question with new phase time
+    const phaseTime = phase===1 ? 12 : 8;
+    state.timerValue = phaseTime;
+    state._timerMax = phaseTime;
+    startTimer();
+  }, 2000);
+}
+
+/* ============ SPELLS ============ */
+function castSpell(spell){
+  const reqs = {fifty:2, freeze:3, shield:4};
+  if(state.combo < reqs[spell] || state.spellsUsed[spell] || state.answered) return;
+  state.combo -= reqs[spell];
+  state.spellsUsed[spell] = true;
+
+  if(spell === 'fifty'){
+    const q = currentQuestionRef();
+    const wrongs = [];
+    document.querySelectorAll('.option').forEach((b, i)=>{
+      if(i !== q.answer) wrongs.push({el:b, i});
+    });
+    shuffle(wrongs).slice(0,2).forEach(w=>w.el.classList.add('eliminated'));
+  } else if(spell === 'freeze'){
+    state.frozen = true;
+    showSpeech("⏱ Time frozen for 5s!");
+    setTimeout(()=>{ state.frozen = false; }, 5000);
+  } else if(spell === 'shield'){
+    state.shielded = true;
+    showSpeech("🛡 Shield activated!");
+  }
+  renderCombo();
+  renderSpells();
+}
+
+document.addEventListener('click', (e)=>{
+  const sp = e.target.closest('.spell');
+  if(sp) castSpell(sp.dataset.spell);
+});
+
+/* ============ KEYBOARD ============ */
+document.addEventListener('keydown', (e)=>{
+  if(!document.getElementById('battleScreen').classList.contains('active')) return;
+  if(['1','2','3','4'].includes(e.key)){
+    const idx = parseInt(e.key)-1;
+    const opts = document.querySelectorAll('.option');
+    if(opts[idx] && !opts[idx].disabled && !opts[idx].classList.contains('eliminated')){
+      opts[idx].click();
+    }
+  }
+  if(e.code === 'Space'){
+    e.preventDefault();
+    const order = ['fifty','freeze','shield'];
+    for(const s of order){
+      const btn = document.getElementById('spell-'+s);
+      if(btn && !btn.disabled){ btn.click(); break; }
+    }
+  }
+});
+
+/* ============ LEADERBOARD ============ */
+function getLeaderboard(includePlayer=true){
+  const list = [...SEED_LEADERBOARD];
+  if(includePlayer){
+    list.push({
+      name: state.playerName,
+      element: state.playerElement,
+      score: state.score,
+      title: state.earnedTitles[state.earnedTitles.length-1] || null,
+      isMe:true,
+    });
+  }
+  list.sort((a,b)=>b.score-a.score);
+  return list;
+}
+function renderLeaderboard(){
+  const box = document.getElementById('leaderboardList');
+  const list = getLeaderboard(true).slice(0,5);
+  box.innerHTML = '';
+  list.forEach((p,i)=>{
+    const row = document.createElement('div');
+    row.className = 'leader-row' + (p.isMe?' me':'');
+    row.innerHTML = `
+      <div class="rank">#${i+1}</div>
+      <div class="pname">
+        <b><span class="el-dot ${p.element}"></span>${escapeHtml(p.name)}</b>
+        ${p.title?`<small>${escapeHtml(p.title)}</small>`:''}
+      </div>
+      <div class="pscore">${p.score.toLocaleString()}</div>
+    `;
+    box.appendChild(row);
+  });
+}
+
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+/* ============ END BATTLE ============ */
+function endBattle(victory){
+  clearInterval(state.timerRef);
+  state.answered = true;
+
+  if(victory){
+    state.earnedTitles.push(state.currentBoss.loot);
+    state.defeatedBosses.push(state.currentBoss.id);
+    const wrap = document.getElementById('bossWrap');
+    wrap.classList.add('defeat');
+    setTimeout(()=>showResult(true), 1700);
+  } else {
+    document.getElementById('defeatOverlay').classList.add('on');
+    setTimeout(()=>showResult(false), 1300);
+  }
+}
+
+function showResult(victory){
+  document.getElementById('battleScreen').classList.remove('active');
+  document.getElementById('resultScreen').classList.add('active');
+  const title = document.getElementById('resultTitle');
+  const flavor = document.getElementById('resultFlavor');
+  const loot = document.getElementById('lootContainer');
+  loot.innerHTML='';
+
+  if(victory){
+    title.textContent = 'VICTORY';
+    title.className = 'result-title victory';
+    flavor.textContent = `${state.currentBoss.name} has fallen!`;
+    const drop = document.createElement('div');
+    drop.className = 'loot-drop';
+    drop.textContent = '🏆 ' + state.currentBoss.loot;
+    loot.appendChild(drop);
+  } else {
+    title.textContent = 'DEFEATED';
+    title.className = 'result-title defeat';
+    flavor.textContent = `${state.currentBoss.name} stands triumphant.`;
+  }
+
+  document.getElementById('finalScore').textContent = state.score.toLocaleString();
+
+  // Final leaderboard with animated rise
+  const lb = getLeaderboard(true).slice(0,6);
+  const fl = document.getElementById('finalLeader');
+  fl.innerHTML='';
+  lb.forEach((p,i)=>{
+    const row = document.createElement('div');
+    row.className = 'leader-row' + (p.isMe?' me':'');
+    row.style.opacity='0';
+    row.style.transform='translateY(20px)';
+    row.innerHTML = `
+      <div class="rank">#${i+1}</div>
+      <div class="pname"><b><span class="el-dot ${p.element}"></span>${escapeHtml(p.name)}</b>${p.title?`<small>${escapeHtml(p.title)}</small>`:''}</div>
+      <div class="pscore">${p.score.toLocaleString()}</div>
+    `;
+    fl.appendChild(row);
+    setTimeout(()=>{ row.style.transition='all .5s'; row.style.opacity='1'; row.style.transform='translateY(0)'; }, 200 + i*150);
+  });
+
+  // Next boss button enabled only if there's another boss
+  const nextBtn = document.getElementById('nextBossBtn');
+  const nextIdx = (state.selectedBossIdx + 1) % BOSSES.length;
+  if(victory && BOSSES.length > 1){
+    nextBtn.style.display = 'inline-block';
+    nextBtn.onclick = ()=>{ state.selectedBossIdx = nextIdx; startBattle(); };
+  } else {
+    nextBtn.style.display = 'none';
+  }
+}
+
+document.getElementById('playAgainBtn').onclick = ()=>{
+  document.getElementById('resultScreen').classList.remove('active');
+  document.getElementById('titleScreen').classList.add('active');
+  renderBossPicker();
+};
+
+/* ============ UTIL ============ */
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+/* ============ INIT ============ */
+document.getElementById('startBtn').onclick = startBattle;
+renderBossPicker();
+</script>
+</body>
+</html>
