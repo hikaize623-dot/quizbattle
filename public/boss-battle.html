@@ -879,7 +879,7 @@ function nextQuestion(){
 
   // pick question
   if(state.questionIndex >= state.questionPool.length){
-    state.questionPool = shuffle([...QUESTIONS]);
+    state.questionPool = shuffle(QUESTIONS.filter(q => q.boss === state.currentBoss.id));
     state.questionIndex = 0;
   }
   const q = state.questionPool[state.questionIndex++];
