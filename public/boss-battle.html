@@ -397,6 +397,13 @@
     .mobile-score-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
     .mobile-score-value{font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:#fff;line-height:1}
     .mobile-score-mult{margin-left:auto;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1px}
+    .mobile-streak-chip{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:10px;background:var(--panel);border:1px solid var(--border-glow);min-width:0}
+    .mobile-streak-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+    .mobile-streak-value{font-family:'Cinzel',serif;font-size:16px;font-weight:700;color:var(--gold);line-height:1}
+    .mobile-streak-fire{font-size:13px}
+    /* Hide the desktop combo/score block on mobile (now in top bar) */
+    .side-spells .combo-row,
+    .side-spells .score-block{display:none}
     .hp-row{display:flex;flex-direction:row;gap:6px}
     .hp-block{padding:5px 7px;flex:1;min-width:0}
     .hp-name{font-size:10px}
@@ -504,7 +511,12 @@
         <span class="mobile-score-value" id="mobileScoreValue">0</span>
         <span class="mobile-score-mult" id="mobileScoreMult">×1</span>
       </div>
-      <button id="leaderToggle" class="leader-toggle" aria-label="Show leaderboard" title="Leaderboard">🏆</button>
+      <div class="mobile-streak-chip">
+        <span class="mobile-streak-fire">🔥</span>
+        <span class="mobile-streak-label">Streak</span>
+        <span class="mobile-streak-value" id="mobileStreakValue">0</span>
+      </div>
+      <button id="leaderToggle" class="leader-toggle" aria-label="Open leaderboard">🏆</button>
     </div>
     <div class="hp-row">
       <div class="hp-block" id="bossHpBlock">
@@ -1049,6 +1061,7 @@ function renderCombo(){
   const mult = comboMultiplier();
   document.getElementById('multiplier').textContent = '×'+mult;
   const mm = document.getElementById('mobileScoreMult'); if(mm) mm.textContent = '×'+mult;
+  const ms = document.getElementById('mobileStreakValue'); if(ms) ms.textContent = state.combo;
 }
 function comboMultiplier(){
   if(state.combo>=5) return 3;
