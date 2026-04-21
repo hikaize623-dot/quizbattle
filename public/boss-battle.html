@@ -1456,6 +1456,19 @@ function shuffle(arr){
 /* ============ INIT ============ */
 document.getElementById('startBtn').onclick = startBattle;
 renderBossPicker();
+
+/* Mobile leaderboard drawer */
+(function(){
+  const panel = document.getElementById('leaderPanel');
+  const backdrop = document.getElementById('leaderBackdrop');
+  const toggle = document.getElementById('leaderToggle');
+  const closeBtn = document.getElementById('leaderClose');
+  const open = ()=>{ panel.classList.add('open'); backdrop.classList.add('open'); };
+  const close = ()=>{ panel.classList.remove('open'); backdrop.classList.remove('open'); };
+  toggle?.addEventListener('click', open);
+  closeBtn?.addEventListener('click', close);
+  backdrop?.addEventListener('click', close);
+})();
 </script>
 </body>
 </html>
