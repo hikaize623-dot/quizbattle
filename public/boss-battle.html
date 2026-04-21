@@ -1126,8 +1126,11 @@ function comboMultiplier(){
   return 1;
 }
 function renderScore(){
-  document.getElementById('scoreValue').textContent = state.score.toLocaleString();
-  const mv = document.getElementById('mobileScoreValue'); if(mv) mv.textContent = state.score.toLocaleString();
+  const sv = document.getElementById('scoreValue');
+  sv.textContent = state.score.toLocaleString();
+  sv.classList.remove('bump'); void sv.offsetWidth; sv.classList.add('bump');
+  const mv = document.getElementById('mobileScoreValue');
+  if(mv){ mv.textContent = state.score.toLocaleString(); }
 }
 function renderSpells(){
   const reqs = {fifty:2, freeze:3, shield:4};
