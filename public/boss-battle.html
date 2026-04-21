@@ -1161,6 +1161,8 @@ function nextQuestion(){
   eb.innerHTML = `${elementIcon(q.element)} ${q.element.toUpperCase()}${isWeak?' ⚡ WEAKNESS':''}`;
   document.getElementById('categoryTag').textContent = q.category;
   document.getElementById('questionText').textContent = q.text;
+  const qCard = document.querySelector('.question-card');
+  if(qCard){ qCard.classList.remove('reveal'); void qCard.offsetWidth; qCard.classList.add('reveal'); }
 
   const grid = document.getElementById('optionsGrid');
   grid.innerHTML = '';
