@@ -386,53 +386,55 @@
     .boss-pick{padding:12px}
     .btn{padding:12px 20px;font-size:12px;letter-spacing:1.5px;width:100%}
 
+    /* Fit everything on one screen — no scrolling */
     .screen{position:absolute;min-height:100%}
-    #battleScreen.active{padding:8px;gap:8px;overflow-y:auto}
-    .top-bar{flex-direction:column;gap:8px}
-    .hp-block{padding:8px 10px}
-    .hp-name{font-size:12px}
-    .hp-head{font-size:10px;letter-spacing:1px}
-    .hp-bar{height:14px}
-    .hp-text{font-size:10px}
+    #battleScreen.active{padding:6px;gap:6px;overflow:hidden;height:100%}
+    .top-bar{flex-direction:row;gap:6px;flex-wrap:wrap}
+    .hp-block{padding:5px 7px;flex:1;min-width:0}
+    .hp-name{font-size:10px}
+    .hp-head{font-size:8px;letter-spacing:1px;margin-bottom:2px}
+    .hp-bar{height:9px}
+    .hp-text{font-size:9px}
 
-    .battle-main{gap:8px;display:flex;flex-direction:column;flex:none}
+    .battle-main{gap:6px;display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
     /* Reorder so the boss & question appear first on mobile */
-    .battle-main > .center-stage{order:1}
-    .battle-main > .side-spells{order:2}
-    .battle-main > .side-leader{order:3}
-    .side-panel{padding:10px;gap:10px}
-    .panel-title{font-size:12px;letter-spacing:1.5px}
+    .battle-main > .center-stage{order:1;flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+    .battle-main > .side-spells{order:2;flex:none}
+    /* Hide leaderboard on phones to save vertical space */
+    .battle-main > .side-leader{display:none}
+    .side-panel{padding:6px 8px;gap:6px}
+    .panel-title{font-size:10px;letter-spacing:1.2px;margin:0}
 
-    .center-stage{min-height:auto}
-    .boss-area{min-height:200px;padding:8px 0}
-    .boss-wrap{width:170px;height:170px}
-    .boss-name{font-size:16px;letter-spacing:2px;top:6px}
-    .boss-weakness{top:34px;font-size:9px;letter-spacing:1.5px}
-    .speech{top:60px;font-size:11px;padding:8px 12px;max-width:90%}
-    .damage-num{font-size:24px}
-    .damage-num.crit{font-size:32px}
+    .center-stage{min-height:auto;gap:6px}
+    .boss-area{flex:none;min-height:120px;height:120px;padding:2px 0}
+    .boss-wrap{width:110px;height:110px}
+    .boss-name{font-size:13px;letter-spacing:1.5px;top:2px}
+    .boss-weakness{top:22px;font-size:8px;letter-spacing:1px}
+    .speech{top:42px;font-size:10px;padding:5px 9px;max-width:90%}
+    .damage-num{font-size:22px}
+    .damage-num.crit{font-size:28px}
 
-    .question-card{padding:12px;gap:10px}
-    .question-text{font-size:15px}
-    .q-meta{flex-wrap:wrap;gap:6px}
-    .element-badge{font-size:10px;padding:4px 9px;letter-spacing:1px}
-    .category-tag{font-size:10px}
-    .option{padding:10px 12px;font-size:13px;gap:8px}
-    .option .key{width:24px;height:24px;font-size:11px}
+    .question-card{padding:8px 10px;gap:6px;flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+    .question-text{font-size:13px;line-height:1.25}
+    .q-meta{flex-wrap:wrap;gap:4px}
+    .element-badge{font-size:9px;padding:3px 7px;letter-spacing:0.8px}
+    .category-tag{font-size:9px}
+    .options{gap:5px}
+    .option{padding:6px 9px;font-size:12px;gap:7px;line-height:1.2;min-height:0}
+    .option .key{width:20px;height:20px;font-size:10px;flex:none}
 
-    .spell{padding:8px;gap:8px}
-    .spell-icon{width:30px;height:30px;font-size:16px}
-    .spell-name{font-size:12px}
-    .spell-cost{font-size:9px}
+    /* Spell panel: horizontal compact strip */
+    .side-spells{display:flex;flex-direction:row;align-items:center;gap:6px;padding:6px 8px;flex-wrap:nowrap;overflow-x:auto}
+    .side-spells .panel-title{display:none}
+    .side-spells .spell-row{display:flex;flex-direction:row;gap:6px;flex:1}
+    .spell{padding:5px 7px;gap:5px;flex:1;min-width:0}
+    .spell-icon{width:24px;height:24px;font-size:13px;flex:none}
+    .spell-name{font-size:10px}
+    .spell-cost{font-size:8px}
 
-    .combo-dot{width:12px;height:12px}
-    .multiplier{font-size:16px}
-    .score-value{font-size:22px}
-
-    .leader-row{padding:6px 8px;font-size:12px;grid-template-columns:20px 1fr auto}
-    .pname b{font-size:12px}
-    .pname small{font-size:9px}
-    .pscore{font-size:13px}
+    .combo-dot{width:9px;height:9px}
+    .multiplier{font-size:13px}
+    .score-value{font-size:16px}
 
     .phase-text{font-size:36px;letter-spacing:4px;padding:0 12px}
     .phase-sub{font-size:14px;letter-spacing:3px}
