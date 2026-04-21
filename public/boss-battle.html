@@ -115,6 +115,8 @@
   /* Battle */
   #battleScreen{padding:14px;gap:12px}
   .top-bar{display:flex;gap:12px;align-items:stretch}
+  .hp-row{display:contents}
+  .mobile-top-row{display:none}
   .hp-block{
     flex:1;background:var(--panel);border:1px solid var(--border);border-radius:12px;
     padding:10px 14px;backdrop-filter:blur(8px);
@@ -389,7 +391,13 @@
     /* Fit everything on one screen — no scrolling */
     .screen{position:absolute;min-height:100%}
     #battleScreen.active{padding:6px;gap:6px;overflow:hidden;height:100%}
-    .top-bar{flex-direction:row;gap:6px;flex-wrap:wrap}
+    .top-bar{flex-direction:column;gap:6px;flex-wrap:nowrap}
+    .mobile-top-row{display:flex;flex-direction:row;gap:8px;align-items:center;justify-content:space-between}
+    .mobile-score-chip{flex:1;display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:var(--panel);border:1px solid var(--border-glow);min-width:0}
+    .mobile-score-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+    .mobile-score-value{font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:#fff;line-height:1}
+    .mobile-score-mult{margin-left:auto;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1px}
+    .hp-row{display:flex;flex-direction:row;gap:6px}
     .hp-block{padding:5px 7px;flex:1;min-width:0}
     .hp-name{font-size:10px}
     .hp-head{font-size:8px;letter-spacing:1px;margin-bottom:2px}
@@ -490,15 +498,24 @@
 <!-- BATTLE SCREEN -->
 <div id="battleScreen" class="screen">
   <div class="top-bar">
-    <div class="hp-block" id="bossHpBlock">
-      <div class="hp-head"><span class="hp-name" id="bossHpName">BOSS</span><span id="bossHpLabel">100/100</span></div>
-      <div class="hp-bar"><div class="hp-fill boss" id="bossHpFill"></div></div>
+    <div class="mobile-top-row">
+      <div class="mobile-score-chip">
+        <span class="mobile-score-label">Score</span>
+        <span class="mobile-score-value" id="mobileScoreValue">0</span>
+        <span class="mobile-score-mult" id="mobileScoreMult">×1</span>
+      </div>
+      <button id="leaderToggle" class="leader-toggle" aria-label="Show leaderboard" title="Leaderboard">🏆</button>
     </div>
-    <div class="hp-block" id="playerHpBlock">
-      <div class="hp-head"><span class="hp-name" id="playerHpName">PLAYER</span><span id="playerHpLabel">100/100</span></div>
-      <div class="hp-bar"><div class="hp-fill player" id="playerHpFill"></div></div>
+    <div class="hp-row">
+      <div class="hp-block" id="bossHpBlock">
+        <div class="hp-head"><span class="hp-name" id="bossHpName">BOSS</span><span id="bossHpLabel">100/100</span></div>
+        <div class="hp-bar"><div class="hp-fill boss" id="bossHpFill"></div></div>
+      </div>
+      <div class="hp-block" id="playerHpBlock">
+        <div class="hp-head"><span class="hp-name" id="playerHpName">PLAYER</span><span id="playerHpLabel">100/100</span></div>
+        <div class="hp-bar"><div class="hp-fill player" id="playerHpFill"></div></div>
+      </div>
     </div>
-    <button id="leaderToggle" class="leader-toggle" aria-label="Show leaderboard" title="Leaderboard">🏆</button>
   </div>
 
   <div class="battle-main">
@@ -1031,6 +1048,7 @@ function renderCombo(){
   }
   const mult = comboMultiplier();
   document.getElementById('multiplier').textContent = '×'+mult;
+  const mm = document.getElementById('mobileScoreMult'); if(mm) mm.textContent = '×'+mult;
 }
 function comboMultiplier(){
   if(state.combo>=5) return 3;
@@ -1039,6 +1057,7 @@ function comboMultiplier(){
 }
 function renderScore(){
   document.getElementById('scoreValue').textContent = state.score.toLocaleString();
+  const mv = document.getElementById('mobileScoreValue'); if(mv) mv.textContent = state.score.toLocaleString();
 }
 function renderSpells(){
   const reqs = {fifty:2, freeze:3, shield:4};
