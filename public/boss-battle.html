@@ -1048,6 +1048,7 @@ function renderCombo(){
   }
   const mult = comboMultiplier();
   document.getElementById('multiplier').textContent = '×'+mult;
+  const mm = document.getElementById('mobileScoreMult'); if(mm) mm.textContent = '×'+mult;
 }
 function comboMultiplier(){
   if(state.combo>=5) return 3;
@@ -1056,6 +1057,7 @@ function comboMultiplier(){
 }
 function renderScore(){
   document.getElementById('scoreValue').textContent = state.score.toLocaleString();
+  const mv = document.getElementById('mobileScoreValue'); if(mv) mv.textContent = state.score.toLocaleString();
 }
 function renderSpells(){
   const reqs = {fifty:2, freeze:3, shield:4};
