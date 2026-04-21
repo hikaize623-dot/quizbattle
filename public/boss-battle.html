@@ -328,33 +328,39 @@
   .option:not(:disabled):hover{transform:translateY(-2px);border-color:var(--border-strong);background:linear-gradient(180deg,rgba(50,32,108,0.75),rgba(34,22,76,0.75));box-shadow:0 6px 18px rgba(124,77,255,0.25)}
   .option:not(:disabled):active{transform:translateY(0) scale(0.99)}
   .option .key{
-    width:26px;height:26px;border-radius:6px;background:rgba(124,77,255,0.25);
+    width:28px;height:28px;border-radius:8px;background:rgba(124,77,255,0.22);
     display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;
-    flex-shrink:0;border:1px solid var(--border);
+    flex-shrink:0;border:1px solid var(--border);box-shadow:var(--inner-highlight);
+    transition:background .2s,border-color .2s;
   }
-  .option.correct{background:rgba(61,220,151,0.2);border-color:var(--good);box-shadow:0 0 16px rgba(61,220,151,0.4)}
+  .option:not(:disabled):hover .key{background:rgba(167,139,250,0.35);border-color:var(--border-strong)}
+  .option.correct{background:linear-gradient(180deg,rgba(52,224,161,0.22),rgba(52,224,161,0.12));border-color:var(--good);box-shadow:0 0 0 1px var(--good),0 0 22px rgba(52,224,161,0.4);animation:correctPulse .5s var(--ease-spring)}
+  @keyframes correctPulse{0%{transform:scale(1)}40%{transform:scale(1.03)}100%{transform:scale(1)}}
+  .option.correct .key{background:var(--good);color:#062418;border-color:var(--good)}
   .option.correct .key::after{content:" ✓";margin-left:2px}
-  .option.wrong{background:rgba(255,84,112,0.2);border-color:var(--bad);box-shadow:0 0 16px rgba(255,84,112,0.4)}
+  .option.wrong{background:linear-gradient(180deg,rgba(255,84,112,0.22),rgba(255,84,112,0.12));border-color:var(--bad);box-shadow:0 0 0 1px var(--bad),0 0 22px rgba(255,84,112,0.4)}
+  .option.wrong .key{background:var(--bad);color:#fff;border-color:var(--bad)}
   .option.wrong .key::after{content:" ✕";margin-left:2px}
-  .option.eliminated{opacity:.25;text-decoration:line-through;pointer-events:none}
+  .option.eliminated{opacity:.22;text-decoration:line-through;pointer-events:none;filter:grayscale(0.7)}
   .option:disabled{cursor:not-allowed}
 
   /* Leaderboard */
   .leader-row{
-    display:grid;grid-template-columns:24px 1fr auto;gap:8px;align-items:center;
-    padding:8px 10px;border-radius:8px;background:rgba(10,5,25,0.5);border:1px solid transparent;
-    font-size:13px;transition:all .4s;
+    display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:center;
+    padding:9px 11px;border-radius:10px;background:rgba(8,4,20,0.45);border:1px solid transparent;
+    font-size:13px;transition:transform .35s var(--ease-out),background .35s,border-color .35s,box-shadow .35s;
   }
-  .leader-row.me{border-color:var(--accent);background:rgba(124,77,255,0.18);box-shadow:0 0 14px rgba(124,77,255,0.4)}
-  .rank{font-family:'Cinzel',serif;font-weight:900;color:var(--gold);text-align:center}
-  .pname{display:flex;flex-direction:column;min-width:0}
-  .pname b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .pname small{font-size:10px;color:var(--gold);font-weight:700}
-  .pscore{font-family:'Cinzel',serif;font-weight:700;font-size:14px;color:var(--gold)}
+  .leader-row:hover{background:rgba(20,12,46,0.7)}
+  .leader-row.me{border-color:var(--accent);background:linear-gradient(90deg,rgba(124,77,255,0.22),rgba(124,77,255,0.08));box-shadow:0 0 0 1px rgba(124,77,255,0.4),0 0 18px rgba(124,77,255,0.35)}
+  .rank{font-family:'Cinzel',serif;font-weight:900;color:var(--gold);text-align:center;font-variant-numeric:tabular-nums;font-size:13px}
+  .pname{display:flex;flex-direction:column;min-width:0;gap:1px}
+  .pname b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;letter-spacing:0.2px}
+  .pname small{font-size:10px;color:var(--gold);font-weight:700;letter-spacing:0.5px}
+  .pscore{font-family:'Cinzel',serif;font-weight:700;font-size:14px;color:var(--gold);font-variant-numeric:tabular-nums}
   .el-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:middle}
-  .el-dot.fire{background:var(--fire);box-shadow:0 0 6px var(--fire)}
-  .el-dot.ice{background:var(--ice);box-shadow:0 0 6px var(--ice)}
-  .el-dot.lightning{background:var(--lightning);box-shadow:0 0 6px var(--lightning)}
+  .el-dot.fire{background:var(--fire);box-shadow:0 0 8px var(--fire)}
+  .el-dot.ice{background:var(--ice);box-shadow:0 0 8px var(--ice)}
+  .el-dot.lightning{background:var(--lightning);box-shadow:0 0 8px var(--lightning)}
 
   /* Phase overlay */
   #phaseOverlay{
