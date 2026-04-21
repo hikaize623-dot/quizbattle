@@ -550,10 +550,13 @@
     </div>
 
     <!-- RIGHT: Leaderboard -->
-    <div class="side-panel side-leader">
+    <div class="side-panel side-leader" id="leaderPanel">
+      <button class="leader-close" id="leaderClose" aria-label="Close leaderboard">✕</button>
       <h3 class="panel-title">Leaderboard</h3>
       <div id="leaderboardList" style="display:flex;flex-direction:column;gap:6px"></div>
     </div>
+  </div>
+  <div class="leader-backdrop" id="leaderBackdrop"></div>
   </div>
 </div>
 
