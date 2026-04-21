@@ -391,7 +391,13 @@
     /* Fit everything on one screen — no scrolling */
     .screen{position:absolute;min-height:100%}
     #battleScreen.active{padding:6px;gap:6px;overflow:hidden;height:100%}
-    .top-bar{flex-direction:row;gap:6px;flex-wrap:wrap}
+    .top-bar{flex-direction:column;gap:6px;flex-wrap:nowrap}
+    .mobile-top-row{display:flex;flex-direction:row;gap:8px;align-items:center;justify-content:space-between}
+    .mobile-score-chip{flex:1;display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:var(--panel);border:1px solid var(--border-glow);min-width:0}
+    .mobile-score-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+    .mobile-score-value{font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:#fff;line-height:1}
+    .mobile-score-mult{margin-left:auto;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1px}
+    .hp-row{display:flex;flex-direction:row;gap:6px}
     .hp-block{padding:5px 7px;flex:1;min-width:0}
     .hp-name{font-size:10px}
     .hp-head{font-size:8px;letter-spacing:1px;margin-bottom:2px}
