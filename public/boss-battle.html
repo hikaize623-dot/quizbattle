@@ -1061,6 +1061,7 @@ function renderCombo(){
   const mult = comboMultiplier();
   document.getElementById('multiplier').textContent = '×'+mult;
   const mm = document.getElementById('mobileScoreMult'); if(mm) mm.textContent = '×'+mult;
+  const ms = document.getElementById('mobileStreakValue'); if(ms) ms.textContent = state.combo;
 }
 function comboMultiplier(){
   if(state.combo>=5) return 3;
