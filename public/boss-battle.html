@@ -436,6 +436,21 @@
     .multiplier{font-size:13px}
     .score-value{font-size:16px}
 
+    /* Mobile leaderboard slide-in drawer (overrides earlier display:none) */
+    .battle-main > .side-leader{display:flex !important;position:fixed;top:0;right:0;height:100%;width:80%;max-width:320px;z-index:100;transform:translateX(100%);transition:transform .28s ease;box-shadow:-8px 0 30px rgba(0,0,0,0.5);border-radius:16px 0 0 16px;overflow-y:auto;background:rgba(20,12,40,0.98)}
+    .battle-main > .side-leader.open{transform:translateX(0)}
+    .leader-close{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:8px;border:1px solid var(--border-glow);background:rgba(0,0,0,0.4);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  }
+  /* Leaderboard toggle button — visible only on phones */
+  .leader-toggle{display:none;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;border:1px solid var(--border-glow);background:rgba(50,30,100,0.7);color:#fff;font-size:18px;cursor:pointer;flex:none;box-shadow:0 0 12px rgba(155,89,255,0.3)}
+  .leader-toggle:hover{background:rgba(80,50,150,0.85)}
+  .leader-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99;opacity:0;pointer-events:none;transition:opacity .2s}
+  .leader-backdrop.open{opacity:1;pointer-events:auto}
+  @media (max-width:640px){
+    .leader-toggle{display:flex}
+    .leader-backdrop{display:block}
+  }
+
     .phase-text{font-size:36px;letter-spacing:4px;padding:0 12px}
     .phase-sub{font-size:14px;letter-spacing:3px}
 
