@@ -490,15 +490,24 @@
 <!-- BATTLE SCREEN -->
 <div id="battleScreen" class="screen">
   <div class="top-bar">
-    <div class="hp-block" id="bossHpBlock">
-      <div class="hp-head"><span class="hp-name" id="bossHpName">BOSS</span><span id="bossHpLabel">100/100</span></div>
-      <div class="hp-bar"><div class="hp-fill boss" id="bossHpFill"></div></div>
+    <div class="mobile-top-row">
+      <div class="mobile-score-chip">
+        <span class="mobile-score-label">Score</span>
+        <span class="mobile-score-value" id="mobileScoreValue">0</span>
+        <span class="mobile-score-mult" id="mobileScoreMult">×1</span>
+      </div>
+      <button id="leaderToggle" class="leader-toggle" aria-label="Show leaderboard" title="Leaderboard">🏆</button>
     </div>
-    <div class="hp-block" id="playerHpBlock">
-      <div class="hp-head"><span class="hp-name" id="playerHpName">PLAYER</span><span id="playerHpLabel">100/100</span></div>
-      <div class="hp-bar"><div class="hp-fill player" id="playerHpFill"></div></div>
+    <div class="hp-row">
+      <div class="hp-block" id="bossHpBlock">
+        <div class="hp-head"><span class="hp-name" id="bossHpName">BOSS</span><span id="bossHpLabel">100/100</span></div>
+        <div class="hp-bar"><div class="hp-fill boss" id="bossHpFill"></div></div>
+      </div>
+      <div class="hp-block" id="playerHpBlock">
+        <div class="hp-head"><span class="hp-name" id="playerHpName">PLAYER</span><span id="playerHpLabel">100/100</span></div>
+        <div class="hp-bar"><div class="hp-fill player" id="playerHpFill"></div></div>
+      </div>
     </div>
-    <button id="leaderToggle" class="leader-toggle" aria-label="Show leaderboard" title="Leaderboard">🏆</button>
   </div>
 
   <div class="battle-main">
