@@ -421,22 +421,8 @@
   #defeatOverlay{position:fixed;inset:0;background:rgba(80,0,0,0);z-index:30;pointer-events:none;transition:background 1.2s}
   #defeatOverlay.on{background:rgba(40,0,0,0.7)}
 
-  @media (max-width:900px){
-    .battle-main{grid-template-columns:1fr;overflow-y:auto}
-    .side-panel{max-height:none;overflow:visible}
-    .options{grid-template-columns:1fr}
-    /* Stop the boss area from eating all vertical space and hiding the question card */
-    .center-stage{flex:none;overflow:visible}
-    .boss-area{flex:none;min-height:260px;height:260px}
-    .question-card{flex:none}
-    /* Reorder: boss + question first, then spells, then leaderboard */
-    .battle-main > .center-stage{order:1}
-    .battle-main > .side-spells{order:2}
-    .battle-main > .side-leader{order:3}
-  }
-
-  /* Phone layout */
-  @media (max-width:640px){
+  /* Tablet + Phone: fit everything on one screen — no scrolling, no empty space */
+  @media (max-width:1100px){
     #titleScreen{padding:14px}
     .title-card{padding:24px 20px;border-radius:16px}
     .game-title{font-size:32px;letter-spacing:1px}
