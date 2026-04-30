@@ -421,22 +421,8 @@
   #defeatOverlay{position:fixed;inset:0;background:rgba(80,0,0,0);z-index:30;pointer-events:none;transition:background 1.2s}
   #defeatOverlay.on{background:rgba(40,0,0,0.7)}
 
-  @media (max-width:900px){
-    .battle-main{grid-template-columns:1fr;overflow-y:auto}
-    .side-panel{max-height:none;overflow:visible}
-    .options{grid-template-columns:1fr}
-    /* Stop the boss area from eating all vertical space and hiding the question card */
-    .center-stage{flex:none;overflow:visible}
-    .boss-area{flex:none;min-height:260px;height:260px}
-    .question-card{flex:none}
-    /* Reorder: boss + question first, then spells, then leaderboard */
-    .battle-main > .center-stage{order:1}
-    .battle-main > .side-spells{order:2}
-    .battle-main > .side-leader{order:3}
-  }
-
-  /* Phone layout */
-  @media (max-width:640px){
+  /* Tablet + Phone: fit everything on one screen — no scrolling, no empty space */
+  @media (max-width:1100px){
     #titleScreen{padding:14px}
     .title-card{padding:24px 20px;border-radius:16px}
     .game-title{font-size:32px;letter-spacing:1px}
@@ -518,9 +504,51 @@
   .leader-toggle:hover{background:rgba(80,50,150,0.85)}
   .leader-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99;opacity:0;pointer-events:none;transition:opacity .2s}
   .leader-backdrop.open{opacity:1;pointer-events:auto}
-  @media (max-width:640px){
+  @media (max-width:1100px){
     .leader-toggle{display:flex}
     .leader-backdrop{display:block}
+  }
+
+  /* Tablet refinements (641px–1100px): same fit-to-screen layout as phone, but use 2-column answers and slightly larger sizing to fill the space without leaving gaps */
+  @media (min-width:641px) and (max-width:1100px){
+    #battleScreen.active{padding:10px;gap:10px}
+    .top-bar{gap:10px}
+    .mobile-top-row{gap:12px}
+    .mobile-score-value{font-size:22px}
+    .mobile-streak-value{font-size:20px}
+    .hp-row{gap:10px}
+    .hp-block{padding:8px 12px}
+    .hp-name{font-size:13px}
+    .hp-head{font-size:10px}
+    .hp-bar{height:12px}
+    .hp-text{font-size:11px}
+
+    .battle-main{gap:10px}
+    .side-panel{padding:10px 12px;gap:10px}
+    .center-stage{gap:10px}
+    .boss-area{min-height:200px;height:200px}
+    .boss-wrap{width:180px;height:180px}
+    .boss-name{font-size:18px}
+    .boss-weakness{top:30px;font-size:10px}
+
+    .question-card{padding:14px 16px;gap:10px}
+    .question-text{font-size:22px;line-height:1.35}
+    .element-badge{font-size:11px;padding:4px 10px}
+    .category-tag{font-size:11px}
+
+    /* Two-column answers fill the row — no empty space on the right */
+    .options{grid-template-columns:1fr 1fr;gap:8px;flex:1;align-content:stretch}
+    .option{padding:12px 14px;font-size:15px;gap:10px;line-height:1.3;min-height:0;height:100%}
+    .option .key{width:26px;height:26px;font-size:12px}
+
+    .side-spells{padding:8px 12px;gap:10px}
+    .side-spells .spell-row{gap:10px}
+    .spell{padding:8px 12px;gap:8px}
+    .spell-icon{width:32px;height:32px;font-size:16px}
+    .spell-name{font-size:12px}
+    .spell-cost{font-size:10px}
+
+    .leader-toggle{width:44px;height:44px;font-size:20px}
   }
 
     .phase-text{font-size:36px;letter-spacing:4px;padding:0 12px}
