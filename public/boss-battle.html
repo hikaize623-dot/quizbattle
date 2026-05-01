@@ -323,8 +323,9 @@
     padding:13px 14px;text-align:left;display:flex;align-items:center;gap:12px;
     transition:transform .15s var(--ease-out),border-color .15s,background .2s,box-shadow .2s;
     font-size:15px;color:var(--text);white-space:pre-line;font-weight:500;
-    position:relative;overflow:hidden;
+    position:relative;overflow:visible;word-break:break-word;overflow-wrap:anywhere;
   }
+  .option > span:not(.key){flex:1;min-width:0;white-space:pre-line;word-break:break-word;overflow-wrap:anywhere}
   .option:not(:disabled):hover{transform:translateY(-2px);border-color:var(--border-strong);background:linear-gradient(180deg,rgba(50,32,108,0.75),rgba(34,22,76,0.75));box-shadow:0 6px 18px rgba(124,77,255,0.25)}
   .option:not(:disabled):active{transform:translateY(0) scale(0.99)}
   .option .key{
