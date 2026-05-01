@@ -1088,7 +1088,19 @@ function renderBossPicker(){
 
 /* ============ START BATTLE ============ */
 function startBattle(){
-  const name = document.getElementById('nameInput').value.trim() || 'Hero';
+  const nameEl = document.getElementById('nameInput');
+  const name = nameEl.value.trim();
+  if (!name) {
+    nameEl.focus();
+    nameEl.style.borderColor = 'var(--bad)';
+    nameEl.style.boxShadow = '0 0 0 2px rgba(255,84,112,0.35)';
+    nameEl.placeholder = 'Please enter your name to continue!';
+    nameEl.classList.add('shake');
+    setTimeout(()=>nameEl.classList.remove('shake'), 500);
+    return;
+  }
+  nameEl.style.borderColor = '';
+  nameEl.style.boxShadow = '';
   state.playerName = name;
   state.currentBoss = BOSSES[state.selectedBossIdx];
   state.bossMaxHp = state.currentBoss.maxHp;
