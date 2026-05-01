@@ -464,23 +464,24 @@
     .side-panel{padding:6px 8px;gap:6px}
     .panel-title{font-size:10px;letter-spacing:1.2px;margin:0}
 
-    .center-stage{min-height:auto;gap:6px}
-    .boss-area{flex:none;min-height:120px;height:120px;padding:2px 0}
-    .boss-wrap{width:110px;height:110px}
-    .boss-name{font-size:13px;letter-spacing:1.5px;top:2px}
-    .boss-weakness{top:22px;font-size:8px;letter-spacing:1px}
-    .speech{top:42px;font-size:10px;padding:5px 9px;max-width:90%}
-    .damage-num{font-size:22px}
-    .damage-num.crit{font-size:28px}
+    .center-stage{min-height:0;gap:4px;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+    .boss-area{flex:none;min-height:90px;height:90px;padding:0}
+    .boss-wrap{width:84px;height:84px}
+    .boss-name{font-size:12px;letter-spacing:1.2px;top:1px}
+    .boss-weakness{top:18px;font-size:8px;letter-spacing:1px}
+    .speech{top:36px;font-size:10px;padding:4px 8px;max-width:90%}
+    .damage-num{font-size:20px}
+    .damage-num.crit{font-size:26px}
 
-    .question-card{padding:8px 10px;gap:6px;flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column}
-    .question-text{font-size:16px;line-height:1.3}
-    .q-meta{flex-wrap:wrap;gap:4px}
-    .element-badge{font-size:9px;padding:3px 7px;letter-spacing:0.8px}
-    .category-tag{font-size:9px}
-    .options{gap:8px;display:grid;grid-template-columns:1fr;grid-auto-rows:min-content;align-content:start}
-    .option{padding:10px 12px;font-size:15px;gap:10px;line-height:1.35;min-height:54px;height:auto;align-items:center}
-    .option .key{width:26px;height:26px;font-size:12px;flex:none}
+    .question-card{padding:6px 8px;gap:4px;flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+    .question-text{font-size:13px;line-height:1.25;flex:none}
+    .q-meta{flex-wrap:wrap;gap:3px;flex:none}
+    .element-badge{font-size:8px;padding:2px 6px;letter-spacing:0.6px}
+    .category-tag{font-size:8px}
+    .options{gap:5px;flex:1;min-height:0;display:grid;grid-template-rows:repeat(4,1fr);grid-template-columns:1fr;align-content:stretch}
+    .option{padding:6px 9px;font-size:12px;gap:7px;line-height:1.2;min-height:0;height:100%;align-items:center;overflow:hidden}
+    .option .key{width:22px;height:22px;font-size:10px;flex:none}
+    .option > span:not(.key){font-size:12px;line-height:1.2}
 
     /* Spell panel: horizontal compact strip */
     .side-spells{display:flex;flex-direction:row;align-items:center;gap:6px;padding:6px 8px;flex-wrap:nowrap;overflow-x:auto}
@@ -526,21 +527,21 @@
 
     .battle-main{gap:10px}
     .side-panel{padding:10px 12px;gap:10px}
-    .center-stage{gap:10px}
-    .boss-area{min-height:200px;height:200px}
-    .boss-wrap{width:180px;height:180px}
-    .boss-name{font-size:18px}
-    .boss-weakness{top:30px;font-size:10px}
+    .center-stage{gap:8px;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+    .boss-area{flex:none;min-height:150px;height:150px}
+    .boss-wrap{width:140px;height:140px}
+    .boss-name{font-size:16px}
+    .boss-weakness{top:26px;font-size:10px}
 
-    .question-card{padding:14px 16px;gap:10px;overflow-y:auto}
-    .question-text{font-size:22px;line-height:1.35}
-    .element-badge{font-size:11px;padding:4px 10px}
-    .category-tag{font-size:11px}
+    .question-card{padding:10px 14px;gap:8px;flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+    .question-text{font-size:16px;line-height:1.3;flex:none}
+    .element-badge{font-size:10px;padding:3px 9px}
+    .category-tag{font-size:10px}
 
-    /* Two-column answers fill the row — no empty space on the right */
-    .options{grid-template-columns:1fr 1fr;gap:10px;grid-auto-rows:min-content;align-content:start}
-    .option{padding:14px 16px;font-size:16px;gap:12px;line-height:1.35;min-height:62px;height:auto}
-    .option .key{width:28px;height:28px;font-size:13px}
+    /* Two-column answers fill remaining vertical space — no scrolling */
+    .options{grid-template-columns:1fr 1fr;gap:8px;flex:1;min-height:0;display:grid;grid-template-rows:1fr 1fr;align-content:stretch}
+    .option{padding:10px 14px;font-size:14px;gap:10px;line-height:1.3;min-height:0;height:100%;overflow:hidden}
+    .option .key{width:26px;height:26px;font-size:12px}
 
     .side-spells{padding:8px 12px;gap:10px}
     .side-spells .spell-row{gap:10px}
