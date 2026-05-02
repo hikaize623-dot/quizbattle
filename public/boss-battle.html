@@ -1134,7 +1134,7 @@ function renderBoss(){
   document.getElementById('playerHpName').textContent = state.playerName.toUpperCase();
   const wrap = document.getElementById('bossWrap');
   wrap.innerHTML = bossSvg(b, state.phase);
-  wrap.classList.remove('phase2','phase3');
+  wrap.classList.remove('phase2','phase3','defeat','hit','attack','flash');
   if(state.phase===1) wrap.classList.add('phase2');
   if(state.phase===2) wrap.classList.add('phase3');
 }
