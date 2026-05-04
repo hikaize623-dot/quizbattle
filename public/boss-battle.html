@@ -347,17 +347,72 @@
 
   /* Leaderboard */
   .leader-row{
-    display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:center;
+    position:relative;
+    display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;
     padding:9px 11px;border-radius:10px;background:rgba(8,4,20,0.45);border:1px solid transparent;
     font-size:13px;transition:transform .35s var(--ease-out),background .35s,border-color .35s,box-shadow .35s;
   }
-  .leader-row:hover{background:rgba(20,12,46,0.7)}
+  .leader-row:hover{background:rgba(20,12,46,0.7);transform:translateX(2px)}
   .leader-row.me{border-color:var(--accent);background:linear-gradient(90deg,rgba(124,77,255,0.22),rgba(124,77,255,0.08));box-shadow:0 0 0 1px rgba(124,77,255,0.4),0 0 18px rgba(124,77,255,0.35)}
   .rank{font-family:'Cinzel',serif;font-weight:900;color:var(--gold);text-align:center;font-variant-numeric:tabular-nums;font-size:13px}
   .pname{display:flex;flex-direction:column;min-width:0;gap:1px}
   .pname b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;letter-spacing:0.2px}
   .pname small{font-size:10px;color:var(--gold);font-weight:700;letter-spacing:0.5px}
   .pscore{font-family:'Cinzel',serif;font-weight:700;font-size:14px;color:var(--gold);font-variant-numeric:tabular-nums}
+
+  /* Top 3 podium styling */
+  .leader-row.top1{
+    background:linear-gradient(90deg,rgba(255,215,0,0.28),rgba(255,165,0,0.08) 60%,rgba(8,4,20,0.45));
+    border-color:rgba(255,215,0,0.7);
+    box-shadow:0 0 0 1px rgba(255,215,0,0.5),0 0 22px rgba(255,200,40,0.45),inset 0 0 18px rgba(255,200,40,0.12);
+    animation:goldPulse 2.6s ease-in-out infinite;
+  }
+  .leader-row.top2{
+    background:linear-gradient(90deg,rgba(220,225,235,0.22),rgba(180,190,210,0.06) 60%,rgba(8,4,20,0.45));
+    border-color:rgba(220,225,235,0.55);
+    box-shadow:0 0 0 1px rgba(220,225,235,0.4),0 0 16px rgba(200,210,230,0.3);
+  }
+  .leader-row.top3{
+    background:linear-gradient(90deg,rgba(205,127,50,0.25),rgba(160,90,30,0.06) 60%,rgba(8,4,20,0.45));
+    border-color:rgba(205,127,50,0.6);
+    box-shadow:0 0 0 1px rgba(205,127,50,0.45),0 0 14px rgba(205,127,50,0.32);
+  }
+  .leader-row.top1 .pscore,
+  .leader-row.top1 .pname b{color:#ffe066;text-shadow:0 0 10px rgba(255,215,0,0.6)}
+  .leader-row.top2 .pscore,
+  .leader-row.top2 .pname b{color:#e8edf5;text-shadow:0 0 8px rgba(220,225,235,0.5)}
+  .leader-row.top3 .pscore,
+  .leader-row.top3 .pname b{color:#ffb072;text-shadow:0 0 8px rgba(205,127,50,0.55)}
+
+  .medal{
+    display:flex;align-items:center;justify-content:center;
+    width:30px;height:30px;border-radius:50%;
+    font-size:16px;line-height:1;
+    background:radial-gradient(circle at 30% 30%,#fff7c2,#ffd700 45%,#b8860b);
+    box-shadow:0 0 10px rgba(255,215,0,0.7),inset 0 -2px 4px rgba(0,0,0,0.3),inset 0 2px 3px rgba(255,255,255,0.5);
+    border:1.5px solid rgba(255,255,255,0.4);
+    animation:medalSpin 4s ease-in-out infinite;
+  }
+  .medal.silver{background:radial-gradient(circle at 30% 30%,#ffffff,#d8dde6 45%,#8a92a3);box-shadow:0 0 8px rgba(220,225,235,0.6),inset 0 -2px 4px rgba(0,0,0,0.3),inset 0 2px 3px rgba(255,255,255,0.6)}
+  .medal.bronze{background:radial-gradient(circle at 30% 30%,#ffd9a8,#cd7f32 45%,#7a4a18);box-shadow:0 0 8px rgba(205,127,50,0.6),inset 0 -2px 4px rgba(0,0,0,0.3),inset 0 2px 3px rgba(255,200,150,0.5)}
+  .crown{
+    position:absolute;top:-10px;left:6px;font-size:16px;
+    filter:drop-shadow(0 0 6px rgba(255,215,0,0.8));
+    animation:crownBob 2s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes goldPulse{
+    0%,100%{box-shadow:0 0 0 1px rgba(255,215,0,0.5),0 0 22px rgba(255,200,40,0.45),inset 0 0 18px rgba(255,200,40,0.12)}
+    50%{box-shadow:0 0 0 1px rgba(255,215,0,0.7),0 0 32px rgba(255,200,40,0.7),inset 0 0 24px rgba(255,200,40,0.2)}
+  }
+  @keyframes medalSpin{
+    0%,100%{transform:rotate(-6deg) scale(1)}
+    50%{transform:rotate(6deg) scale(1.08)}
+  }
+  @keyframes crownBob{
+    0%,100%{transform:translateY(0) rotate(-8deg)}
+    50%{transform:translateY(-3px) rotate(8deg)}
+  }
   .el-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:middle}
   .el-dot.fire{background:var(--fire);box-shadow:0 0 8px var(--fire)}
   .el-dot.ice{background:var(--ice);box-shadow:0 0 8px var(--ice)}
