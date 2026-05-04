@@ -1699,12 +1699,13 @@ function showResult(victory){
   fl.innerHTML='';
   lb.forEach((p,i)=>{
     const row = document.createElement('div');
-    row.className = 'leader-row' + (p.isMe?' me':'');
+    row.className = 'leader-row' + topClass(i) + (p.isMe?' me':'');
     row.style.opacity='0';
     row.style.transform='translateY(20px)';
     row.innerHTML = `
-      <div class="rank">#${i+1}</div>
-      <div class="pname"><b><span class="el-dot ${p.element}"></span>${escapeHtml(p.name)}</b>${p.title?`<small>${escapeHtml(p.title)}</small>`:''}</div>
+      ${i===0?'<div class="crown">👑</div>':''}
+      ${rankBadge(i)}
+      <div class="pname"><b><span class="el-dot ${p.element}"></span>${escapeHtml(p.name)}${p.isMe?' <span style="color:var(--accent);font-size:10px">(YOU)</span>':''}</b>${p.title?`<small>${escapeHtml(p.title)}</small>`:''}</div>
       <div class="pscore">${p.score.toLocaleString()}</div>
     `;
     fl.appendChild(row);
