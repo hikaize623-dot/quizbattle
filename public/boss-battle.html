@@ -479,13 +479,18 @@
 
   /* Tablet + Phone: fit everything on one screen — no scrolling, no empty space */
   @media (max-width:1100px){
-    #titleScreen{padding:14px;justify-content:flex-start;overflow-y:auto;padding-top:20px;padding-bottom:20px}
-    .title-card{padding:20px 18px;border-radius:16px}
-    .game-title{font-size:28px;letter-spacing:1px;word-break:break-word;padding:0 4px}
-    .subtitle{font-size:10px;letter-spacing:2px;margin-bottom:18px}
-    .boss-picker{grid-template-columns:1fr;gap:10px;margin-bottom:18px}
-    .boss-pick{padding:12px}
-    .btn{padding:12px 20px;font-size:12px;letter-spacing:1.5px;width:100%}
+    #titleScreen{padding:10px;justify-content:center;overflow:hidden}
+    .title-card{padding:14px 14px;border-radius:14px;max-height:100%;overflow:hidden}
+    .game-title{font-size:22px;letter-spacing:1px;margin:0 0 4px;padding:0 2px}
+    .subtitle{font-size:9px;letter-spacing:1.5px;margin-bottom:10px}
+    .boss-picker{grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+    .boss-pick{padding:6px 8px}
+    .boss-pick h3{font-size:12px;letter-spacing:0.8px;margin:0 0 2px}
+    .boss-pick p{font-size:8.5px;letter-spacing:0.8px}
+    #titleScreen .field{margin-bottom:10px;gap:4px}
+    #titleScreen .field label{font-size:9px;letter-spacing:1.5px}
+    #titleScreen .input{padding:8px 12px;font-size:13px;border-radius:10px}
+    #titleScreen .btn{padding:10px 16px;font-size:11px;letter-spacing:1.2px;width:100%}
 
     /* Fit everything on one screen — no scrolling */
     .screen{position:absolute;min-height:100%}
