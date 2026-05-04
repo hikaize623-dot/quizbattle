@@ -492,8 +492,8 @@
     #titleScreen .input{padding:8px 12px;font-size:13px;border-radius:10px}
     #titleScreen .btn{padding:10px 16px;font-size:11px;letter-spacing:1.2px;width:100%}
 
-    /* Fit everything on one screen — no scrolling */
-    .screen{position:absolute;min-height:100%}
+    /* Fit everything on one screen — no scrolling anywhere */
+    .screen{position:fixed;inset:0;height:100%;max-height:100%;overflow:hidden}
     #battleScreen.active{padding:6px;gap:6px;overflow:hidden;height:100%}
     .top-bar{flex-direction:column;gap:6px;flex-wrap:nowrap}
     .mobile-top-row{display:flex;flex-direction:row;gap:8px;align-items:center;justify-content:space-between}
@@ -616,13 +616,16 @@
     .phase-text{font-size:36px;letter-spacing:4px;padding:0 12px}
     .phase-sub{font-size:14px;letter-spacing:3px}
 
-    #resultScreen{padding:14px}
-    .result-card{padding:24px 20px;border-radius:16px}
-    .result-title{font-size:36px;letter-spacing:3px}
-    .loot-drop{font-size:14px;padding:10px 18px;letter-spacing:1.5px}
-    .final-score{font-size:24px}
-    .result-actions{flex-direction:column}
-    .result-actions .btn{width:100%}
+    #resultScreen{padding:10px;overflow:hidden;justify-content:center}
+    .result-card{padding:14px 14px;border-radius:14px;max-height:100%;overflow:hidden;display:flex;flex-direction:column;gap:6px}
+    .result-title{font-size:24px;letter-spacing:2px;margin:0}
+    #resultFlavor{font-size:10px;letter-spacing:1.2px}
+    .loot-drop{font-size:11px;padding:6px 12px;letter-spacing:1px;margin:4px 0}
+    .final-score{font-size:16px;margin:4px 0}
+    .final-leader{margin:4px 0;gap:3px;font-size:11px;max-height:35vh;overflow:hidden}
+    .final-leader .leader-row{padding:4px 8px;font-size:11px}
+    .result-actions{flex-direction:column;margin-top:6px;gap:6px}
+    .result-actions .btn{width:100%;padding:10px 16px;font-size:11px;letter-spacing:1.2px}
   }
 </style>
 </head>
