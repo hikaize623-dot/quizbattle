@@ -1621,17 +1621,26 @@ function getLeaderboard(includePlayer=true){
   list.sort((a,b)=>b.score-a.score);
   return list;
 }
+function rankBadge(i){
+  if(i===0) return '<div class="medal" title="1st">🥇</div>';
+  if(i===1) return '<div class="medal silver" title="2nd">🥈</div>';
+  if(i===2) return '<div class="medal bronze" title="3rd">🥉</div>';
+  return `<div class="rank">#${i+1}</div>`;
+}
+function topClass(i){ return i===0?' top1':i===1?' top2':i===2?' top3':''; }
+
 function renderLeaderboard(){
   const box = document.getElementById('leaderboardList');
   const list = getLeaderboard(true).slice(0,5);
   box.innerHTML = '';
   list.forEach((p,i)=>{
     const row = document.createElement('div');
-    row.className = 'leader-row' + (p.isMe?' me':'');
+    row.className = 'leader-row' + topClass(i) + (p.isMe?' me':'');
     row.innerHTML = `
-      <div class="rank">#${i+1}</div>
+      ${i===0?'<div class="crown">👑</div>':''}
+      ${rankBadge(i)}
       <div class="pname">
-        <b><span class="el-dot ${p.element}"></span>${escapeHtml(p.name)}</b>
+        <b><span class="el-dot ${p.element}"></span>${escapeHtml(p.name)}${p.isMe?' <span style="color:var(--accent);font-size:10px">(YOU)</span>':''}</b>
         ${p.title?`<small>${escapeHtml(p.title)}</small>`:''}
       </div>
       <div class="pscore">${p.score.toLocaleString()}</div>
