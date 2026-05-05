@@ -1738,6 +1738,7 @@ document.getElementById('playAgainBtn').onclick = ()=>{
   document.getElementById('resultScreen').classList.remove('active');
   document.getElementById('titleScreen').classList.add('active');
   renderBossPicker();
+  window.SS_AUDIO && SS_AUDIO.music('lobby');
 };
 
 /* ============ UTIL ============ */
