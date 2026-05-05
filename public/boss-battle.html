@@ -1259,6 +1259,7 @@ function startBattle(){
   document.getElementById('resultScreen').classList.remove('active');
   document.getElementById('battleScreen').classList.add('active');
   document.getElementById('defeatOverlay').classList.remove('on');
+  window.SS_AUDIO && SS_AUDIO.music('battle');
 
   renderBoss();
   renderHpBars();
