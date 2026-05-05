@@ -1668,9 +1668,13 @@ function endBattle(victory){
     state.defeatedBosses.push(state.currentBoss.id);
     const wrap = document.getElementById('bossWrap');
     wrap.classList.add('defeat');
+    window.SS_AUDIO && SS_AUDIO.stopMusic();
+    window.SS_AUDIO && SS_AUDIO.sfx('win');
     setTimeout(()=>showResult(true), 1700);
   } else {
     document.getElementById('defeatOverlay').classList.add('on');
+    window.SS_AUDIO && SS_AUDIO.stopMusic();
+    window.SS_AUDIO && SS_AUDIO.sfx('lose');
     setTimeout(()=>showResult(false), 1300);
   }
 }
