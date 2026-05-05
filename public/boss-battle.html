@@ -1453,6 +1453,7 @@ function correctHit(q){
   void wrap.offsetWidth;
   wrap.classList.add('hit','flash');
   setTimeout(()=>wrap.classList.remove('flash'),400);
+  window.SS_AUDIO && SS_AUDIO.sfx('hit');
 
   showDamage(dmg, isCrit ? 'crit' : (isWeak ? 'weak' : ''), isWeak);
   if(isCrit) flashCrit();
