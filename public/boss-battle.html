@@ -628,6 +628,7 @@
 </head>
 <body>
 <div class="stage"><div class="ground"></div></div>
+<button id="muteBtn" aria-label="Toggle sound" style="position:fixed;top:10px;right:10px;z-index:60;width:40px;height:40px;border-radius:50%;border:1px solid var(--border-glow,#5a4eff);background:rgba(10,10,30,0.7);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,0.5)">🔊</button>
 
 <!-- TITLE SCREEN -->
 <div id="titleScreen" class="screen active">
@@ -1259,6 +1260,7 @@ function startBattle(){
   document.getElementById('resultScreen').classList.remove('active');
   document.getElementById('battleScreen').classList.add('active');
   document.getElementById('defeatOverlay').classList.remove('on');
+  window.SS_AUDIO && SS_AUDIO.music('battle');
 
   renderBoss();
   renderHpBars();
@@ -1453,6 +1455,7 @@ function correctHit(q){
   void wrap.offsetWidth;
   wrap.classList.add('hit','flash');
   setTimeout(()=>wrap.classList.remove('flash'),400);
+  window.SS_AUDIO && SS_AUDIO.sfx('hit');
 
   showDamage(dmg, isCrit ? 'crit' : (isWeak ? 'weak' : ''), isWeak);
   if(isCrit) flashCrit();
@@ -1666,9 +1669,13 @@ function endBattle(victory){
     state.defeatedBosses.push(state.currentBoss.id);
     const wrap = document.getElementById('bossWrap');
     wrap.classList.add('defeat');
+    window.SS_AUDIO && SS_AUDIO.stopMusic();
+    window.SS_AUDIO && SS_AUDIO.sfx('win');
     setTimeout(()=>showResult(true), 1700);
   } else {
     document.getElementById('defeatOverlay').classList.add('on');
+    window.SS_AUDIO && SS_AUDIO.stopMusic();
+    window.SS_AUDIO && SS_AUDIO.sfx('lose');
     setTimeout(()=>showResult(false), 1300);
   }
 }
@@ -1732,6 +1739,7 @@ document.getElementById('playAgainBtn').onclick = ()=>{
   document.getElementById('resultScreen').classList.remove('active');
   document.getElementById('titleScreen').classList.add('active');
   renderBossPicker();
+  window.SS_AUDIO && SS_AUDIO.music('lobby');
 };
 
 /* ============ UTIL ============ */
@@ -1759,6 +1767,90 @@ renderBossPicker();
   closeBtn?.addEventListener('click', close);
   backdrop?.addEventListener('click', close);
 })();
+
+/* ============ AUDIO ============ */
+(function(){
+  const SRC = {
+    lobby:  'https://cdn.pixabay.com/audio/2022/10/30/audio_347111d654.mp3',
+    battle: 'https://cdn.pixabay.com/audio/2022/03/15/audio_8e1c1c5e0e.mp3',
+    hit:    'https://assets.mixkit.co/active_storage/sfx/2017/2017-preview.mp3',
+    win:    'https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3',
+    lose:   'https://assets.mixkit.co/active_storage/sfx/1432/1432-preview.mp3'
+  };
+  const music = {
+    lobby:  new Audio(SRC.lobby),
+    battle: new Audio(SRC.battle)
+  };
+  Object.values(music).forEach(a=>{ a.loop=true; a.volume=0.35; a.preload='auto'; });
+  const sfxBuf = {
+    hit:  new Audio(SRC.hit),
+    win:  new Audio(SRC.win),
+    lose: new Audio(SRC.lose)
+  };
+  Object.values(sfxBuf).forEach(a=>{ a.volume=0.7; a.preload='auto'; });
+
+  let muted = localStorage.getItem('ss_muted') === '1';
+  let current = null;
+  let pending = 'lobby';
+  let unlocked = false;
+
+  function applyMute(){
+    Object.values(music).forEach(a=>{ a.muted = muted; });
+    Object.values(sfxBuf).forEach(a=>{ a.muted = muted; });
+  }
+  applyMute();
+
+  function playMusic(name){
+    pending = name;
+    if(!unlocked) return;
+    const next = music[name];
+    if(!next || current === next) {
+      if(next && next.paused) next.play().catch(()=>{});
+      return;
+    }
+    if(current){ try{ current.pause(); current.currentTime = 0; }catch(e){} }
+    current = next;
+    next.play().catch(()=>{});
+  }
+  function stopMusic(){
+    if(current){ try{ current.pause(); current.currentTime = 0; }catch(e){} current = null; }
+    pending = null;
+  }
+  function sfx(name){
+    const a = sfxBuf[name]; if(!a) return;
+    try{ a.currentTime = 0; a.play().catch(()=>{}); }catch(e){}
+  }
+
+  window.SS_AUDIO = { music: playMusic, stopMusic, sfx };
+
+  // Unlock on first user gesture (autoplay policy)
+  function unlock(){
+    if(unlocked) return;
+    unlocked = true;
+    if(pending) playMusic(pending);
+    window.removeEventListener('pointerdown', unlock);
+    window.removeEventListener('keydown', unlock);
+  }
+  window.addEventListener('pointerdown', unlock);
+  window.addEventListener('keydown', unlock);
+
+  // Mute button
+  const btn = document.getElementById('muteBtn');
+  function syncBtn(){ btn.textContent = muted ? '🔇' : '🔊'; }
+  syncBtn();
+  btn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    muted = !muted;
+    localStorage.setItem('ss_muted', muted ? '1' : '0');
+    applyMute();
+    syncBtn();
+    if(!muted && current && current.paused) current.play().catch(()=>{});
+  });
+
+  // Start lobby music
+  playMusic('lobby');
+})();
+
 </script>
 </body>
 </html>
