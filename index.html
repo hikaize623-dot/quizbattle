@@ -1,26 +1,1724 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- TODO: Set the document title to the name of your application -->
-    <title>Lovable App</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
 
-    <!-- TODO: Update og:title to match your application name -->
-    <meta property="og:title" content="Lovable App" />
-    <meta property="og:description" content="Lovable Generated Project" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scholar Slayer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #070512;
+      --purple: #171036;
+      --gold: #ffd770;
+      --white: #ffffff;
+      --red: #ff5470;
+      --green: #34e0a1;
+      --black: #000000;
+    }
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Lovable" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-  </head>
+    * {
+      box-sizing: border-box;
+    }
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'Press Start 2P', cursive;
+      font-size: 14px;
+      -webkit-font-smoothing: none;
+    }
+
+    button {
+      font-family: 'Press Start 2P', cursive;
+      cursor: pointer;
+      background: var(--black);
+      color: var(--white);
+      border: 4px solid var(--white);
+      padding: 12px;
+      font-size: 12px;
+      transition: transform 0.1s;
+    }
+
+    button:active:not(:disabled) {
+      transform: translateY(4px);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    input {
+      font-family: 'Press Start 2P', cursive;
+    }
+
+    .stars-bg {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+        radial-gradient(2px 2px at 70% 60%, #fff, transparent),
+        radial-gradient(1px 1px at 40% 80%, #fff, transparent),
+        radial-gradient(2px 2px at 85% 25%, var(--gold), transparent),
+        radial-gradient(1px 1px at 10% 65%, #fff, transparent);
+      background-size: 400px 400px;
+      animation: drift 40s linear infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes drift {
+      from {
+        background-position: 0 0;
+      }
+
+      to {
+        background-position: 400px 400px;
+      }
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      height: 100%;
+      padding: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    #titleScreen {
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .game-title {
+      font-size: 48px;
+      color: var(--gold);
+      text-align: center;
+      text-shadow: 4px 4px var(--black);
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .name-input {
+      background: var(--black);
+      border: 4px solid var(--white);
+      padding: 16px;
+      font-size: 16px;
+      color: var(--gold);
+      text-align: center;
+      outline: none;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .name-input:focus {
+      border-color: var(--gold);
+    }
+
+    .start-btn {
+      font-size: 20px;
+      padding: 16px 32px;
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+
+    #battleScreen {
+      gap: 16px;
+    }
+
+    .hp-top {
+      display: flex;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .hp-box {
+      flex: 1;
+      background: var(--purple);
+      border: 4px solid var(--white);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .hp-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--gold);
+    }
+
+    .hp-bar-bg {
+      height: 16px;
+      background: var(--black);
+      border: 2px solid var(--white);
+      padding: 2px;
+    }
+
+    .hp-bar-fill {
+      height: 100%;
+      transition: width 0.2s;
+    }
+
+    .hp-bar-fill.red {
+      background: var(--red);
+    }
+
+    .hp-bar-fill.green {
+      background: var(--green);
+    }
+
+    .battle-mid {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 0;
+    }
+
+    .arena {
+      flex: 1;
+      background: var(--black);
+      border: 4px solid var(--white);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+
+
+    .boss-wrap {
+      width: 300px;
+      height: 300px;
+      z-index: 2;
+      animation: bounce 1s steps(2, end) infinite;
+      transform-origin: bottom center;
+      margin-bottom: 60px;
+    }
+
+    .boss-wrap svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .boss-wrap.hit {
+      animation: bossHit 0.2s steps(2, end);
+    }
+
+    @keyframes bossHit {
+
+      0%,
+      100% {
+        transform: translateX(0);
+        filter: brightness(1);
+      }
+
+      50% {
+        transform: translateX(-16px);
+        filter: brightness(2) contrast(2);
+      }
+    }
+
+    .boss-wrap.attack {
+      animation: bossAttack 0.2s steps(2, end);
+    }
+
+    @keyframes bossAttack {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.2) translateY(16px);
+      }
+    }
+
+    .boss-wrap.defeat {
+      animation: bossDefeat 1s forwards steps(4, end);
+    }
+
+    @keyframes bossDefeat {
+      0% {
+        opacity: 1;
+        filter: none;
+      }
+
+      100% {
+        transform: translateY(60px);
+        opacity: 0;
+        filter: grayscale(1);
+      }
+    }
+
+    .damage-num {
+      position: absolute;
+      top: 30%;
+      font-size: 24px;
+      color: var(--gold);
+      text-shadow: 2px 2px var(--black);
+      animation: floatUp 1s steps(4, end) forwards;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(-40px);
+      }
+    }
+
+    .stats-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--purple);
+      border: 4px solid var(--white);
+      padding: 8px 12px;
+      flex-shrink: 0;
+      font-size: 12px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .score-box {
+      color: var(--gold);
+    }
+
+    .combo-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .combo-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .combo-dot {
+      width: 12px;
+      height: 12px;
+      background: var(--black);
+      border: 2px solid var(--white);
+    }
+
+    .combo-dot.on {
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+
+    .spells {
+      display: flex;
+      gap: 8px;
+    }
+
+    .spell {
+      padding: 4px;
+      font-size: 16px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quiz-area {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .timer-wrap {
+      height: 12px;
+      background: var(--black);
+      border: 2px solid var(--white);
+      padding: 2px;
+    }
+
+    .timer-fill {
+      height: 100%;
+      background: var(--white);
+      transition: width 0.1s linear;
+    }
+
+    .question-box {
+      background: var(--purple);
+      border: 4px solid var(--white);
+      padding: 16px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 12px;
+      line-height: 1.5;
+      text-align: center;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .option {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px;
+      padding: 12px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      line-height: 1.4;
+    }
+
+    .option:hover:not(:disabled) {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .option .key {
+      width: 24px;
+      height: 24px;
+      background: var(--white);
+      color: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+
+    .option.eliminated {
+      opacity: 0.2;
+      pointer-events: none;
+      text-decoration: line-through;
+    }
+
+    .option.correct {
+      background: var(--green);
+      border-color: var(--white);
+      color: var(--black);
+    }
+
+    .option.correct .key {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .option.wrong {
+      background: var(--red);
+      border-color: var(--white);
+    }
+
+    #resultScreen {
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      text-align: center;
+    }
+
+    .result-title {
+      font-size: 48px;
+      margin: 0;
+      text-shadow: 4px 4px var(--black);
+    }
+
+    .result-title.victory {
+      color: var(--gold);
+    }
+
+    .result-title.defeat {
+      color: var(--red);
+    }
+
+    .result-stats {
+      background: var(--purple);
+      border: 4px solid var(--white);
+      padding: 24px;
+      font-size: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 400px;
+      text-align: left;
+      margin: 0 auto;
+    }
+
+    .result-stats span {
+      color: var(--gold);
+      float: right;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .result-actions button {
+      font-size: 16px;
+      padding: 16px 24px;
+    }
+
+    .flash-green {
+      animation: flashGreen 0.3s;
+    }
+
+    @keyframes flashGreen {
+
+      0%,
+      100% {
+        background: var(--black);
+      }
+
+      50% {
+        background: var(--green);
+      }
+    }
+
+    .flash-red {
+      animation: flashRed 0.3s;
+    }
+
+    @keyframes flashRed {
+
+      0%,
+      100% {
+        background: var(--black);
+      }
+
+      50% {
+        background: var(--red);
+      }
+    }
+
+    .shake-screen {
+      animation: screenShake 0.4s;
+    }
+
+    @keyframes screenShake {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+
+      20% {
+        transform: translate(-8px, 4px);
+      }
+
+      40% {
+        transform: translate(8px, -4px);
+      }
+
+      60% {
+        transform: translate(-8px, -4px);
+      }
+
+      80% {
+        transform: translate(8px, 4px);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .game-title {
+        font-size: 32px;
+      }
+
+      .stats-bar {
+        justify-content: center;
+      }
+
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .option {
+        padding: 10px;
+      }
+    }
+
+    /* Selection Screen */
+    #selectionScreen {
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 40px;
+    }
+
+    .select-section-title {
+      font-size: 16px;
+      color: var(--gold);
+      text-align: center;
+      margin: 24px 0 12px;
+    }
+
+    .select-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .select-grid.two-cols {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .select-btn {
+      background: var(--purple);
+      color: var(--white);
+      border: 4px solid var(--white);
+      padding: 16px 8px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .select-btn:hover:not(:disabled) {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .select-btn.active {
+      background: var(--gold);
+      color: var(--black);
+      border-color: var(--gold);
+    }
+
+    .select-btn:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars-bg"></div>
+
+  <div id="titleScreen" class="screen active">
+    <h1 class="game-title">SCHOLAR SLAYER</h1>
+    <input type="text" id="nameInput" class="name-input" maxlength="16" placeholder="ENTER NAME" />
+    <button id="startBtn" class="start-btn">START BATTLE</button>
+    <button id="muteBtn" style="margin-top:20px; font-size:12px; border:2px solid var(--white); padding:8px;">SOUND: ON</button>
+  </div>
+
+
+  <!-- SELECTION SCREEN -->
+  <div id="selectionScreen" class="screen">
+    <h1 class="game-title" style="font-size:32px;">CHOOSE PATH</h1>
+
+    <div class="select-section-title">TINGKATAN (FORM)</div>
+    <div class="select-grid" id="formGrid">
+      <button class="select-btn form-btn" data-form="1">FORM 1</button>
+      <button class="select-btn form-btn" data-form="2">FORM 2</button>
+      <button class="select-btn form-btn" data-form="3">FORM 3</button>
+      <button class="select-btn form-btn" data-form="4">FORM 4</button>
+      <button class="select-btn form-btn" data-form="5">FORM 5</button>
+    </div>
+
+    <div class="select-section-title">SUBJECT</div>
+    <div class="select-grid two-cols" id="subjectGrid">
+      <button class="select-btn subj-btn" data-subject="mathematics">MATHEMATICS</button>
+      <button class="select-btn subj-btn" data-subject="science">SCIENCE</button>
+      <button class="select-btn subj-btn" data-subject="sejarah">SEJARAH</button>
+      <button class="select-btn subj-btn" data-subject="physics">PHYSICS</button>
+      <button class="select-btn subj-btn" data-subject="chemistry">CHEMISTRY</button>
+      <button class="select-btn subj-btn" data-subject="biology">BIOLOGY</button>
+    </div>
+
+    <button id="confirmSelectBtn" class="start-btn" style="margin-top:auto;" disabled>FIGHT BOSS!</button>
+  </div>
+
+  <div id="battleScreen" class="screen">
+    <div class="hp-top">
+      <div class="hp-box">
+        <div class="hp-label"><span id="bossHpName">BOSS</span> <span id="bossHpLabel">100/100</span></div>
+        <div class="hp-bar-bg">
+          <div class="hp-bar-fill red" id="bossHpFill"></div>
+        </div>
+      </div>
+      <div class="hp-box">
+        <div class="hp-label"><span id="playerHpName">PLAYER</span> <span id="playerHpLabel">100/100</span></div>
+        <div class="hp-bar-bg">
+          <div class="hp-bar-fill green" id="playerHpFill"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="battle-mid">
+      <div class="arena" id="arena">
+        <div class="boss-wrap" id="bossWrap"></div>
+      </div>
+      <div class="stats-bar">
+        <div class="score-box">SCORE: <span id="scoreValue">0</span></div>
+        <div class="combo-box">
+          COMBO: <div class="combo-dots" id="comboDots"></div>
+        </div>
+        <div class="spells">
+          <button class="spell" id="spell-fifty" data-spell="fifty">½</button>
+          <button class="spell" id="spell-freeze" data-spell="freeze">❄</button>
+          <button class="spell" id="spell-shield" data-spell="shield">🛡</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-area">
+      <div class="timer-wrap">
+        <div class="timer-fill" id="timerFill"></div>
+      </div>
+      <div class="question-box" id="questionText"></div>
+      <div class="options-grid" id="optionsGrid"></div>
+    </div>
+  </div>
+
+  <div id="resultScreen" class="screen">
+    <h1 id="resultTitle" class="result-title">VICTORY</h1>
+    <div class="result-stats">
+      <div>SCORE: <span id="finalScore">0</span></div>
+      <div>ACCURACY: <span id="finalAccuracy">0%</span></div>
+      <div>MAX COMBO: <span id="finalCombo">0</span></div>
+    </div>
+
+    <div class="leaderboard-wrap"
+      style="width: 100%; max-width: 400px; margin: 0 auto; background: var(--purple); border: 4px solid var(--white); padding: 16px;">
+      <h2 style="font-size: 16px; color: var(--gold); text-align: center; margin-top: 0; margin-bottom: 12px;">TOP
+        SCORERS</h2>
+      <div id="leaderboardList"
+        style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; text-align: left;">
+      </div>
+    </div>
+
+    <div class="result-actions">
+      <button id="retryBtn">RETRY</button>
+      <button id="menuBtn">MENU</button>
+      <button id="nextBossBtn">NEXT BOSS</button>
+    </div>
+  </div>
+
+  <script>
+    const QUESTIONS = [
+      // === FORM 1 (EMBERLING) ===
+      // Science (F1)
+      { boss: "emberling", text: "What is the SI unit for temperature?", element: "ice", options: ["Celsius", "Fahrenheit", "Kelvin", "Joule"], answer: 2, category: "Science • Form 1" },
+      { boss: "emberling", text: "Which of these is a non-renewable energy source?", element: "fire", options: ["Solar", "Wind", "Natural Gas", "Hydroelectric"], answer: 2, category: "Science • Form 1" },
+      { boss: "emberling", text: "The process of a solid turning directly into a gas is called...", element: "fire", options: ["Melting", "Sublimation", "Evaporation", "Condensation"], answer: 1, category: "Science • Form 1" },
+      { boss: "emberling", text: "Which cell structure controls all activities in the cell?", element: "fire", options: ["Cytoplasm", "Vacuole", "Nucleus", "Cell Wall"], answer: 2, category: "Science • Form 1" },
+      { boss: "emberling", text: "What is the SI unit for length?", element: "fire", options: ["Centimeter", "Meter", "Kilometer", "Millimeter"], answer: 1, category: "Science • Form 1" },
+      { boss: "emberling", text: "Which of these is a base quantity?", element: "fire", options: ["Volume", "Density", "Mass", "Force"], answer: 2, category: "Science • Form 1" },
+      { boss: "emberling", text: "Density = Mass divided by ...?", element: "fire", options: ["Area", "Weight", "Volume", "Height"], answer: 2, category: "Science • Form 1" },
+      { boss: "emberling", text: "Which part of the cell is known as the powerhouse?", element: "fire", options: ["Nucleus", "Ribosome", "Mitochondria", "Vacuole"], answer: 2, category: "Science • Form 1" },
+      { boss: "emberling", text: "The state of matter with a fixed shape and volume is...", element: "fire", options: ["Solid", "Liquid", "Gas", "Plasma"], answer: 0, category: "Science • Form 1" },
+      { boss: "emberling", text: "Which of these is an example of a vertebrate?", element: "fire", options: ["Earthworm", "Frog", "Snail", "Spider"], answer: 1, category: "Science • Form 1" },
+      { boss: "emberling", text: "Which gas is needed for a fire to burn?", element: "fire", options: ["Nitrogen", "Carbon Dioxide", "Oxygen", "Helium"], answer: 2, category: "Science • Form 1" },
+      { boss: "emberling", text: "The percentage of oxygen in the atmosphere is approximately...", element: "fire", options: ["78%", "21%", "1%", "0.03%"], answer: 1, category: "Science • Form 1" },
+      // Mathematics (F1)
+      { boss: "emberling", text: "What is the result of -12 + 7?", element: "lightning", calc: true, options: ["5", "-5", "-19", "19"], answer: 1, category: "Mathematics • Form 1" },
+      { boss: "emberling", text: "Solve for x: 2x - 4 = 10", element: "lightning", calc: true, options: ["3", "5", "7", "14"], answer: 2, category: "Mathematics • Form 1" },
+      { boss: "emberling", text: "Calculate the area of a triangle with base 6cm and height 4cm.", element: "lightning", calc: true, options: ["24 cm²", "10 cm²", "12 cm²", "48 cm²"], answer: 2, category: "Mathematics • Form 1" },
+      { boss: "emberling", text: "Evaluate: -15 + (-8)", element: "lightning", calc: true, options: ["7", "-23", "23", "-7"], answer: 1, category: "Mathematics • Form 1" },
+      { boss: "emberling", text: "Which is a prime number?", element: "lightning", options: ["15", "21", "2", "9"], answer: 2, category: "Mathematics • Form 1" },
+      { boss: "emberling", text: "Find the Lowest Common Multiple (LCM) of 4 and 6.", element: "lightning", calc: true, options: ["2", "12", "24", "10"], answer: 1, category: "Mathematics • Form 1" },
+      { boss: "emberling", text: "Simplify: 3x + 5y - 2x + y", element: "lightning", calc: true, options: ["x + 6y", "5x + 6y", "x + 4y", "5x + 4y"], answer: 0, category: "Mathematics • Form 1" },
+      { boss: "emberling", text: "If a = 3 and b = -2, find the value of 2a - b.", element: "lightning", calc: true, options: ["4", "8", "7", "5"], answer: 1, category: "Mathematics • Form 1" },
+      { boss: "emberling", text: "Find the perimeter of a square with side length 5cm.", element: "lightning", calc: true, options: ["10cm", "25cm", "20cm", "15cm"], answer: 2, category: "Mathematics • Form 1" },
+      { boss: "emberling", text: "The sum of interior angles in a triangle is...", element: "lightning", options: ["90°", "180°", "270°", "360°"], answer: 1, category: "Mathematics • Form 1" },
+      { boss: "emberling", text: "What is the square of 13?", element: "lightning", calc: true, options: ["144", "169", "196", "156"], answer: 1, category: "Mathematics • Form 1" },
+      // Sejarah (F1)
+      { boss: "emberling", text: "Siapakah yang digelar sebagai 'Bapa Sejarah'?", element: "fire", options: ["Herodotus", "Ibn Khaldun", "Aristotle", "Tun Sri Lanang"], answer: 0, category: "Sejarah • Form 1" },
+      { boss: "emberling", text: "Manakah antara berikut merupakan sumber primer?", element: "fire", options: ["Buku teks", "Fosil", "Ensiklopedia", "Akhbar"], answer: 1, category: "Sejarah • Form 1" },
+      { boss: "emberling", text: "Zaman Paleolitik juga dikenali sebagai...", element: "fire", options: ["Zaman Batu Lama", "Zaman Batu Baru", "Zaman Logam", "Zaman Gangsa"], answer: 0, category: "Sejarah • Form 1" },
+      { boss: "emberling", text: "Apakah maksud 'Syajaratun' dalam bahasa Arab?", element: "fire", options: ["Sejarah", "Masa", "Pohon", "Kejadian"], answer: 2, category: "Sejarah • Form 1" },
+      { boss: "emberling", text: "Zaman Air Batu Akhir dikenali sebagai Zaman...", element: "fire", options: ["Miosen", "Pliosen", "Pleistosen", "Holosen"], answer: 3, category: "Sejarah • Form 1" },
+      { boss: "emberling", text: "Apakah maksud Sejarah mengikut Herodotus?", element: "fire", options: ["Tindakan manusia dan sebabnya", "Cerita tentang tuhan", "Pohon hayat", "Catatan masa lalu"], answer: 0, category: "Sejarah • Form 1" },
+      { boss: "emberling", text: "Zaman Prasejarah manakah yang menggunakan alat batu yang lebih halus?", element: "fire", options: ["Paleolitik", "Mesolitik", "Neolitik", "Logam"], answer: 2, category: "Sejarah • Form 1" },
+      { boss: "emberling", text: "Apakah fungsi lukisan gua pada zaman prasejarah?", element: "fire", options: ["Hiasan", "Komunikasi dan upacara ritual", "Peta kawasan", "Rekod cukai"], answer: 1, category: "Sejarah • Form 1" },
+      { boss: "emberling", text: "Kerajaan Funan berpusat di...", element: "fire", options: ["Lembah Sungai Mekong", "Lembah Sungai Musi", "Lembah Sungai Nil", "Lembah Sungai Brantas"], answer: 0, category: "Sejarah • Form 1" },
+      { boss: "emberling", text: "Maksud kedaulatan ialah...", element: "fire", options: ["Kekuasaan tertinggi", "Kebebasan bersuara", "Sistem beraja", "Pembentukan undang-undang"], answer: 0, category: "Sejarah • Form 1" },
+      { boss: "emberling", text: "Ciri-ciri kerajaan Alam Melayu termasuklah...", element: "fire", options: ["Raja, Undang-undang, Wilayah Pengaruh, Rakyat", "Presiden, Parlimen", "Sultan, Residen", "Gabenor, Majlis Perbandaran"], answer: 0, category: "Sejarah • Form 1" },
+
+      // === FORM 2 (STORMFANG) ===
+      // Science (F2)
+      { boss: "stormfang", text: "Which system is responsible for transporting oxygen in the body?", element: "fire", options: ["Digestive", "Respiratory", "Circulatory", "Excretory"], answer: 2, category: "Science • Form 2" },
+      { boss: "stormfang", text: "What is the product of photosynthesis?", element: "fire", options: ["Glucose and Oxygen", "Carbon Dioxide and Water", "Starch and Nitrogen", "Sugar and CO2"], answer: 0, category: "Science • Form 2" },
+      { boss: "stormfang", text: "Sound travels fastest in...", element: "lightning", options: ["Vacuum", "Gas", "Liquid", "Solid"], answer: 3, category: "Science • Form 2" },
+      { boss: "stormfang", text: "A solution with a pH of 3 is considered...", element: "fire", options: ["Neutral", "Strongly Acidic", "Weakly Alkaline", "Strongly Alkaline"], answer: 1, category: "Science • Form 2" },
+      { boss: "stormfang", text: "Which blood group is the universal donor?", element: "fire", options: ["A", "B", "AB", "O"], answer: 3, category: "Science • Form 2" },
+      { boss: "stormfang", text: "What is the function of the large intestine?", element: "fire", options: ["Digest proteins", "Absorb water", "Absorb nutrients", "Store bile"], answer: 1, category: "Science • Form 2" },
+      { boss: "stormfang", text: "Which is a physical property of water?", element: "fire", options: ["Reactivity", "Flammability", "Boiling point", "Acidity"], answer: 2, category: "Science • Form 2" },
+      { boss: "stormfang", text: "The relationship where both organisms benefit is...", element: "fire", options: ["Parasitism", "Commensalism", "Mutualism", "Competition"], answer: 2, category: "Science • Form 2" },
+      { boss: "stormfang", text: "Which vitamin is needed for blood clotting?", element: "fire", options: ["Vitamin A", "Vitamin C", "Vitamin D", "Vitamin K"], answer: 3, category: "Science • Form 2" },
+      { boss: "stormfang", text: "An object that vibrates produces...", element: "fire", options: ["Heat", "Light", "Sound", "Electricity"], answer: 2, category: "Science • Form 2" },
+      { boss: "stormfang", text: "Which part of the eye controls the size of the pupil?", element: "fire", options: ["Lens", "Retina", "Iris", "Cornea"], answer: 2, category: "Science • Form 2" },
+      // Mathematics (F2)
+      { boss: "stormfang", text: "Simplify: 4(x + 2) - 3x", element: "ice", calc: true, options: ["x + 8", "x + 2", "7x + 8", "x - 8"], answer: 0, category: "Mathematics • Form 2" },
+      { boss: "stormfang", text: "What is the sum of interior angles of a pentagon?", element: "ice", calc: true, options: ["360°", "540°", "720°", "180°"], answer: 1, category: "Mathematics • Form 2" },
+      { boss: "stormfang", text: "Find the hypotenuse of a right-angled triangle with sides 5cm and 12cm.", element: "ice", calc: true, options: ["13cm", "15cm", "17cm", "20cm"], answer: 0, category: "Mathematics • Form 2" },
+      { boss: "stormfang", text: "Factorize: 3x + 12", element: "ice", calc: true, options: ["3(x + 4)", "3(x + 12)", "x(3 + 12)", "3x(1 + 4)"], answer: 0, category: "Mathematics • Form 2" },
+      { boss: "stormfang", text: "Calculate the area of a circle with radius 7cm (π = 22/7).", element: "ice", calc: true, options: ["44 cm²", "154 cm²", "49 cm²", "77 cm²"], answer: 1, category: "Mathematics • Form 2" },
+      { boss: "stormfang", text: "The midpoint of (2, 4) and (6, 8) is...", element: "ice", calc: true, options: ["(4, 6)", "(8, 12)", "(3, 5)", "(4, 4)"], answer: 0, category: "Mathematics • Form 2" },
+      { boss: "stormfang", text: "Calculate the gradient of the line passing through (0,0) and (2,4).", element: "ice", calc: true, options: ["1/2", "4", "2", "6"], answer: 2, category: "Mathematics • Form 2" },
+      { boss: "stormfang", text: "Find the value of 3³ + 2².", element: "ice", calc: true, options: ["13", "31", "25", "10"], answer: 1, category: "Mathematics • Form 2" },
+      { boss: "stormfang", text: "Convert 2.5 meters to centimeters.", element: "ice", calc: true, options: ["25cm", "250cm", "2500cm", "0.25cm"], answer: 1, category: "Mathematics • Form 2" },
+      { boss: "stormfang", text: "Find the mode of the data: 2, 3, 3, 4, 5, 5, 5, 6.", element: "ice", options: ["3", "4", "5", "6"], answer: 2, category: "Mathematics • Form 2" },
+      { boss: "stormfang", text: "Find the median of: 1, 3, 3, 6, 7, 8, 9.", element: "ice", options: ["3", "6", "7", "8"], answer: 3, category: "Mathematics • Form 2" },
+      // Sejarah (F2)
+      { boss: "stormfang", text: "Kerajaan Alam Melayu yang manakah terletak di Lembah Bujang?", element: "ice", options: ["Funan", "Champa", "Kedah Tua", "Srivijaya"], answer: 2, category: "Sejarah • Form 2" },
+      { boss: "stormfang", text: "Apakah gelaran bagi pemerintah kerajaan Majapahit?", element: "ice", options: ["Sultan", "Raja", "Maharaja", "Datu"], answer: 2, category: "Sejarah • Form 2" },
+      { boss: "stormfang", text: "Srivijaya terkenal sebagai pusat...", element: "ice", options: ["Pertanian", "Perdagangan dan Pengajian Agama", "Perkilangan", "Pertambangan"], answer: 1, category: "Sejarah • Form 2" },
+      { boss: "stormfang", text: "Sistem pemerintahan di Melaka berasaskan...", element: "ice", options: ["Sistem Syura", "Sistem Pembesar Empat Lipatan", "Sistem Beraja Mutlak", "Sistem Demokrasi"], answer: 1, category: "Sejarah • Form 2" },
+      { boss: "stormfang", text: "Siapakah yang mengasaskan Kesultanan Melayu Melaka?", element: "ice", options: ["Tun Perak", "Parameswara", "Sultan Iskandar Syah", "Sang Nila Utama"], answer: 1, category: "Sejarah • Form 2" },
+      { boss: "stormfang", text: "Apakah gelaran yang digunakan oleh Parameswara selepas memeluk Islam?", element: "ice", options: ["Sultan Muzaffar Syah", "Sultan Mansur Syah", "Sultan Megat Iskandar Syah", "Sultan Alauddin Riayat Syah"], answer: 2, category: "Sejarah • Form 2" },
+      { boss: "stormfang", text: "Sistem Pembesar Empat Lipatan diketuai oleh...", element: "ice", options: ["Laksamana", "Bendahara", "Temenggung", "Penghulu Bendahari"], answer: 1, category: "Sejarah • Form 2" },
+      { boss: "stormfang", text: "Pusat pemerintahan Kesultanan Johor Riau yang pertama terletak di...", element: "ice", options: ["Johor Lama", "Pekan Tua", "Kota Tinggi", "Riau"], answer: 1, category: "Sejarah • Form 2" },
+      { boss: "stormfang", text: "Hukum Kanun Melaka mengandungi berapa fasal?", element: "ice", options: ["24", "44", "34", "54"], answer: 1, category: "Sejarah • Form 2" },
+      { boss: "stormfang", text: "Agama rasmi bagi kerajaan Kesultanan Melayu Melaka ialah...", element: "ice", options: ["Hindu", "Buddha", "Islam", "Kristian"], answer: 2, category: "Sejarah • Form 2" },
+      { boss: "stormfang", text: "Siapakah Laksamana Melaka yang terkenal?", element: "ice", options: ["Hang Jebat", "Hang Tuah", "Hang Kasturi", "Hang Lekir"], answer: 1, category: "Sejarah • Form 2" },
+
+      // === FORM 3 (VERDANTIA) ===
+      // Science (F3)
+      { boss: "verdantia", text: "Which hormone regulates blood sugar levels?", element: "fire", options: ["Adrenaline", "Insulin", "Estrogen", "Thyroxine"], answer: 1, category: "Science • Form 3" },
+      { boss: "verdantia", text: "The acid found in our stomach is...", element: "fire", options: ["Sulfuric acid", "Nitric acid", "Hydrochloric acid", "Acetic acid"], answer: 2, category: "Science • Form 3" },
+      { boss: "verdantia", text: "What is the main function of red blood cells?", element: "fire", options: ["Fight infections", "Blood clotting", "Transport oxygen", "Produce energy"], answer: 2, category: "Science • Form 3" },
+      { boss: "verdantia", text: "Which gas is needed for aerobic respiration?", element: "fire", options: ["Carbon dioxide", "Oxygen", "Nitrogen", "Hydrogen"], answer: 1, category: "Science • Form 3" },
+      { boss: "verdantia", text: "The blood vessel that carries blood away from the heart is...", element: "fire", options: ["Vein", "Artery", "Capillary", "Venule"], answer: 1, category: "Science • Form 3" },
+      { boss: "verdantia", text: "Which part of the plant is responsible for transpiration?", element: "fire", options: ["Roots", "Stem", "Stomata", "Flowers"], answer: 2, category: "Science • Form 3" },
+      { boss: "verdantia", text: "What is the main component of natural gas?", element: "fire", options: ["Ethane", "Methane", "Propane", "Butane"], answer: 1, category: "Science • Form 3" },
+      { boss: "verdantia", text: "Which mineral is needed for strong bones?", element: "fire", options: ["Iron", "Iodine", "Calcium", "Sodium"], answer: 2, category: "Science • Form 3" },
+      { boss: "verdantia", text: "Which gas causes the 'greenhouse effect'?", element: "fire", options: ["Oxygen", "Nitrogen", "Carbon dioxide", "Helium"], answer: 2, category: "Science • Form 3" },
+      { boss: "verdantia", text: "The movement of plants towards light is called...", element: "fire", options: ["Geotropism", "Phototropism", "Hydrotropism", "Thigmotropism"], answer: 1, category: "Science • Form 3" },
+      { boss: "verdantia", text: "Which of these is a biotic factor in an ecosystem?", element: "fire", options: ["Temperature", "Light intensity", "Bacteria", "Soil pH"], answer: 2, category: "Science • Form 3" },
+      // Mathematics (F3)
+      { boss: "verdantia", text: "Calculate 5³ - 10²", element: "lightning", calc: true, options: ["15", "25", "50", "75"], answer: 1, category: "Mathematics • Form 3" },
+      { boss: "verdantia", text: "Solve: x² - 9 = 0", element: "lightning", calc: true, options: ["x = 3", "x = -3", "x = ±3", "x = 9"], answer: 2, category: "Mathematics • Form 3" },
+      { boss: "verdantia", text: "What is the gradient of the line y = -2x + 5?", element: "lightning", calc: true, options: ["2", "-2", "5", "-5"], answer: 1, category: "Mathematics • Form 1" },
+      { boss: "verdantia", text: "Simplify: (a²)³", element: "lightning", calc: true, options: ["a⁵", "a⁶", "a¹", "3a²"], answer: 1, category: "Mathematics • Form 3" },
+      { boss: "verdantia", text: "Convert 0.0056 to standard form.", element: "lightning", calc: true, options: ["5.6 x 10³", "5.6 x 10⁻³", "56 x 10⁻⁴", "0.56 x 10⁻²"], answer: 1, category: "Mathematics • Form 3" },
+      { boss: "verdantia", text: "In a right-angled triangle, sin θ = ...?", element: "lightning", options: ["Opp/Adj", "Adj/Hyp", "Opp/Hyp", "Hyp/Opp"], answer: 2, category: "Mathematics • Form 3" },
+      { boss: "verdantia", text: "Calculate the volume of a cylinder with r=3 and h=7 (π=22/7).", element: "lightning", calc: true, options: ["198 unit³", "66 unit³", "154 unit³", "462 unit³"], answer: 0, category: "Mathematics • Form 3" },
+      { boss: "verdantia", text: "Solve: 2x - 5 < 3", element: "lightning", calc: true, options: ["x < 4", "x < 1", "x > 4", "x < 8"], answer: 0, category: "Mathematics • Form 3" },
+      { boss: "verdantia", text: "Find the value of 2⁻³.", element: "lightning", calc: true, options: ["8", "-8", "1/8", "1/6"], answer: 2, category: "Mathematics • Form 3" },
+      { boss: "verdantia", text: "The tangent of 45° is...", element: "lightning", options: ["0", "0.5", "1", "√3"], answer: 2, category: "Mathematics • Form 3" },
+      { boss: "verdantia", text: "Find the value of log₁₀ 1000.", element: "lightning", calc: true, options: ["2", "3", "4", "10"], answer: 1, category: "Mathematics • Form 3" },
+      // Sejarah (F3)
+      { boss: "verdantia", text: "Siapakah yang mengetuai penentangan di Naning?", element: "lightning", options: ["Tok Janggut", "Mat Kilau", "Dol Said", "Rentap"], answer: 2, category: "Sejarah • Form 3" },
+      { boss: "verdantia", text: "Apakah faktor utama British campur tangan di Perak?", element: "lightning", options: ["Agama", "Perebutan takhta dan Perang Larut", "Pendidikan", "Kebudayaan"], answer: 1, category: "Sejarah • Form 3" },
+      { boss: "verdantia", text: "James Brooke menguasai Sarawak daripada kesultanan...", element: "lightning", options: ["Brunei", "Sulu", "Johor", "Sambas"], answer: 0, category: "Sejarah • Form 3" },
+      { boss: "verdantia", text: "Sistem Residen dimulakan di Perak selepas perjanjian...", element: "lightning", options: ["Perjanjian London", "Perjanjian Pangkor", "Perjanjian Burney", "Perjanjian Bangkok"], answer: 1, category: "Sejarah • Form 3" },
+      { boss: "verdantia", text: "Negeri manakah yang pertama menerima Residen British?", element: "lightning", options: ["Selangor", "Pahang", "Perak", "Negeri Sembilan"], answer: 2, category: "Sejarah • Form 3" },
+      { boss: "verdantia", text: "Siapakah Residen British pertama di Perak?", element: "lightning", options: ["J.G. Davidson", "J.W.W. Birch", "Frank Swettenham", "Martin Lister"], answer: 1, category: "Sejarah • Form 3" },
+      { boss: "verdantia", text: "Apakah nama sistem pentadbiran British di Negeri-negeri Melayu Tidak Bersekutu?", element: "lightning", options: ["Sistem Residen", "Sistem Penasihat", "Sistem Birokrasi Barat", "Sistem Indirect Rule"], answer: 1, category: "Sejarah • Form 3" },
+      { boss: "verdantia", text: "Tok Janggut mengetuai penentangan di negeri...", element: "lightning", options: ["Pahang", "Terengganu", "Kelantan", "Sarawak"], answer: 2, category: "Sejarah • Form 3" },
+      { boss: "verdantia", text: "Sistem Kangchu diperkenalkan di negeri...", element: "lightning", options: ["Kedah", "Perlis", "Johor", "Selangor"], answer: 2, category: "Sejarah • Form 3" },
+      { boss: "verdantia", text: "Urusan pentadbiran Sarawak di bawah keluarga Brooke dikenali sebagai...", element: "lightning", options: ["Raja Putih", "Raja Berdaulat", "Gabenor", "Residen"], answer: 0, category: "Sejarah • Form 3" },
+      { boss: "verdantia", text: "Syarikat Borneo Utara British (SBUB) mentadbir negeri...", element: "lightning", options: ["Sarawak", "Sabah", "Brunei", "Labuan"], answer: 1, category: "Sejarah • Form 3" },
+
+      // === FORM 4 (LORD VEXON) ===
+      // Science (F4)
+      { boss: "vexon", text: "Which nutrient is needed for tissue growth and repair?", element: "fire", options: ["Carbohydrate", "Protein", "Fat", "Vitamin"], answer: 1, category: "Science • Form 4" },
+      { boss: "vexon", text: "What is the end product of starch digestion?", element: "fire", options: ["Amino acids", "Fatty acids", "Glucose", "Glycerol"], answer: 2, category: "Science • Form 4" },
+      { boss: "vexon", text: "Which nutrient is the main energy provider?", element: "fire", options: ["Protein", "Carbohydrate", "Vitamin", "Fiber"], answer: 1, category: "Science • Form 4" },
+      { boss: "vexon", text: "The process of nitrogen cycle starts with nitrogen ...?", element: "fire", options: ["Fixation", "Denitrification", "Respiration", "Digestion"], answer: 0, category: "Science • Form 4" },
+      { boss: "vexon", text: "Which chemical is used to test for starch?", element: "fire", options: ["Benedict's", "Iodine", "Biuret", "Ethanol"], answer: 1, category: "Science • Form 4" },
+      { boss: "vexon", text: "Which of these is a synthetic polymer?", element: "fire", options: ["Silk", "Starch", "Nylon", "Protein"], answer: 2, category: "Science • Form 4" },
+      // Physics (F4)
+      { boss: "vexon", text: "[SPM] Velocity is defined as the rate of change of...", element: "lightning", options: ["Distance", "Displacement", "Speed", "Acceleration"], answer: 1, category: "Physics • Form 4" },
+      { boss: "vexon", text: "[SPM] Inertia depends solely on an object's...", element: "lightning", options: ["Weight", "Volume", "Mass", "Gravity"], answer: 2, category: "Physics • Form 4" },
+      { boss: "vexon", text: "[SPM] What is the SI unit for force?", element: "lightning", options: ["Joule", "Watt", "Newton", "Pascal"], answer: 2, category: "Physics • Form 4" },
+      { boss: "vexon", text: "[SPM] Which of these is a vector quantity?", element: "lightning", options: ["Mass", "Distance", "Velocity", "Energy"], answer: 2, category: "Physics • Form 4" },
+      { boss: "vexon", text: "[SPM] The formula for Newton's Second Law of Motion is...", element: "lightning", options: ["F = mv", "F = ma", "W = mg", "P = F/A"], answer: 1, category: "Physics • Form 4" },
+      { boss: "vexon", text: "[SPM] Pressure is defined as Force divided by...", element: "lightning", options: ["Volume", "Mass", "Area", "Height"], answer: 2, category: "Physics • Form 4" },
+      { boss: "vexon", text: "[SPM] The bending of light as it passes from one medium to another is...", element: "lightning", options: ["Reflection", "Refraction", "Diffraction", "Interference"], answer: 1, category: "Physics • Form 4" },
+      { boss: "vexon", text: "[SPM] Atmospheric pressure at sea level is approximately...", element: "lightning", options: ["10,000 Pa", "101,325 Pa", "1,000 Pa", "100 Pa"], answer: 1, category: "Physics • Form 4" },
+      { boss: "vexon", text: "[SPM] Pascal's Principle is used in...", element: "lightning", options: ["Hot air balloons", "Hydraulic jacks", "Aeroplanes", "Submarines"], answer: 1, category: "Physics • Form 4" },
+      { boss: "vexon", text: "[SPM] Specific heat capacity is defined as the heat required to raise the temperature of 1kg of substance by...", element: "lightning", options: ["1°C", "10°C", "100°C", "0.1°C"], answer: 0, category: "Physics • Form 4" },
+      // Chemistry (F4)
+      { boss: "vexon", text: "[SPM] What is the proton number of Carbon?", element: "fire", options: ["6", "12", "14", "8"], answer: 0, category: "Chemistry • Form 4" },
+      { boss: "vexon", text: "[SPM] Which group does Neon belong to?", element: "fire", options: ["Group 1", "Group 17", "Group 18", "Group 2"], answer: 2, category: "Chemistry • Form 4" },
+      { boss: "vexon", text: "[SPM] An ionic bond is formed between...", element: "fire", options: ["Non-metal and Non-metal", "Metal and Metal", "Metal and Non-metal", "Noble gases"], answer: 2, category: "Chemistry • Form 4" },
+      { boss: "vexon", text: "[SPM] Isotopes have the same number of protons but different number of...", element: "fire", options: ["Electrons", "Nucleons", "Neutrons", "Shells"], answer: 2, category: "Chemistry • Form 4" },
+      { boss: "vexon", text: "[SPM] The functional group of an alcohol is...", element: "fire", options: ["Carboxyl", "Hydroxyl", "Carbonyl", "Amino"], answer: 1, category: "Chemistry • Form 4" },
+      { boss: "vexon", text: "[SPM] Which group is known as the Halogens?", element: "fire", options: ["Group 1", "Group 2", "Group 17", "Group 18"], answer: 2, category: "Chemistry • Form 4" },
+      { boss: "vexon", text: "[SPM] A mole is defined as the amount of substance containing how many particles?", element: "fire", options: ["6.02x10²³", "3.00x10⁸", "9.81", "1.60x10⁻¹⁹"], answer: 0, category: "Chemistry • Form 4" },
+      { boss: "vexon", text: "[SPM] Which gas is evolved when a reactive metal reacts with acid?", element: "fire", options: ["Oxygen", "Carbon Dioxide", "Hydrogen", "Nitrogen"], answer: 2, category: "Chemistry • Form 4" },
+      { boss: "vexon", text: "[SPM] The pH value of a strong acid is typically...", element: "fire", options: ["1-2", "5-6", "7", "13-14"], answer: 0, category: "Chemistry • Form 4" },
+      { boss: "vexon", text: "[SPM] An alloy of copper and tin is called...", element: "fire", options: ["Brass", "Bronze", "Steel", "Duralumin"], answer: 1, category: "Chemistry • Form 4" },
+      // Biology (F4)
+      { boss: "vexon", text: "[SPM] Which organelle is known as the 'powerhouse' of the cell?", element: "ice", options: ["Nucleus", "Ribosome", "Mitochondria", "Golgi body"], answer: 2, category: "Biology • Form 4" },
+      { boss: "vexon", text: "[SPM] The movement of water across a semi-permeable membrane is...", element: "ice", options: ["Diffusion", "Osmosis", "Active Transport", "Facilitated Diffusion"], answer: 1, category: "Biology • Form 4" },
+      { boss: "vexon", text: "[SPM] Enzymes are made of...", element: "ice", options: ["Lipids", "Proteins", "Carbohydrates", "Minerals"], answer: 1, category: "Biology • Form 4" },
+      { boss: "vexon", text: "[SPM] Which organelle is the site of aerobic respiration?", element: "ice", options: ["Chloroplast", "Ribosome", "Mitochondrion", "Lysosome"], answer: 2, category: "Biology • Form 4" },
+      { boss: "vexon", text: "[SPM] A red blood cell in distilled water will...", element: "ice", options: ["Crenate", "Burst", "Plasmolyse", "Stay same"], answer: 1, category: "Biology • Form 4" },
+      { boss: "vexon", text: "[SPM] Which enzyme digests proteins in the stomach?", element: "ice", options: ["Amylase", "Pepsin", "Lipase", "Trypsin"], answer: 1, category: "Biology • Form 4" },
+      { boss: "vexon", text: "[SPM] The fluid mosaic model describes the structure of the...", element: "ice", options: ["Cell Wall", "Plasma Membrane", "Cytoplasm", "Nucleus"], answer: 1, category: "Biology • Form 4" },
+      { boss: "vexon", text: "[SPM] During mitosis, the chromosomes align at the center during...", element: "ice", options: ["Prophase", "Metaphase", "Anaphase", "Telophase"], answer: 1, category: "Biology • Form 4" },
+      { boss: "vexon", text: "[SPM] Photosynthesis occurs in which tissue of the leaf?", element: "ice", options: ["Epidermis", "Xylem", "Mesophyll", "Phloem"], answer: 2, category: "Biology • Form 4" },
+      { boss: "vexon", text: "[SPM] The process of breaking down complex food substances into simpler ones is...", element: "ice", options: ["Ingestion", "Digestion", "Absorption", "Defaecation"], answer: 1, category: "Biology • Form 4" },
+      // Mathematics (F4)
+      { boss: "vexon", text: "[SPM] If P = {1, 2, 3} and Q = {2, 3, 4}, find P ∩ Q.", element: "lightning", options: ["{1, 2, 3, 4}", "{2, 3}", "{1, 4}", "∅"], answer: 1, category: "Mathematics • Form 4" },
+      { boss: "vexon", text: "[SPM] The base-10 value of 1101₂ is...", element: "lightning", calc: true, options: ["11", "13", "15", "9"], answer: 1, category: "Mathematics • Form 4" },
+      { boss: "vexon", text: "[SPM] Solve: 3x² - 5x - 2 = 0", element: "lightning", calc: true, options: ["2, -1/3", "-2, 1/3", "2, 1/3", "-2, -1/3"], answer: 0, category: "Mathematics • Form 4" },
+      { boss: "vexon", text: "[SPM] The number 45 in base 8 is...", element: "lightning", calc: true, options: ["55", "56", "57", "54"], answer: 0, category: "Mathematics • Form 4" },
+      { boss: "vexon", text: "[SPM] Find the vertex of the quadratic function f(x) = x² - 4x + 3.", element: "lightning", calc: true, options: ["(2, -1)", "(-2, 15)", "(2, 1)", "(0, 3)"], answer: 0, category: "Mathematics • Form 4" },
+      { boss: "vexon", text: "[SPM] In a Venn diagram, the region outside of set A is denoted as...", element: "lightning", options: ["A'", "A ∩ B", "A ∪ B", "ξ"], answer: 0, category: "Mathematics • Form 4" },
+      { boss: "vexon", text: "[SPM] Find the median of 12, 15, 13, 19, 22, 21.", element: "lightning", calc: true, options: ["15", "17", "18", "19"], answer: 1, category: "Mathematics • Form 4" },
+      { boss: "vexon", text: "[SPM] Calculate the volume of a sphere with radius 3cm (π=3.14).", element: "lightning", calc: true, options: ["113.04 cm³", "37.68 cm³", "28.26 cm³", "150.72 cm³"], answer: 0, category: "Mathematics • Form 4" },
+      // Sejarah (F4)
+      { boss: "vexon", text: "Apakah ciri utama negara bangsa Kesultanan Melayu Melaka?", element: "lightning", options: ["Sempadan", "Rakyat, Kedaulatan, Wilayah Pengaruh, Undang-undang", "Bendera", "Pasukan Tentera"], answer: 1, category: "Sejarah • Form 4" },
+      { boss: "vexon", text: "Siapakah tokoh yang mempelopori gerakan nasionalisme di Mesir?", element: "lightning", options: ["Sayyid Jamal al-Din al-Afghani", "Mahatma Gandhi", "Sun Yat Sen", "Jose Rizal"], answer: 0, category: "Sejarah • Form 4" },
+      { boss: "vexon", text: "Persidangan Damai Paris 1919 menghasilkan Perjanjian...", element: "lightning", options: ["Pangkor", "Versailles", "London", "Bangkok"], answer: 1, category: "Sejarah • Form 4" },
+      { boss: "vexon", text: "Malayan Union diperkenalkan pada tahun...", element: "lightning", options: ["1945", "1946", "1948", "1957"], answer: 1, category: "Sejarah • Form 4" },
+      { boss: "vexon", text: "Apakah matlamat penubuhan UMNO pada 1946?", element: "lightning", options: ["Menuntut kemerdekaan", "Menentang Malayan Union", "Menubuhkan tentera", "Membina sekolah"], answer: 1, category: "Sejarah • Form 4" },
+      { boss: "vexon", text: "Apakah tema utama penulisan cerpen sebelum Perang Dunia Kedua?", element: "lightning", options: ["Cinta", "Nasionalisme", "Teknologi", "Sukan"], answer: 1, category: "Sejarah • Form 4" },
+      { boss: "vexon", text: "Siapakah pengasas Kesultanan Melayu Melaka?", element: "lightning", options: ["Tun Perak", "Parameswara", "Sultan Iskandar Syah", "Hang Tuah"], answer: 1, category: "Sejarah • Form 4" },
+      { boss: "vexon", text: "Apakah kepentingan Undang-undang Laut Melaka?", element: "lightning", options: ["Mengatur solat", "Mengatur perdagangan di laut", "Mengatur perkahwinan", "Mengatur pertanian"], answer: 1, category: "Sejarah • Form 4" },
+      { boss: "vexon", text: "Gerakan nasionalisme di Tanah Melayu dipengaruhi oleh gerakan di...", element: "lightning", options: ["Mesir dan Turki", "Rusia", "Jepun", "Amerika"], answer: 0, category: "Sejarah • Form 4" },
+      { boss: "vexon", text: "Tokoh yang memimpin Kesatuan Melayu Muda (KMM) ialah...", element: "lightning", options: ["Onn Jaafar", "Ibrahim Haji Yaacob", "Tunku Abdul Rahman", "Dr. Burhanuddin al-Helmi"], answer: 1, category: "Sejarah • Form 4" },
+      { boss: "vexon", text: "Negara bangsa ditakrifkan sebagai...", element: "lightning", options: ["Satu bangsa, satu bahasa, satu negara", "Kawasan yang mempunyai banyak raja", "Sempadan yang luas", "Kumpulan etnik yang berbeza"], answer: 0, category: "Sejarah • Form 4" },
+
+      // === FORM 5 (GLACIERA) ===
+      // Science (F5)
+      { boss: "glaciera", text: "[SPM] Which microorganism is used in bread making?", element: "fire", options: ["Bacteria", "Virus", "Yeast", "Protozoa"], answer: 2, category: "Science • Form 5" },
+      { boss: "glaciera", text: "[SPM] What is the main cause of global warming?", element: "fire", options: ["Oxygen", "Nitrogen", "Carbon dioxide", "Argon"], answer: 2, category: "Science • Form 5" },
+      { boss: "glaciera", text: "[SPM] Which microorganism is used to produce antibiotics?", element: "fire", options: ["Bacteria", "Virus", "Fungi", "Algae"], answer: 2, category: "Science • Form 5" },
+      { boss: "glaciera", text: "[SPM] What is the pH value of a neutral solution?", element: "fire", options: ["1", "7", "14", "0"], answer: 1, category: "Science • Form 5" },
+      { boss: "glaciera", text: "[SPM] Which of these is a synthetic polymer?", element: "fire", options: ["Natural rubber", "Cellulose", "Nylon", "Starch"], answer: 2, category: "Science • Form 5" },
+      { boss: "glaciera", text: "[SPM] The use of microorganisms to treat waste is called...", element: "fire", options: ["Fermentation", "Bioremediation", "Pasteurization", "Vaccination"], answer: 1, category: "Science • Form 5" },
+      { boss: "glaciera", text: "[SPM] Which of these is a macronutrient for plants?", element: "fire", options: ["Iron", "Boron", "Nitrogen", "Zinc"], answer: 2, category: "Science • Form 5" },
+      // Physics (F5)
+      { boss: "glaciera", text: "[SPM] What is the SI unit for electric current?", element: "fire", options: ["Volt", "Ampere", "Ohm", "Watt"], answer: 1, category: "Physics • Form 5" },
+      { boss: "glaciera", text: "[SPM] Radioactive decay is a process that is...", element: "fire", options: ["Random and Spontaneous", "Predictable", "Constant", "Fast"], answer: 0, category: "Physics • Form 5" },
+      { boss: "glaciera", text: "[SPM] A step-up transformer has more turns in the ... coil.", element: "fire", options: ["Primary", "Secondary", "Both", "Iron core"], answer: 1, category: "Physics • Form 5" },
+      { boss: "glaciera", text: "[SPM] Which wave requires a medium for propagation?", element: "fire", options: ["Radio wave", "Light wave", "Sound wave", "X-ray"], answer: 2, category: "Physics • Form 5" },
+      { boss: "glaciera", text: "[SPM] V = IR is known as...", element: "fire", options: ["Newton's Law", "Ohm's Law", "Boyle's Law", "Hooke's Law"], answer: 1, category: "Physics • Form 5" },
+      { boss: "glaciera", text: "[SPM] What is the function of a transformer?", element: "fire", options: ["Change DC to AC", "Change voltage levels", "Store charge", "Produce light"], answer: 1, category: "Physics • Form 5" },
+      { boss: "glaciera", text: "[SPM] The phenomenon where a wave changes direction as it passes an obstacle is...", element: "fire", options: ["Reflection", "Refraction", "Diffraction", "Interference"], answer: 2, category: "Physics • Form 5" },
+      { boss: "glaciera", text: "[SPM] Fleming's Left Hand Rule is used to find the direction of...", element: "fire", options: ["Magnetic field", "Force", "Current", "Voltage"], answer: 1, category: "Physics • Form 5" },
+      { boss: "glaciera", text: "[SPM] A semiconductor that is doped with a trivalent impurity is...", element: "fire", options: ["n-type", "p-type", "Intrinsic", "Insulator"], answer: 1, category: "Physics • Form 5" },
+      { boss: "glaciera", text: "[SPM] Which radioactive emission has the highest ionizing power?", element: "fire", options: ["Alpha", "Beta", "Gamma", "X-ray"], answer: 0, category: "Physics • Form 5" },
+      // Chemistry (F5)
+      { boss: "glaciera", text: "[SPM] A solution with a pH of 14 is...", element: "lightning", options: ["Strong acid", "Weak acid", "Neutral", "Strong alkali"], answer: 3, category: "Chemistry • Form 5" },
+      { boss: "glaciera", text: "[SPM] Saponification is the process of making...", element: "lightning", options: ["Salt", "Soap", "Sugar", "Acid"], answer: 1, category: "Chemistry • Form 5" },
+      { boss: "glaciera", text: "[SPM] Which of these is a polymer?", element: "lightning", options: ["Ethane", "Glucose", "Polyethene", "Methane"], answer: 2, category: "Chemistry • Form 5" },
+      { boss: "glaciera", text: "[SPM] Oxidation involves the ... of electrons.", element: "lightning", options: ["Gain", "Loss", "Sharing", "Neutering"], answer: 1, category: "Chemistry • Form 5" },
+      { boss: "glaciera", text: "[SPM] What is the general formula for alkanes?", element: "lightning", options: ["CnH2n", "CnH2n+2", "CnH2n-2", "CnH2n+1"], answer: 1, category: "Chemistry • Form 5" },
+      { boss: "glaciera", text: "[SPM] Saponification produces soap and...", element: "lightning", options: ["Ethanol", "Glycerol", "Acid", "Water"], answer: 1, category: "Chemistry • Form 5" },
+      { boss: "glaciera", text: "[SPM] A redox reaction involves both ... and ...?", element: "lightning", options: ["Addition and Subtraction", "Oxidation and Reduction", "Melting and Boiling", "Acid and Base"], answer: 1, category: "Chemistry • Form 5" },
+      { boss: "glaciera", text: "[SPM] Which substance is used as a food preservative?", element: "lightning", options: ["Vinegar", "Sugar", "Sodium chloride", "All of the above"], answer: 3, category: "Chemistry • Form 5" },
+      { boss: "glaciera", text: "[SPM] The catalyst used in the Haber Process is...", element: "lightning", options: ["Iron", "Platinum", "Vanadium(V) oxide", "Nickel"], answer: 0, category: "Chemistry • Form 5" },
+      { boss: "glaciera", text: "[SPM] Which of these is a medicine used to relieve pain?", element: "lightning", options: ["Antibiotic", "Analgesic", "Antiseptic", "Aspirin (actually an analgesic)"], answer: 1, category: "Chemistry • Form 5" },
+      // Biology (F5)
+      { boss: "glaciera", text: "[SPM] Which of these is a biotic factor in an ecosystem?", element: "ice", options: ["Light", "pH", "Bacteria", "Temperature"], answer: 2, category: "Biology • Form 5" },
+      { boss: "glaciera", text: "[SPM] Meiosis results in how many haploid cells?", element: "ice", options: ["2", "4", "1", "8"], answer: 1, category: "Biology • Form 5" },
+      { boss: "glaciera", text: "[SPM] The blood group AB is an example of...", element: "ice", options: ["Co-dominance", "Incomplete dominance", "Mutation", "Recessive trait"], answer: 0, category: "Biology • Form 5" },
+      { boss: "glaciera", text: "[SPM] Meiosis results in ... daughter cells.", element: "ice", options: ["Two", "Four", "One", "Eight"], answer: 1, category: "Biology • Form 5" },
+      { boss: "glaciera", text: "[SPM] The genetic material in humans is...", element: "ice", options: ["RNA", "ATP", "DNA", "GTP"], answer: 2, category: "Biology • Form 5" },
+      { boss: "glaciera", text: "[SPM] Which hormone is responsible for the 'fight or flight' response?", element: "ice", options: ["Insulin", "Thyroxine", "Adrenaline", "Estrogen"], answer: 2, category: "Biology • Form 5" },
+      { boss: "glaciera", text: "[SPM] The process of maintaining a constant internal environment is...", element: "ice", options: ["Photosynthesis", "Homeostasis", "Respiration", "Excretion"], answer: 1, category: "Biology • Form 5" },
+      { boss: "glaciera", text: "[SPM] Which part of the brain controls balance and coordination?", element: "ice", options: ["Cerebrum", "Cerebellum", "Medulla oblongata", "Hypothalamus"], answer: 1, category: "Biology • Form 5" },
+      { boss: "glaciera", text: "[SPM] Deoxygenated blood from the body enters which heart chamber first?", element: "ice", options: ["Right Atrium", "Left Atrium", "Right Ventricle", "Left Ventricle"], answer: 0, category: "Biology • Form 5" },
+      { boss: "glaciera", text: "[SPM] The site of fertilization in humans is usually the...", element: "ice", options: ["Uterus", "Ovary", "Fallopian tube", "Cervix"], answer: 2, category: "Biology • Form 5" },
+      // Mathematics (F5)
+      { boss: "glaciera", text: "[SPM] Find the sum of the first 10 terms of an AP: 2, 5, 8...", element: "fire", calc: true, options: ["155", "165", "145", "175"], answer: 0, category: "Mathematics • Form 5" },
+      { boss: "glaciera", text: "[SPM] Differentiate y = 3x² with respect to x.", element: "fire", calc: true, options: ["3x", "6x", "6x²", "x³"], answer: 1, category: "Mathematics • Form 5" },
+      { boss: "glaciera", text: "[SPM] The matrix [[1,0],[0,1]] is called the ... matrix.", element: "fire", options: ["Zero", "Identity", "Inverse", "Square"], answer: 1, category: "Mathematics • Form 5" },
+      { boss: "glaciera", text: "[SPM] If y varies directly as x and y=10 when x=2, find the constant k.", element: "fire", calc: true, options: ["20", "5", "12", "8"], answer: 1, category: "Mathematics • Form 5" },
+      { boss: "glaciera", text: "[SPM] The probability of an event A is always between...", element: "fire", options: ["-1 and 1", "0 and 1", "0 and 100", "1 and 10"], answer: 1, category: "Mathematics • Form 5" },
+      { boss: "glaciera", text: "[SPM] Integration is the reverse process of...", element: "fire", options: ["Multiplication", "Differentiation", "Addition", "Logarithm"], answer: 1, category: "Mathematics • Form 5" },
+      { boss: "glaciera", text: "[SPM] Find the inverse of matrix [[2,1],[4,3]].", element: "fire", calc: true, options: ["[[1.5,-0.5],[-2,1]]", "[[3,-1],[-4,2]]", "[[1,0],[0,1]]", "No inverse"], answer: 0, category: "Mathematics • Form 5" },
+      { boss: "glaciera", text: "[SPM] If k = 5, find the value of (k+1)!.", element: "fire", calc: true, options: ["120", "720", "24", "12"], answer: 1, category: "Mathematics • Form 5" },
+      // Sejarah (F5)
+      { boss: "glaciera", text: "Kemerdekaan Tanah Melayu diisytiharkan pada...", element: "fire", options: ["31 Ogos 1945", "31 Ogos 1957", "16 Sept 1963", "31 Ogos 1963"], answer: 1, category: "Sejarah • Form 5" },
+      { boss: "glaciera", text: "Malaysia dibentuk pada tarikh...", element: "fire", options: ["31 Ogos 1957", "16 Sept 1963", "1 Mei 1969", "20 Ogos 1957"], answer: 1, category: "Sejarah • Form 5" },
+      { boss: "glaciera", text: "Apakah matlamat Dasar Ekonomi Baru (DEB)?", element: "fire", options: ["Membasmi kemiskinan dan menyusun semula masyarakat", "Meningkatkan cukai", "Menghapuskan sekolah vernakular", "Membina jalan raya"], answer: 0, category: "Sejarah • Form 5" },
+      { boss: "glaciera", text: "Rukun Negara diperkenalkan selepas peristiwa...", element: "fire", options: ["Kemerdekaan", "Pembentukan Malaysia", "Tragedi 13 Mei 1969", "Konfrontasi"], answer: 2, category: "Sejarah • Form 5" },
+      { boss: "glaciera", text: "Dasar Pandang Ke Timur diilhamkan oleh...", element: "fire", options: ["Tunku Abdul Rahman", "Tun Dr. Mahathir", "Tun Razak", "Tun Hussein Onn"], answer: 1, category: "Sejarah • Form 5" },
+      { boss: "glaciera", text: "Siapakah yang melaungkan 'Merdeka' sebanyak 7 kali di Stadium Merdeka?", element: "fire", options: ["Tunku Abdul Rahman", "Tun Abdul Razak", "Tun Dr. Mahathir", "Tun Hussein Onn"], answer: 0, category: "Sejarah • Form 5" },
+      { boss: "glaciera", text: "Suruhanjaya Reid ditubuhkan untuk...", element: "fire", options: ["Membina jalan", "Merangka Perlembagaan Persekutuan", "Mengutip cukai", "Menangkap komunis"], answer: 1, category: "Sejarah • Form 5" },
+      { boss: "glaciera", text: "Rukun Negara mempunyai berapa prinsip?", element: "fire", options: ["3", "4", "5", "6"], answer: 2, category: "Sejarah • Form 5" },
+      { boss: "glaciera", text: "Wawasan 2020 diperkenalkan oleh...", element: "fire", options: ["Tun Abdul Razak", "Tun Hussein Onn", "Tun Dr. Mahathir Mohamad", "Tunku Abdul Rahman"], answer: 2, category: "Sejarah • Form 5" },
+      { boss: "glaciera", text: "Konsep 1Malaysia diperkenalkan oleh...", element: "fire", options: ["Tun Mahathir", "Tun Abdullah Badawi", "Datuk Seri Najib Razak", "Tan Sri Muhyiddin Yassin"], answer: 2, category: "Sejarah • Form 5" },
+      { boss: "glaciera", text: "Apakah matlamat utama penubuhan Malaysia?", element: "fire", options: ["Menyekat pengaruh komunis", "Meningkatkan eksport kayu", "Membina empangan", "Menghapuskan bahasa Melayu"], answer: 0, category: "Sejarah • Form 5" }
+    ];
+
+    const BOSSES = [
+      {
+        id: "emberling",
+        name: "Emberling [Tingkatan 1]",
+        title: "the Spark Whelp — Form 1 Syllabus",
+        weakness: "fire",
+        maxHp: 450,
+        loot: "Spark Breaker",
+        palette: { p1: "#a23a1c", p2: "#ff7a3d", p3: "#ffcb47" },
+        accent: "#ff8a3d",
+        image: "1.png",
+        taunts: [
+          "You think you can defeat me?",
+          "Feel my burning fury!",
+          "I am just getting started!",
+          "Tiny mortal, run!",
+          "The flames will consume you!"
+        ]
+      },
+      {
+        id: "stormfang",
+        name: "Stormfang [Tingkatan 2]",
+        title: "the Thunder Wolf — Form 2 Syllabus",
+        weakness: "ice",
+        maxHp: 500,
+        loot: "Storm Breaker",
+        palette: { p1: "#3a3a8a", p2: "#6a6ad6", p3: "#ffd84d" },
+        accent: "#ffd84d",
+        image: "2.png",
+        taunts: [
+          "Hear the thunder roar!",
+          "Lightning never misses!",
+          "You cannot outrun the storm!",
+          "I am the tempest!",
+          "Bow before the sky!"
+        ]
+      },
+      {
+        id: "verdantia",
+        name: "Verdantia [Tingkatan 3]",
+        title: "the Verdant Sorceress — Form 3 Syllabus",
+        weakness: "lightning",
+        maxHp: 550,
+        loot: "Verdant Breaker",
+        palette: { p1: "#1f6b3a", p2: "#3ddc97", p3: "#a3e4ff" },
+        accent: "#3ddc97",
+        image: "3.png",
+        taunts: [
+          "Roots will bind you forever.",
+          "The forest answers my call!",
+          "Nature shows no mercy!",
+          "Wither and decay!",
+          "I am the wild itself!"
+        ]
+      },
+      {
+        id: "vexon",
+        name: "Lord Vexon [Tingkatan 4]",
+        title: "the Arcane Tyrant — Form 4 Syllabus",
+        weakness: "lightning",
+        maxHp: 600,
+        loot: "Arcane Breaker",
+        palette: { p1: "#5b2a86", p2: "#a23ec9", p3: "#ff3b6b" },
+        accent: "#b388ff",
+        image: "4.png",
+        taunts: [
+          "You dare challenge me?",
+          "Now you've made me angry!",
+          "THIS IS MY FINAL FORM!",
+          "Pathetic mortal!",
+          "Your mind is weak!"
+        ]
+      },
+      {
+        id: "glaciera",
+        name: "Glaciera [Tingkatan 5]",
+        title: "the Frozen Queen — Form 5 Syllabus",
+        weakness: "fire",
+        maxHp: 650,
+        loot: "Frost Breaker",
+        palette: { p1: "#2c5d8a", p2: "#3aa6e0", p3: "#a3e4ff" },
+        accent: "#5ec8ff",
+        image: "5.png",
+        taunts: [
+          "Your warmth means nothing here.",
+          "Feel the cold seeping into your bones.",
+          "The blizzard has no mercy!",
+          "Frozen to the core!",
+          "Winter is eternal!"
+        ]
+      }
+    ];
+
+    const SEED_LEADERBOARD = [
+      { name: "ShadowKnight", element: "lightning", score: 2840, title: "Arcane Breaker" },
+      { name: "ArcaneQueen", element: "ice", score: 2510, title: "Frost Breaker" },
+      { name: "PyroSultan", element: "fire", score: 2295, title: "Ember Champion" },
+      { name: "FireMage88", element: "fire", score: 1760, title: null },
+      { name: "StormCaller", element: "lightning", score: 1580, title: "Thunder Adept" },
+      { name: "QuizLord", element: "lightning", score: 1340, title: null },
+      { name: "FrostWeaver", element: "ice", score: 1180, title: null },
+      { name: "EmberSiti", element: "fire", score: 980, title: null },
+      { name: "NoviceMage", element: "ice", score: 720, title: null },
+      { name: "AzimRunic", element: "lightning", score: 540, title: null },
+    ];
+
+    // AUDIO SYSTEM
+    const AudioEngine = {
+      ctx: null,
+      osc: null,
+      gain: null,
+      music: null,
+      isMuted: false,
+      
+      init() {
+        if (this.ctx) return;
+        this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        this.music = new Audio('bgmusic.mp3');
+        this.music.loop = true;
+      },
+
+      play(freq, type, duration, vol = 0.1) {
+        if (this.isMuted) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        g.gain.setValueAtTime(vol, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+        osc.connect(g);
+        g.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + duration);
+      },
+
+      correct() {
+        this.play(523.25, 'square', 0.1); // C5
+        setTimeout(() => this.play(659.25, 'square', 0.2), 100); // E5
+      },
+
+      wrong() {
+        this.play(220.00, 'sawtooth', 0.3); // A3
+        setTimeout(() => this.play(110.00, 'sawtooth', 0.5), 50); // A2
+      },
+
+      startMusic() {
+        this.init();
+        if (this.isMuted) return;
+        this.music.play().catch(e => console.log("Music play blocked"));
+      },
+
+      stopMusic() {
+        if (this.music) {
+          this.music.pause();
+        }
+      },
+
+      toggleMute() {
+        this.isMuted = !this.isMuted;
+        if (this.isMuted) this.stopMusic();
+        else {
+          if (!document.getElementById('battleScreen').classList.contains('active')) {
+            this.startMusic();
+          }
+        }
+        return this.isMuted;
+      }
+    };
+
+    const state = {
+      selectedForm: null,
+      selectedSubject: null,
+      currentBoss: null,
+      bossHp: 0, bossMaxHp: 0,
+      playerHp: 100, playerMaxHp: 100,
+      combo: 0, maxCombo: 0,
+      score: 0,
+      correctAnswers: 0, totalAnswers: 0,
+      phase: 0,
+      questionIndex: 0,
+      answered: false,
+      timerValue: 15,
+      timerRef: null,
+      shielded: false,
+      frozen: false,
+      spellsUsed: {},
+      playerName: "HERO",
+      questionStart: 0,
+      questionPool: [],
+      selectedBossIdx: 0,
+      defeatedBosses: [],
+      earnedTitles: []
+    };
+
+    function bossSvg(boss, phase) {
+      if (boss.image) {
+        return `<div style="width:100%;height:100%;background-image:url('${boss.image}');background-repeat:no-repeat;background-position:0px 0px;background-size:cover;image-rendering:pixelated;filter:drop-shadow(4px 4px 0px rgba(0,0,0,1))"></div>`;
+      }
+
+      const p = boss.palette;
+      const color = phase === 0 ? p.p1 : phase === 1 ? p.p2 : p.p3;
+      const eyeColor = phase === 2 ? "#fff200" : phase === 1 ? "#ff7849" : "#ffffff";
+      const glow = phase === 2 ? "1" : phase === 1 ? "0.6" : "0.3";
+
+      if (boss.id === "vexon") {
+        return `
+    <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="vbody" cx="50%" cy="40%">
+          <stop offset="0%" stop-color="${shade(color, 30)}"/>
+          <stop offset="100%" stop-color="${color}"/>
+        </radialGradient>
+        <radialGradient id="vorb" cx="50%" cy="50%">
+          <stop offset="0%" stop-color="#fff"/>
+          <stop offset="40%" stop-color="${boss.accent}"/>
+          <stop offset="100%" stop-color="${shade(color, -30)}"/>
+        </radialGradient>
+      </defs>
+      <path d="M120 220 L60 220 L70 130 Q70 100 120 100 Q170 100 170 130 L180 220 Z" fill="url(#vbody)" stroke="${shade(color, -40)}" stroke-width="2"/>
+      <ellipse cx="75" cy="130" rx="22" ry="14" fill="${shade(color, -20)}"/>
+      <ellipse cx="165" cy="130" rx="22" ry="14" fill="${shade(color, -20)}"/>
+      <ellipse cx="120" cy="80" rx="34" ry="40" fill="${shade(color, 40)}" stroke="${shade(color, -40)}" stroke-width="2"/>
+      <path d="M88 55 L100 30 L112 50 L120 22 L128 50 L140 30 L152 55 Z" fill="${boss.accent}" stroke="#3a1f5f" stroke-width="2"/>
+      <circle cx="120" cy="38" r="4" fill="#fff200" opacity="${glow}"/>
+      <ellipse cx="106" cy="82" rx="6" ry="8" fill="#000"/>
+      <ellipse cx="134" cy="82" rx="6" ry="8" fill="#000"/>
+      <circle cx="106" cy="84" r="3" fill="${eyeColor}"/>
+      <circle cx="134" cy="84" r="3" fill="${eyeColor}"/>
+      <path d="M108 100 Q120 ${phase > 0 ? 108 : 104} 132 100" stroke="#1a0030" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <line x1="195" y1="50" x2="195" y2="220" stroke="#3a1f5f" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="195" cy="45" r="14" fill="url(#vorb)"/>
+      <circle cx="195" cy="45" r="20" fill="${boss.accent}" opacity="0.3"/>
+    </svg>`;
+      }
+      return `
+  <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="gbody" cx="50%" cy="40%">
+        <stop offset="0%" stop-color="${shade(color, 40)}"/>
+        <stop offset="100%" stop-color="${color}"/>
+      </radialGradient>
+      <radialGradient id="gice" cx="50%" cy="40%">
+        <stop offset="0%" stop-color="#fff"/>
+        <stop offset="100%" stop-color="${boss.accent}"/>
+      </radialGradient>
+    </defs>
+    <path d="M120 220 L55 220 L75 140 Q75 110 120 110 Q165 110 165 140 L185 220 Z" fill="url(#gbody)" stroke="${shade(color, -30)}" stroke-width="2"/>
+    <polygon points="90,200 95,180 100,200" fill="${boss.accent}" opacity="0.7"/>
+    <polygon points="140,210 145,185 150,210" fill="${boss.accent}" opacity="0.7"/>
+    <ellipse cx="120" cy="85" rx="32" ry="38" fill="url(#gice)" stroke="${shade(color, -30)}" stroke-width="2"/>
+    <path d="M88 75 L82 130 L92 100 Z" fill="${shade(color, 30)}"/>
+    <path d="M152 75 L158 130 L148 100 Z" fill="${shade(color, 30)}"/>
+    <path d="M90 60 L98 30 L108 55 L118 25 L128 55 L138 30 L150 60 Z" fill="${boss.accent}" stroke="#fff" stroke-width="1.5" opacity="0.95"/>
+    <circle cx="118" cy="35" r="4" fill="#a3e4ff" opacity="${glow}"/>
+    <ellipse cx="108" cy="88" rx="5" ry="7" fill="#000"/>
+    <ellipse cx="132" cy="88" rx="5" ry="7" fill="#000"/>
+    <circle cx="108" cy="90" r="2.5" fill="${eyeColor}"/>
+    <circle cx="132" cy="90" r="2.5" fill="${eyeColor}"/>
+    <path d="M110 105 Q120 ${phase > 0 ? 100 : 108} 130 105" stroke="#1a2a40" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <line x1="40" y1="60" x2="40" y2="220" stroke="#2c5d8a" stroke-width="5"/>
+    <polygon points="40,40 30,65 50,65" fill="${boss.accent}" stroke="#fff" stroke-width="1"/>
+    <circle cx="40" cy="55" r="16" fill="${boss.accent}" opacity="0.35"/>
+  </svg>`;
+    }
+
+    function shade(hex, percent) {
+      const h = hex.replace('#', '');
+      let r = parseInt(h.substr(0, 2), 16), g = parseInt(h.substr(2, 2), 16), b = parseInt(h.substr(4, 2), 16);
+      r = Math.max(0, Math.min(255, r + Math.round(255 * percent / 100)));
+      g = Math.max(0, Math.min(255, g + Math.round(255 * percent / 100)));
+      b = Math.max(0, Math.min(255, b + Math.round(255 * percent / 100)));
+      return '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
+    }
+
+
+    function goToSelection() {
+      const nameEl = document.getElementById('nameInput');
+      const name = nameEl.value.trim();
+      if (!name) {
+        nameEl.focus();
+        return;
+      }
+      state.playerName = name;
+      AudioEngine.startMusic();
+      document.getElementById('titleScreen').classList.remove('active');
+      document.getElementById('selectionScreen').classList.add('active');
+    }
+
+    document.querySelectorAll('.form-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.form-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.selectedForm = parseInt(btn.dataset.form);
+
+        // Disable physics, chemistry, biology for forms 1-3
+        const isUpper = state.selectedForm >= 4;
+        document.querySelectorAll('.subj-btn').forEach(sb => {
+          const subj = sb.dataset.subject;
+          if (['physics', 'chemistry', 'biology'].includes(subj)) {
+            sb.disabled = !isUpper;
+            if (!isUpper && sb.classList.contains('active')) {
+              sb.classList.remove('active');
+              state.selectedSubject = null;
+            }
+          }
+        });
+        checkConfirm();
+      });
+    });
+
+    document.querySelectorAll('.subj-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.disabled) return;
+        document.querySelectorAll('.subj-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.selectedSubject = btn.dataset.subject;
+        checkConfirm();
+      });
+    });
+
+    function checkConfirm() {
+      document.getElementById('confirmSelectBtn').disabled = !(state.selectedForm && state.selectedSubject);
+    }
+
+    document.getElementById('confirmSelectBtn').onclick = () => {
+      state.selectedBossIdx = state.selectedForm - 1;
+      startBattle();
+    };
+
+    function startBattle() {
+      const nameEl = document.getElementById('nameInput');
+      const name = nameEl.value.trim();
+      if (!name) {
+        nameEl.focus();
+        return;
+      }
+      state.playerName = name;
+      state.currentBoss = BOSSES[state.selectedBossIdx];
+      state.bossMaxHp = state.currentBoss.maxHp;
+      state.bossHp = state.bossMaxHp;
+      state.playerHp = 100; state.playerMaxHp = 100;
+      state.combo = 0; state.maxCombo = 0; state.score = 0;
+      state.correctAnswers = 0; state.totalAnswers = 0;
+      state.phase = 0;
+      state.questionIndex = 0; state.shielded = false; state.frozen = false;
+      state.spellsUsed = {};
+      state.questionPool = shuffle(QUESTIONS.filter(q => {
+        const isRightBoss = q.boss === state.currentBoss.id;
+        const isRightSubj = q.category.toLowerCase().includes(state.selectedSubject);
+        return isRightBoss && isRightSubj;
+      }));
+
+      // fallback if no questions found
+      if (state.questionPool.length === 0) {
+        state.questionPool = [{ boss: state.currentBoss.id, text: "No questions found for this subject. Play anyway?", element: "fire", options: ["OK", "Yes", "Sure", "Alright"], answer: 0, category: "" }];
+      }
+
+      document.getElementById('selectionScreen').classList.remove('active');
+      document.getElementById('titleScreen').classList.remove('active');
+      document.getElementById('resultScreen').classList.remove('active');
+      document.getElementById('battleScreen').classList.add('active');
+      AudioEngine.stopMusic();
+
+      renderBoss();
+      renderHpBars();
+      renderCombo();
+      renderScore();
+      renderSpells();
+      nextQuestion();
+    }
+
+    function renderBoss() {
+      const b = state.currentBoss;
+      document.getElementById('bossHpName').textContent = b.name.toUpperCase();
+      document.getElementById('playerHpName').textContent = state.playerName.toUpperCase();
+      const wrap = document.getElementById('bossWrap');
+      wrap.innerHTML = bossSvg(b, state.phase);
+      wrap.className = 'boss-wrap';
+    }
+
+    function renderHpBars() {
+      const bp = Math.max(0, state.bossHp / state.bossMaxHp * 100);
+      const pp = Math.max(0, state.playerHp / state.playerMaxHp * 100);
+      document.getElementById('bossHpFill').style.width = bp + '%';
+      document.getElementById('playerHpFill').style.width = pp + '%';
+      document.getElementById('bossHpLabel').textContent = `${Math.max(0, Math.ceil(state.bossHp))}/${state.bossMaxHp}`;
+      document.getElementById('playerHpLabel').textContent = `${Math.max(0, Math.ceil(state.playerHp))}/${state.playerMaxHp}`;
+    }
+
+    function renderCombo() {
+      const dots = document.getElementById('comboDots');
+      dots.innerHTML = '';
+      for (let i = 0; i < 4; i++) {
+        const d = document.createElement('div');
+        d.className = 'combo-dot' + (i < state.combo ? ' on' : '');
+        dots.appendChild(d);
+      }
+    }
+
+    function renderScore() {
+      document.getElementById('scoreValue').textContent = state.score.toLocaleString();
+    }
+
+    function renderSpells() {
+      const reqs = { fifty: 2, freeze: 3, shield: 4 };
+      Object.keys(reqs).forEach(s => {
+        const btn = document.getElementById('spell-' + s);
+        const used = state.spellsUsed[s];
+        btn.disabled = state.combo < reqs[s] || used || state.answered;
+      });
+    }
+
+    function nextQuestion() {
+      if (state.bossHp <= 0) { endBattle(true); return; }
+      if (state.playerHp <= 0) { endBattle(false); return; }
+
+      state.answered = false;
+      state.frozen = false;
+
+      if (state.questionIndex >= state.questionPool.length) {
+        state.questionPool = shuffle(QUESTIONS.filter(q => q.boss === state.currentBoss.id));
+        state.questionIndex = 0;
+      }
+      const q = state.questionPool[state.questionIndex++];
+
+      document.getElementById('questionText').textContent = q.text;
+
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option';
+        btn.innerHTML = `<span class="key">${'ABCD'[i]}</span><span>${opt}</span>`;
+        btn.onclick = () => answer(i, q);
+        grid.appendChild(btn);
+      });
+
+      let phaseTime = 15;
+      if (q.calc) phaseTime += 10;
+      state.timerValue = phaseTime;
+      state._timerMax = phaseTime;
+      state.questionStart = Date.now();
+      startTimer();
+      renderSpells();
+    }
+
+    function startTimer() {
+      clearInterval(state.timerRef);
+      const fill = document.getElementById('timerFill');
+      state.timerRef = setInterval(() => {
+        if (state.frozen || state.answered) return;
+        state.timerValue -= 0.1;
+        const pct = Math.max(0, state.timerValue / state._timerMax * 100);
+        fill.style.width = pct + '%';
+        if (state.timerValue <= 0) {
+          clearInterval(state.timerRef);
+          timeout();
+        }
+      }, 100);
+    }
+
+    function answer(idx, q) {
+      if (state.answered) return;
+      state.answered = true;
+      clearInterval(state.timerRef);
+
+      const btns = document.querySelectorAll('.option');
+      btns.forEach(b => b.disabled = true);
+
+      if (idx === q.answer) {
+        btns[idx].classList.add('correct');
+        document.getElementById('arena').classList.add('flash-green');
+        setTimeout(() => document.getElementById('arena').classList.remove('flash-green'), 300);
+        AudioEngine.correct();
+        correctHit(q);
+      } else {
+        btns[q.answer].classList.add('correct');
+        btns[idx].classList.add('wrong');
+        AudioEngine.wrong();
+        document.body.classList.add('shake-screen');
+        document.getElementById('arena').classList.add('flash-red');
+        setTimeout(() => {
+          document.body.classList.remove('shake-screen');
+          document.getElementById('arena').classList.remove('flash-red');
+        }, 400);
+        wrongHit();
+      }
+
+      setTimeout(nextQuestion, 1300);
+    }
+
+    function timeout() {
+      if (state.answered) return;
+      state.answered = true;
+      const btns = document.querySelectorAll('.option');
+      const q = state.questionPool[state.questionIndex - 1];
+      btns.forEach(b => b.disabled = true);
+      if (q) btns[q.answer].classList.add('correct');
+      AudioEngine.wrong();
+
+      document.body.classList.add('shake-screen');
+      document.getElementById('arena').classList.add('flash-red');
+      setTimeout(() => {
+        document.body.classList.remove('shake-screen');
+        document.getElementById('arena').classList.remove('flash-red');
+      }, 400);
+      wrongHit();
+
+      setTimeout(nextQuestion, 1300);
+    }
+
+    function correctHit(q) {
+      state.correctAnswers++;
+      state.totalAnswers++;
+      state.combo++;
+      if (state.combo > state.maxCombo) state.maxCombo = state.combo;
+
+      const elapsed = (Date.now() - state.questionStart) / 1000;
+      const isCrit = elapsed <= 3;
+      const isWeak = q.element === state.currentBoss.weakness;
+
+      let mult = 1;
+      if (state.combo >= 5) mult = 3;
+      else if (state.combo >= 3) mult = 2;
+
+      const weakBonus = isWeak ? 1.5 : 1;
+      const critBonus = isCrit ? 1.5 : 1;
+
+      let baseDmg = 60;
+      let dmg = Math.round(baseDmg * mult * weakBonus * critBonus);
+      let scoreAdd = Math.round(20 * mult * weakBonus * critBonus);
+
+      state.bossHp -= dmg;
+      state.score += scoreAdd;
+
+      const wrap = document.getElementById('bossWrap');
+      wrap.classList.remove('hit');
+      void wrap.offsetWidth;
+      wrap.classList.add('hit');
+
+      showDamage(dmg);
+
+      renderHpBars();
+      renderScore();
+      renderCombo();
+      renderSpells();
+    }
+
+    function wrongHit() {
+      state.totalAnswers++;
+      state.combo = 0;
+      if (state.shielded) {
+        state.shielded = false;
+        renderCombo(); renderSpells();
+        return;
+      }
+      state.playerHp -= 25;
+      if (state.playerHp < 0) state.playerHp = 0;
+
+      const wrap = document.getElementById('bossWrap');
+      wrap.classList.remove('attack');
+      void wrap.offsetWidth;
+      wrap.classList.add('attack');
+
+      renderHpBars(); renderCombo(); renderSpells();
+    }
+
+    function showDamage(dmg) {
+      const area = document.getElementById('arena');
+      const el = document.createElement('div');
+      el.className = 'damage-num';
+      el.textContent = '-' + dmg;
+      area.appendChild(el);
+      setTimeout(() => el.remove(), 1000);
+    }
+
+    function castSpell(spell) {
+      const reqs = { fifty: 2, freeze: 3, shield: 4 };
+      if (state.combo < reqs[spell] || state.spellsUsed[spell] || state.answered) return;
+      state.combo -= reqs[spell];
+      state.spellsUsed[spell] = true;
+
+      if (spell === 'fifty') {
+        const q = state.questionPool[state.questionIndex - 1];
+        const wrongs = [];
+        document.querySelectorAll('.option').forEach((b, i) => {
+          if (i !== q.answer) wrongs.push({ el: b, i });
+        });
+        shuffle(wrongs).slice(0, 2).forEach(w => w.el.classList.add('eliminated'));
+      } else if (spell === 'freeze') {
+        state.frozen = true;
+        setTimeout(() => { state.frozen = false; }, 5000);
+      } else if (spell === 'shield') {
+        state.shielded = true;
+      }
+      renderCombo();
+      renderSpells();
+    }
+
+    document.addEventListener('click', (e) => {
+      const sp = e.target.closest('.spell');
+      if (sp) castSpell(sp.dataset.spell);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.getElementById('battleScreen').classList.contains('active')) return;
+      if (['1', '2', '3', '4'].includes(e.key)) {
+        const idx = parseInt(e.key) - 1;
+        const opts = document.querySelectorAll('.option');
+        if (opts[idx] && !opts[idx].disabled && !opts[idx].classList.contains('eliminated')) {
+          opts[idx].click();
+        }
+      }
+      if (e.code === 'Space') {
+        e.preventDefault();
+        const order = ['fifty', 'freeze', 'shield'];
+        for (const s of order) {
+          const btn = document.getElementById('spell-' + s);
+          if (btn && !btn.disabled) { btn.click(); break; }
+        }
+      }
+    });
+
+    function endBattle(victory) {
+      clearInterval(state.timerRef);
+      state.answered = true;
+
+      if (victory) {
+        const wrap = document.getElementById('bossWrap');
+        wrap.classList.add('defeat');
+        setTimeout(() => showResult(true), 1500);
+      } else {
+        setTimeout(() => showResult(false), 1000);
+      }
+    }
+
+    function showResult(victory) {
+      document.getElementById('battleScreen').classList.remove('active');
+      document.getElementById('resultScreen').classList.add('active');
+
+      const title = document.getElementById('resultTitle');
+      if (victory) {
+        title.textContent = 'VICTORY!';
+        title.className = 'result-title victory';
+      } else {
+        title.textContent = 'DEFEATED';
+        title.className = 'result-title defeat';
+      }
+
+      document.getElementById('finalScore').textContent = state.score.toLocaleString();
+      const acc = state.totalAnswers > 0 ? Math.round((state.correctAnswers / state.totalAnswers) * 100) : 0;
+      document.getElementById('finalAccuracy').textContent = acc + '%';
+      document.getElementById('finalCombo').textContent = state.maxCombo;
+
+      // Update Leaderboard
+      window.currentLeaderboard = window.currentLeaderboard || [...SEED_LEADERBOARD];
+      if (state.score > 0) {
+        const existingIdx = window.currentLeaderboard.findIndex(e => e.name === state.playerName);
+        if (existingIdx >= 0) {
+          if (state.score > window.currentLeaderboard[existingIdx].score) {
+            window.currentLeaderboard[existingIdx].score = state.score;
+          }
+        } else {
+          window.currentLeaderboard.push({ name: state.playerName, element: state.currentBoss.weakness, score: state.score, title: "Scholar" });
+        }
+      }
+      window.currentLeaderboard.sort((a, b) => b.score - a.score);
+
+      const lbList = document.getElementById('leaderboardList');
+      lbList.innerHTML = '';
+
+      const renderEntry = (entry, rank) => {
+        const el = document.createElement('div');
+        el.style.display = 'flex';
+        el.style.justifyContent = 'space-between';
+        const isPlayer = entry.name === state.playerName;
+        el.innerHTML = `<span style="${isPlayer ? 'color:var(--green)' : ''}">${rank}. ${entry.name}</span> <span style="color:var(--gold)">${entry.score.toLocaleString()}</span>`;
+        lbList.appendChild(el);
+      };
+
+      window.currentLeaderboard.slice(0, 5).forEach((entry, i) => {
+        renderEntry(entry, i + 1);
+      });
+
+      const playerIdx = window.currentLeaderboard.findIndex(e => e.name === state.playerName);
+      if (playerIdx >= 5) {
+        const sep = document.createElement('div');
+        sep.style.textAlign = 'center';
+        sep.style.opacity = '0.5';
+        sep.textContent = '...';
+        lbList.appendChild(sep);
+        renderEntry(window.currentLeaderboard[playerIdx], playerIdx + 1);
+      }
+
+      const nextBtn = document.getElementById('nextBossBtn');
+      const retryBtn = document.getElementById('retryBtn');
+
+      if (victory && BOSSES.length > state.selectedBossIdx + 1) {
+        nextBtn.style.display = 'inline-block';
+        retryBtn.style.display = 'none';
+      } else {
+        nextBtn.style.display = 'none';
+        retryBtn.style.display = 'inline-block';
+      }
+    }
+
+    document.getElementById('retryBtn').onclick = startBattle;
+    document.getElementById('nextBossBtn').onclick = () => {
+      state.selectedBossIdx++;
+      startBattle();
+    };
+    document.getElementById('menuBtn').onclick = () => {
+      document.getElementById('resultScreen').classList.remove('active');
+      document.getElementById('titleScreen').classList.add('active');
+      AudioEngine.startMusic();
+    };
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    document.getElementById('startBtn').onclick = goToSelection;
+
+    document.getElementById('muteBtn').onclick = () => {
+      const muted = AudioEngine.toggleMute();
+      document.getElementById('muteBtn').textContent = muted ? 'SOUND: OFF' : 'SOUND: ON';
+    };
+
+    document.getElementById('nameInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') goToSelection();
+    });
+  </script>
+</body>
+
 </html>
