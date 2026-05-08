@@ -992,7 +992,7 @@
         loot: "Spark Breaker",
         palette: { p1: "#a23a1c", p2: "#ff7a3d", p3: "#ffcb47" },
         accent: "#ff8a3d",
-        image: "1.png",
+        image: "public/1.png",
         taunts: [
           "You think you can defeat me?",
           "Feel my burning fury!",
@@ -1010,7 +1010,7 @@
         loot: "Storm Breaker",
         palette: { p1: "#3a3a8a", p2: "#6a6ad6", p3: "#ffd84d" },
         accent: "#ffd84d",
-        image: "2.png",
+        image: "public/2.png",
         taunts: [
           "Hear the thunder roar!",
           "Lightning never misses!",
@@ -1028,7 +1028,7 @@
         loot: "Verdant Breaker",
         palette: { p1: "#1f6b3a", p2: "#3ddc97", p3: "#a3e4ff" },
         accent: "#3ddc97",
-        image: "3.png",
+        image: "public/3.png",
         taunts: [
           "Roots will bind you forever.",
           "The forest answers my call!",
@@ -1046,7 +1046,7 @@
         loot: "Arcane Breaker",
         palette: { p1: "#5b2a86", p2: "#a23ec9", p3: "#ff3b6b" },
         accent: "#b388ff",
-        image: "4.png",
+        image: "public/4.png",
         taunts: [
           "You dare challenge me?",
           "Now you've made me angry!",
@@ -1064,7 +1064,7 @@
         loot: "Frost Breaker",
         palette: { p1: "#2c5d8a", p2: "#3aa6e0", p3: "#a3e4ff" },
         accent: "#5ec8ff",
-        image: "5.png",
+        image: "public/5.png",
         taunts: [
           "Your warmth means nothing here.",
           "Feel the cold seeping into your bones.",
@@ -1099,7 +1099,7 @@
       init() {
         if (this.ctx) return;
         this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-        this.music = new Audio('bgmusic.mp3');
+        this.music = new Audio('public/bgmusic.mp3');
         this.music.loop = true;
       },
 
